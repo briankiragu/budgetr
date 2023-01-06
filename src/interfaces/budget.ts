@@ -10,3 +10,9 @@ export interface IProjectedExpense {
   amount: number;
   currency: string;
 }
+
+export interface IExpensePeriod {
+  start: Date;
+  end: Date;
+  range: 'weekly' | 'monthly' | 'annually';
+}

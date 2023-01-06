@@ -1,19 +1,40 @@
 // Import interfaces...
 import type { Component } from 'solid-js';
-import type { IProjectedExpense, ITransaction } from '@interfaces/budget';
+import type {
+  IExpensePeriod,
+  IProjectedExpense,
+  ITransaction,
+} from '@interfaces/budget';
 
 // Import the SolidJS modules...
-import { createSignal } from 'solid-js';
+import { createSignal, lazy } from 'solid-js';
 
 // Import the components...
-import ProjectedIncome from '@components/cards/ProjectedIncome';
-import ProjectedExpenses from '@components/cards/ProjectedExpenses';
-import ActualIncome from '@components/cards/ActualIncome';
-import ActualExpenses from '@components/cards/ActualExpenses';
-import ActualSavings from '@/components/cards/ActualSavings';
+const ProjectedIncome = lazy(
+  async () => await import('@components/cards/ProjectedIncome')
+);
+const ProjectedExpenses = lazy(
+  async () => await import('@components/cards/ProjectedExpenses')
+);
+const ActualIncome = lazy(
+  async () => await import('@components/cards/ActualIncome')
+);
+const ActualExpenses = lazy(
+  async () => await import('@components/cards/ActualExpenses')
+);
+const ActualSavings = lazy(
+  async () => await import('@components/cards/ActualSavings')
+);
 
 // Define the dashboard component.
 const Dashboard: Component = () => {
+  // Define the period.
+  const [period] = createSignal<IExpensePeriod>({
+    range: 'monthly',
+    start: new Date('2023-02-01'),
+    end: new Date('2023-03-31'),
+  });
+
   // Projected income and expenses.
   const [projectedIncome] = createSignal<ITransaction[]>([
     { source: 'salary', amount: 65800, currency: 'ZAR' },
@@ -57,40 +78,46 @@ const Dashboard: Component = () => {
   const totalExpenses = (): number =>
     expenses().reduce((acc, expense) => acc + expense.amount, 0);
 
-  // Calculate the savings.
-  const savings = (): number => totalIncome() - totalExpenses();
-
   // Define the dashboard component's template.
   return (
     <>
       <h1 class="mb-6 text-5xl font-semibold">At a glance</h1>
 
       {/* Summary */}
-      <section class="flex flex-col gap-10">
-        <section class="grid grid-cols-1 gap-4 md:grid-cols-4 md:gap-6">
+      <section class="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-14">
+        <section class="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6">
           {/* Projected Income */}
-          <ProjectedIncome income={totalProjectedIncome()} />
+          <ProjectedIncome period={period()} income={totalProjectedIncome()} />
 
           {/* Projected Expenses */}
-          <ProjectedExpenses expenses={totalProjectedExpenses()} />
-        </section>
+          <ProjectedExpenses
+            period={period()}
+            income={totalProjectedIncome()}
+            expenses={totalProjectedExpenses()}
+          />
 
-        <section class="grid grid-cols-1 gap-4 md:grid-cols-4 md:gap-6">
           {/* Actual Income */}
           <ActualIncome
+            period={period()}
             projected={totalProjectedIncome()}
             actual={totalIncome()}
           />
 
           {/* Actual Expenses */}
           <ActualExpenses
+            period={period()}
+            income={totalIncome()}
             projected={totalProjectedExpenses()}
             actual={totalExpenses()}
           />
-
-          {/* Actual Savings */}
-          <ActualSavings amount={savings()} />
         </section>
+
+        {/* Actual Savings */}
+        <ActualSavings
+          period={period()}
+          income={totalIncome()}
+          expenses={totalExpenses()}
+        />
       </section>
     </>
   );

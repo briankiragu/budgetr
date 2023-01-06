@@ -24,12 +24,12 @@ const TransactionsSheet: Component<{ transactions: ITransaction[] }> = (
             </h3>
 
             {/* Date */}
-            <p class="hidden col-span-2 text-right text-sm text-teal-500 font-medium md:inline-grid">
-              {transaction.date.toTimeString()}
+            <p class="hidden col-span-2 text-right text-sm text-teal-600 font-medium md:inline-grid">
+              {transaction.date.toUTCString()}
             </p>
 
             {/* Nature */}
-            <p class="hidden col-span-2 text-right text-sm text-teal-500 font-medium md:inline-grid">
+            <p class="hidden col-span-2 text-right text-sm text-teal-600 font-medium md:inline-grid">
               {toTitle(transaction.nature)}
             </p>
 

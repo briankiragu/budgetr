@@ -91,11 +91,12 @@ const Dashboard: Component = () => {
   // Actual income and expenses.
   const [income] = createSignal<ITransaction[]>([
     {
-      source: 'salary',
+      source: 'bonus',
       amount: 86400,
       currency: 'ZAR',
       date: new Date(),
       nature: 'income',
+      description: 'Relocation bonus from AWS Development Centre',
     },
   ]);
   const [expenses] = createSignal<ITransaction[]>([
@@ -105,6 +106,8 @@ const Dashboard: Component = () => {
       currency: 'ZAR',
       date: new Date(),
       nature: 'expense',
+      description:
+        "First month's rent, deposit, service charge and application fee for the new apartment",
     },
     {
       source: 'consumables',

@@ -2,13 +2,13 @@ export interface ITransaction {
   source: string;
   amount: number;
   currency: string;
+  date: Date;
+  nature: 'income' | 'investment' | 'saving' | 'expense';
+  description?: string;
 }
 
-export interface IProjectedExpense {
-  source: string;
+export interface IProjectedTransaction extends ITransaction {
   type: 'fixed' | 'percentage';
-  amount: number;
-  currency: string;
 }
 
 export interface IExpensePeriod {

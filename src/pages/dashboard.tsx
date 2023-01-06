@@ -2,12 +2,13 @@
 import type { Component } from 'solid-js';
 import type {
   IExpensePeriod,
-  IProjectedExpense,
+  IProjectedTransaction,
   ITransaction,
 } from '@interfaces/budget';
 
 // Import the SolidJS modules...
 import { createSignal, lazy } from 'solid-js';
+import TransactionsSheet from '@/components/tables/TransactionsSheet';
 
 // Import the components...
 const ProjectedIncome = lazy(
@@ -37,24 +38,88 @@ const Dashboard: Component = () => {
 
   // Projected income and expenses.
   const [projectedIncome] = createSignal<ITransaction[]>([
-    { source: 'salary', amount: 65800, currency: 'ZAR' },
-    { source: 'bonus', amount: 14200, currency: 'ZAR' },
+    {
+      source: 'salary',
+      amount: 65800,
+      currency: 'ZAR',
+      date: new Date(),
+      nature: 'income',
+    },
+    {
+      source: 'bonus',
+      amount: 14200,
+      currency: 'ZAR',
+      date: new Date(),
+      nature: 'income',
+    },
   ]);
-  const [projectedExpenses] = createSignal<IProjectedExpense[]>([
-    { source: 'tithe', type: 'percentage', amount: 10, currency: 'ZAR' },
-    { source: 'tax', type: 'percentage', amount: 30, currency: 'ZAR' },
-    { source: 'investment', type: 'percentage', amount: 10, currency: 'ZAR' },
-    { source: 'rent', type: 'fixed', amount: 6500, currency: 'ZAR' },
+  const [projectedExpenses] = createSignal<IProjectedTransaction[]>([
+    {
+      source: 'tithe',
+      type: 'percentage',
+      amount: 10,
+      currency: 'ZAR',
+      date: new Date(),
+      nature: 'investment',
+    },
+    {
+      source: 'tax',
+      type: 'percentage',
+      amount: 30,
+      currency: 'ZAR',
+      date: new Date(),
+      nature: 'expense',
+    },
+    {
+      source: 'investment',
+      type: 'percentage',
+      amount: 10,
+      currency: 'ZAR',
+      date: new Date(),
+      nature: 'investment',
+    },
+    {
+      source: 'rent',
+      type: 'fixed',
+      amount: 6500,
+      currency: 'ZAR',
+      date: new Date(),
+      nature: 'expense',
+    },
   ]);
 
   // Actual income and expenses.
   const [income] = createSignal<ITransaction[]>([
-    { source: 'salary', amount: 86400, currency: 'ZAR' },
+    {
+      source: 'salary',
+      amount: 86400,
+      currency: 'ZAR',
+      date: new Date(),
+      nature: 'income',
+    },
   ]);
   const [expenses] = createSignal<ITransaction[]>([
-    { source: 'rent', amount: 15700, currency: 'ZAR' },
-    { source: 'consumables', amount: 4200, currency: 'ZAR' },
-    { source: 'transport', amount: 1200, currency: 'ZAR' },
+    {
+      source: 'rent',
+      amount: 15700,
+      currency: 'ZAR',
+      date: new Date(),
+      nature: 'expense',
+    },
+    {
+      source: 'consumables',
+      amount: 4200,
+      currency: 'ZAR',
+      date: new Date(),
+      nature: 'expense',
+    },
+    {
+      source: 'transport',
+      amount: 1200,
+      currency: 'ZAR',
+      date: new Date(),
+      nature: 'expense',
+    },
   ]);
 
   // Calculate the total projected income.
@@ -82,44 +147,60 @@ const Dashboard: Component = () => {
   // Define the dashboard component's template.
   return (
     <>
-      <h1 class="mb-6 text-5xl font-semibold">At a glance</h1>
-
       {/* Summary */}
-      <section class="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-14">
-        <section class="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6">
-          {/* Projected Income */}
-          <ProjectedIncome period={period()} income={totalProjectedIncome()} />
+      <div>
+        <h1 class="mb-6 text-gray-800 text-5xl font-extrabold">At a glance</h1>
 
-          {/* Projected Expenses */}
-          <ProjectedExpenses
-            period={period()}
-            income={totalProjectedIncome()}
-            expenses={totalProjectedExpenses()}
-          />
+        <section class="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-14">
+          <section class="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6">
+            {/* Projected Income */}
+            <ProjectedIncome
+              period={period()}
+              income={totalProjectedIncome()}
+            />
 
-          {/* Actual Income */}
-          <ActualIncome
-            period={period()}
-            projected={totalProjectedIncome()}
-            actual={totalIncome()}
-          />
+            {/* Projected Expenses */}
+            <ProjectedExpenses
+              period={period()}
+              income={totalProjectedIncome()}
+              expenses={totalProjectedExpenses()}
+            />
 
-          {/* Actual Expenses */}
-          <ActualExpenses
+            {/* Actual Income */}
+            <ActualIncome
+              period={period()}
+              projected={totalProjectedIncome()}
+              actual={totalIncome()}
+            />
+
+            {/* Actual Expenses */}
+            <ActualExpenses
+              period={period()}
+              income={totalIncome()}
+              projected={totalProjectedExpenses()}
+              actual={totalExpenses()}
+            />
+          </section>
+
+          {/* Actual Savings */}
+          <ActualSavings
             period={period()}
             income={totalIncome()}
-            projected={totalProjectedExpenses()}
-            actual={totalExpenses()}
+            expenses={totalExpenses()}
           />
         </section>
+      </div>
 
-        {/* Actual Savings */}
-        <ActualSavings
-          period={period()}
-          income={totalIncome()}
-          expenses={totalExpenses()}
-        />
-      </section>
+      <hr class="my-8" />
+
+      {/* Transactions */}
+      <div>
+        <h1 class="mb-6 text-3xl text-gray-800 font-bold tracking-tight">
+          Transactions
+        </h1>
+
+        <TransactionsSheet transactions={expenses()} />
+      </div>
     </>
   );
 };

@@ -10,16 +10,27 @@ import Income from './pages/income';
 import Expenses from './pages/expenses';
 import Transactions from './pages/transactions';
 
+// Import the components...
+import TheNavbar from './components/TheNavbar';
+
 // Define the app component.
 const App: Component = () => {
   return (
     <>
-      <Routes>
-        <Route path="/" component={Dashboard} />
-        <Route path="/income" component={Income} />
-        <Route path="/expenses" component={Expenses} />
-        <Route path="/transactions" component={Transactions} />
-      </Routes>
+      {/* Navigation bar */}
+      <header>
+        <TheNavbar />
+      </header>
+
+      {/* Content */}
+      <main class="px-3 py-2">
+        <Routes>
+          <Route path="/" component={Dashboard} />
+          <Route path="/income" component={Income} />
+          <Route path="/expenses" component={Expenses} />
+          <Route path="/transactions" component={Transactions} />
+        </Routes>
+      </main>
     </>
   );
 };

@@ -11,8 +11,8 @@ import Expenses from './pages/expenses';
 import Transactions from './pages/transactions';
 
 // Import the components...
-import TheNavbar from './components/TheNavbar';
-import TheSidebar from './components/TheSidebar';
+import TheNavbar from './components/layout/TheNavbar';
+import TheSidebar from './components/layout/TheSidebar';
 
 // Define the app component.
 const App: Component = () => {

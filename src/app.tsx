@@ -1,11 +1,22 @@
+// Import the SolidJS interfaces...
 import type { Component } from 'solid-js';
 
+// Import the SolidJS Router methods...
+import { Routes, Route } from '@solidjs/router';
+
+// Import the pages...
+import Dashboard from './pages/dashboard';
+
+// Define the app component.
 const App: Component = () => {
   return (
-    <div class="p-6">
-      <h1 class="text-5xl font-bold">BudgetR</h1>
-    </div>
+    <>
+      <Routes>
+        <Route path="/" component={Dashboard} />
+      </Routes>
+    </>
   );
 };
 
+// Export the app component.
 export default App;

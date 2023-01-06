@@ -1,5 +1,8 @@
-// Import the Solid library.
+// Import the SolidJS library.
 import { render } from 'solid-js/web';
+
+// Import the SolidJS Router.
+import { Router } from '@solidjs/router';
 
 // Import the App component.
 import App from './app';
@@ -8,4 +11,11 @@ import App from './app';
 import './index.css';
 
 // Render the App component into the DOM.
-render(() => <App />, document.getElementById('root') as HTMLElement);
+render(
+  () => (
+    <Router>
+      <App />
+    </Router>
+  ),
+  document.getElementById('root') as HTMLElement
+);

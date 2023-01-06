@@ -62,6 +62,7 @@ const Dashboard: Component = () => {
     projectedIncome().reduce((acc, stream) => acc + stream.amount, 0);
 
   // Calculate the total projected expenses.
+  // TODO: This should be resolved in a SolidJS way...
   const totalProjectedExpenses = (): number =>
     projectedExpenses().reduce((acc, expense) => {
       if (expense.type === 'percentage') {

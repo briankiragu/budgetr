@@ -12,6 +12,24 @@
       "vite/client",
       "@testing-library/jest-dom"
     ],
+    "baseUrl": ".",
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ],
+      "@components/*": [
+        "./src/components/*"
+      ],
+      "@composables/*": [
+        "./src/composables/*"
+      ],
+      "@interfaces/*": [
+        "./src/interfaces/*"
+      ],
+      "@pages/*": [
+        "./src/pages/*"
+      ],
+    }
   },
   "includes": [
     "./src"

@@ -5,14 +5,14 @@ import type { Component } from 'solid-js';
 import { Routes, Route } from '@solidjs/router';
 
 // Import the pages...
-import Dashboard from './pages/dashboard';
-import Income from './pages/income';
-import Expenses from './pages/expenses';
-import Transactions from './pages/transactions';
+import Dashboard from '@pages/dashboard';
+import Income from '@pages/income';
+import Expenses from '@pages/expenses';
+import Transactions from '@pages/transactions';
 
 // Import the components...
-import TheNavbar from './components/TheNavbar';
-import TheSidebar from './components/TheSidebar';
+import TheNavbar from '@components/layout/TheNavbar';
+import TheSidebar from '@components/layout/TheSidebar';
 
 // Define the app component.
 const App: Component = () => {
@@ -31,7 +31,7 @@ const App: Component = () => {
         </aside>
 
         {/* Main content */}
-        <main class="h-full pl-2 col-span-5">
+        <main class="h-full p-6 pl-6 col-span-5">
           <Routes>
             <Route path="/" component={Dashboard} />
             <Route path="/income" component={Income} />

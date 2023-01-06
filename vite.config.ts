@@ -2,6 +2,7 @@
 /// <reference types="vite/client" />
 
 import { defineConfig } from 'vite';
+import path from 'path';
 import solidPlugin from 'vite-plugin-solid';
 
 export default defineConfig({
@@ -25,6 +26,13 @@ export default defineConfig({
     target: 'esnext',
   },
   resolve: {
+    alias: {
+      '@': path.resolve(__dirname, './src'),
+      '@composables': path.resolve(__dirname, './src/composables'),
+      '@components': path.resolve(__dirname, './src/components'),
+      '@interfaces': path.resolve(__dirname, './src/interfaces'),
+      '@pages': path.resolve(__dirname, './src/pages'),
+    },
     conditions: ['development', 'browser'],
   },
 });

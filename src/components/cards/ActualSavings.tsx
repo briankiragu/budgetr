@@ -41,7 +41,7 @@ const ActualSavings: Component<{
 
   // Define the JSX...
   return (
-    <div class="transition-shadow ease-in duration-300 h-full rounded-lg px-6 py-4 bg-green-400 flex flex-col justify-between items-end md:px-8 md:py-6 hover:shadow-lg">
+    <div class="transition-shadow ease-in duration-300 h-full rounded-lg px-6 py-6 bg-green-400 flex flex-col justify-between items-end md:px-8 md:py-6 hover:shadow-lg">
       <div class="mb-2 flex flex-col">
         <h1 class="flex justify-end gap-2 text-md text-green-700 font-semibold tracking-tight leading-4 md:text-lg">
           {toTitle(props.period.range)} savings

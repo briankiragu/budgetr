@@ -185,13 +185,13 @@ const Dashboard: Component = () => {
       <hr class="my-8" />
 
       {/* Transactions */}
-      <div>
+      <section class="pb-6">
         <h1 class="mb-6 text-3xl text-gray-800 font-bold tracking-tight">
           Transactions
         </h1>
 
         <TransactionsSheet transactions={expenses()} />
-      </div>
+      </section>
     </>
   );
 };

@@ -1,3 +1,50 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@font-face {
+  font-family: 'Inter-fallback';
+  size-adjust: 107%;
+  ascent-override: 90%;
+  src: local('Arial');
+}
+
+@font-face {
+  font-family: 'Inter';
+  src: url('/fonts/Inter.ttf') format('truetype') tech('variations'),
+    url('/fonts/Inter.ttf') format('truetype-variations');
+  font-weight: 100 1000;
+  font-stretch: 25% 151%;
+  font-display: swap;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Stop a user from scrolling when a modal is open */
+html:has(dialog[open]) {
+  overflow: hidden;
+}
+
+body {
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+}
+
+dialog {
+  animation-fill-mode: forwards;
+}
+
+dialog:not([open]) {
+  pointer-events: none;
+  opacity: 0;
+}
+
+/* Slightly blur the backgroud when dialog is open */
+dialog::backdrop {
+  backdrop-filter: blur(4px);
+  transition: backdrop-filter 0.5s ease;
+}

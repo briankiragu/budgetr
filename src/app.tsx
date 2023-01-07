@@ -31,7 +31,7 @@ const App: Component = () => {
         </aside> */}
 
         {/* Main content */}
-        <main class="h-full p-6 pl-6">
+        <main class="h-full pl-6 p-6">
           <Routes>
             <Route path="/" component={Dashboard} />
             <Route path="/income" component={Income} />

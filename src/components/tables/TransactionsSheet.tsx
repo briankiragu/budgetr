@@ -72,7 +72,7 @@ const TransactionsSheet: Component<{ transactions: ITransaction[] }> = (
   return (
     <div class="flex flex-col gap-6">
       {/* Filters */}
-      <div class="flex justify-between items-center">
+      <div class="flex flex-wrap gap-4 justify-between items-center">
         {/* Filters */}
         <div class="flex justify-between items-center gap-6">
           {/* Filter by source */}

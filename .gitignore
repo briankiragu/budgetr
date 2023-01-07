@@ -1,3 +1,7 @@
+# Sensitive data
+data/**
+!data/.gitignore
+
 # Dependencies
 /node_modules
 

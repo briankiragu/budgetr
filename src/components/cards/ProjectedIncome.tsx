@@ -11,7 +11,7 @@ const ProjectedIncome: Component<{ period: IExpensePeriod; income: number }> = (
 ) => {
   // Return the component's JSX.
   return (
-    <div class="rounded-lg px-6 py-4 bg-indigo-400 md:px-8 md:py-6">
+    <div class="h-full rounded-lg px-6 py-4 bg-indigo-400 flex flex-col justify-between md:px-8 md:py-6 xl:px-4">
       <h1 class="text-md text-indigo-200 font-semibold tracking-tight leading-4 md:text-lg">
         Projected {props.period.range} income
       </h1>

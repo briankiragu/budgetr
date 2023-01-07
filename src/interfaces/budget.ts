@@ -1,4 +1,6 @@
 export interface ITransaction {
+  uid: string;
+  ref?: string | null;
   source: string;
   amount: number;
   currency: string;
@@ -7,7 +9,7 @@ export interface ITransaction {
   description?: string;
 }
 
-export interface IProjectedTransaction extends ITransaction {
+export interface IProjectedExpense extends ITransaction {
   type: 'fixed' | 'percentage';
 }
 

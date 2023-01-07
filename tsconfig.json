@@ -12,6 +12,7 @@
       "vite/client",
       "@testing-library/jest-dom"
     ],
+    "rootDir": ".",
     "baseUrl": ".",
     "paths": {
       "@/*": [
@@ -29,9 +30,14 @@
       "@pages/*": [
         "./src/pages/*"
       ],
+      "@data/*": [
+        "./data/*"
+      ],
     }
   },
   "includes": [
-    "./src"
+    ".eslintrc.cjs",
+    "./**/*.ts",
+    "./**/*.tsx",
   ],
 }

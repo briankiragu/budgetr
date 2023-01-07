@@ -30,7 +30,7 @@ const TransactionsSheet: Component<{ transactions: ITransaction[] }> = (
 
             {/* Date */}
             <p class="hidden col-span-2 text-right text-sm text-teal-600 font-medium md:inline-grid">
-              {transaction.date.toUTCString()}
+              {new Date(transaction.date).toUTCString()}
             </p>
 
             {/* Nature */}

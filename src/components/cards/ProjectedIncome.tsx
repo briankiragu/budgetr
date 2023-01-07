@@ -11,11 +11,11 @@ const ProjectedIncome: Component<{ period: IExpensePeriod; income: number }> = (
 ) => {
   // Return the component's JSX.
   return (
-    <div class="rounded-lg px-6 py-4 bg-indigo-400 md:px-8 md:py-6">
-      <h1 class="text-md text-indigo-200 font-semibold tracking-tight leading-4 md:text-lg">
+    <div class="transition-shadow ease-in duration-300 h-full rounded-lg px-6 py-4 bg-indigo-400 flex flex-col justify-between md:px-8 md:py-6 xl:px-4 hover:shadow-lg">
+      <h1 class="flex justify-between text-sm text-indigo-200 font-semibold tracking-tight leading-4 md:text-lg">
         Projected {props.period.range} income
       </h1>
-      <p class="text-2xl text-indigo-50 tracking-tighter font-extrabold md:text-4xl">
+      <p class="text-4xl text-indigo-50 tracking-tighter font-extrabold">
         {toPrice(props.income, 'ZAR')}
       </p>
     </div>

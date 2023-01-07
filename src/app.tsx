@@ -24,14 +24,14 @@ const App: Component = () => {
       </header>
 
       {/* Content */}
-      <section class="h-screen grid grid-cols-6 gap-3">
+      <section class="h-screen">
         {/* Sidebar */}
-        <aside class="h-full col-span-1">
+        {/* <aside class="h-full">
           <TheSidebar />
-        </aside>
+        </aside> */}
 
         {/* Main content */}
-        <main class="h-full p-6 pl-6 col-span-5">
+        <main class="h-full pl-6 p-6">
           <Routes>
             <Route path="/" component={Dashboard} />
             <Route path="/income" component={Income} />

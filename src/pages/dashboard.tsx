@@ -3,6 +3,7 @@ import type { Component } from 'solid-js';
 import type {
   IExpensePeriod,
   IProjectedExpense,
+  IProjectedIncome,
   ITransaction,
 } from '@interfaces/budget';
 
@@ -34,7 +35,7 @@ const IncomeStream = lazy(
 );
 
 // Create a FetchAPI call to get the projected income.
-const fetchProjectedIncome = async (uid: string): Promise<ITransaction[]> =>
+const fetchProjectedIncome = async (uid: string): Promise<IProjectedIncome[]> =>
   await (await fetch(`data/${uid}/income/projected.json`)).json();
 
 // Create a FetchAPI call to get the projected expenses.

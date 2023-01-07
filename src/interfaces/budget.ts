@@ -9,6 +9,13 @@ export interface ITransaction {
   description?: string;
 }
 
+export interface IProjectedIncome extends ITransaction {
+  frequency: {
+    recurring: boolean;
+    range?: 'daily' | 'weekly' | 'monthly' | 'annually';
+  };
+}
+
 export interface IProjectedExpense extends ITransaction {
   type: 'fixed' | 'percentage';
 }

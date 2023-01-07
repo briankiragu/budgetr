@@ -19,12 +19,12 @@ const App: Component = () => {
   return (
     <>
       {/* Navigation bar */}
-      <header class="sticky top-0">
+      <header class="sticky top-0 z-10">
         <TheNavbar />
       </header>
 
       {/* Content */}
-      <section class="h-screen">
+      <section class="relative h-screen">
         {/* Sidebar */}
         {/* <aside class="h-full">
           <TheSidebar />

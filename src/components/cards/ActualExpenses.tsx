@@ -1,5 +1,5 @@
 // Import interfaces...
-import type { Component, JSXElement } from 'solid-js';
+import { Component, JSXElement, Show } from 'solid-js';
 import type { IExpensePeriod } from '@/interfaces/budget';
 
 // Import necessary composables...
@@ -12,20 +12,40 @@ const ActualExpenses: Component<{
   projected: number;
   actual: number;
 }> = (props) => {
-  // Calculate the difference between the projected and actual income.
-  const improvement = (): boolean =>
-    props.actual < props.income && props.actual < props.projected;
+  // Calculate the difference between the actual income.
+  const lessThanIncome = (): boolean => props.actual < props.income;
+
+  // Calculate the difference between the projected expenses.
+  const lessThanBudget = (): boolean => props.actual < props.projected;
 
   // Create JSX emoji for the reaction.
-  const emoji = (): JSXElement =>
-    improvement() ? <span>🎉</span> : <span>😟</span>;
+  // const emoji = (): JSXElement => {
+  //   if () {
+  //     return <span>🎉🎉</span>;
+  //   } else if (lessThanIncome() || lessThanBudget()) {
+  //     return <span>🎉</span>;
+  //   } else {
+  //     return <span>😟</span>;
+  //   }
+  // };
 
   // Return the component's JSX.
   return (
     <div class="transition-shadow ease-in duration-300 h-full rounded-lg px-6 py-6 bg-teal-400 flex flex-col gap-2 justify-between md:px-8 md:py-6 xl:px-4 hover:shadow-lg">
       <h1 class="flex justify-between text-sm text-teal-100 font-semibold tracking-tight leading-4 md:text-lg">
         Actual {props.period.range} expenses
-        {emoji()}
+        <Show when={lessThanIncome() && lessThanBudget()}>
+          <span>🎉🎉</span>
+        </Show>
+        <Show when={lessThanIncome() && !lessThanBudget()}>
+          <span>🎉</span>
+        </Show>
+        <Show when={!lessThanIncome() && lessThanBudget()}>
+          <span>🎉</span>
+        </Show>
+        <Show when={!lessThanIncome() && !lessThanBudget()}>
+          <span>😟</span>
+        </Show>
       </h1>
       <p class="text-4xl text-teal-50 tracking-tighter font-extrabold">
         {toPrice(props.actual, 'ZAR')}

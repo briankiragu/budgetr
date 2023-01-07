@@ -16,7 +16,7 @@ const ProjectedExpenses: Component<{
 
   // Create JSX emoji for the reaction.
   const emoji = (): JSXElement =>
-    overdrawn() ? <span>😱</span> : <span>👌</span>;
+    overdrawn() ? <span>😟</span> : <span>👌</span>;
 
   // Return the component's JSX.
   return (

@@ -21,11 +21,11 @@ const ActualIncome: Component<{
   // Return the component's JSX.
   return (
     <div class="h-full rounded-lg px-6 py-4 bg-indigo-400 flex flex-col justify-between md:px-8 md:py-6 xl:px-4">
-      <h1 class="flex justify-between text-md text-indigo-200 font-semibold tracking-tight leading-4 md:text-lg">
+      <h1 class="flex justify-between text-sm text-indigo-200 font-semibold tracking-tight leading-4 md:text-lg">
         Actual {props.period.range} income
         {emoji()}
       </h1>
-      <p class="text-2xl text-indigo-50 tracking-tighter font-extrabold md:text-4xl">
+      <p class="text-4xl text-indigo-50 tracking-tighter font-extrabold">
         {toPrice(props.actual, 'ZAR')}
       </p>
     </div>

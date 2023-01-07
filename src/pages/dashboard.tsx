@@ -9,7 +9,6 @@ import type {
 
 // Import the SolidJS modules...
 import { createSignal, createResource, lazy, For } from 'solid-js';
-import TransactionsSheet from '@/components/tables/TransactionsSheet';
 
 // Import the components...
 const ProjectedIncome = lazy(
@@ -32,6 +31,9 @@ const ActualSavings = lazy(
 );
 const IncomeStream = lazy(
   async () => await import('@components/cards/IncomeStream')
+);
+const TransactionsSheet = lazy(
+  async () => await import('@components/tables/TransactionsSheet')
 );
 
 // Create a FetchAPI call to get the projected income.
@@ -65,7 +67,7 @@ const Dashboard: Component = () => {
   const [userId] = createSignal('briankiragu');
 
   // Create a resource to handle the projected and actual income.
-  const [projectedIncome] = createResource<ITransaction[]>(
+  const [projectedIncome] = createResource<IProjectedIncome[]>(
     userId,
     fetchProjectedIncome
   );
@@ -191,7 +193,7 @@ const Dashboard: Component = () => {
           Transactions
         </h1>
 
-        <TransactionsSheet transactions={expenses()} />
+        <TransactionsSheet transactions={[...income(), ...expenses()]} />
       </section>
     </>
   );

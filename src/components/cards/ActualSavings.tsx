@@ -53,7 +53,7 @@ const ActualSavings: Component<{
       </div>
 
       {/* Percentage saved */}
-      <p class="text-6xl text-green-100 tracking-tighter font-extrabold md:text-6xl">
+      <p class="text-7xl text-green-100 tracking-tighter font-extrabold">
         {percentage().toFixed(1)}%
       </p>
     </div>

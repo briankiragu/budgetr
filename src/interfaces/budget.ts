@@ -1,6 +1,6 @@
 export interface ITransaction {
   uid: string;
-  ref?: string | null;
+  refs: string[] | null;
   source: string;
   amount: number;
   currency: string;
@@ -12,12 +12,20 @@ export interface ITransaction {
 export interface IProjectedIncome extends ITransaction {
   frequency: {
     recurring: boolean;
-    range?: 'daily' | 'weekly' | 'monthly' | 'annually';
+    unit?: 'day' | 'week' | 'month' | 'year';
+    value?: number;
+    start?: string;
+    end?: string | null;
   };
 }
 
 export interface IProjectedExpense extends ITransaction {
   type: 'fixed' | 'percentage';
+}
+
+export interface IIncomeStream {
+  projected: IProjectedIncome;
+  actual: ITransaction[];
 }
 
 export interface IExpensePeriod {

@@ -2,6 +2,7 @@
 import type { Component } from 'solid-js';
 import type {
   IExpensePeriod,
+  IIncomeStream,
   IProjectedExpense,
   IProjectedIncome,
   ITransaction,
@@ -108,6 +109,21 @@ const Dashboard: Component = () => {
   const totalExpenses = (): number =>
     expenses().reduce((acc, expense) => acc + expense.amount, 0);
 
+  // Get the list of projected income streams and their fulfillments (whether they were received or not).
+  const streams = (): IIncomeStream[] =>
+    projectedIncome() !== undefined
+      ? projectedIncome().map((stream) => ({
+          projected: stream,
+          // Check if it was fulfilled in the actual income transaction.
+          actual:
+            income() !== undefined
+              ? income().filter((transaction) =>
+                  transaction.refs?.includes(stream.uid)
+                )
+              : [],
+        }))
+      : [];
+
   // Define the dashboard component's template.
   return (
     <>
@@ -176,7 +192,7 @@ const Dashboard: Component = () => {
         </h1>
 
         <div class="grid grid-cols-1 gap-5 md:grid-cols-5">
-          <For each={income()}>
+          <For each={streams()}>
             {(stream) => (
               <div class="col-span-1">
                 <IncomeStream stream={stream} />

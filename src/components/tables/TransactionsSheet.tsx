@@ -142,7 +142,7 @@ const TransactionsSheet: Component<{ transactions: ITransaction[] }> = (
       <ul class="flex flex-col gap-2">
         <For each={filteredTransactions()}>
           {(transaction) => (
-            <li class="transition-all ease-in rounded-md px-5 py-4 bg-teal-100 grid grid-cols-5 gap-4 items-center text-teal-700 tracking-tighter md:px-8 md:grid-cols-12  hover:shadow-lg hover:bg-teal-200">
+            <li class="transition-all ease-in rounded-md px-5 py-4 bg-teal-100 grid grid-cols-5 gap-4 items-center text-teal-700 tracking-tighter md:px-8 md:grid-cols-12 hover:shadow-lg hover:bg-teal-200">
               {/* Source */}
               <h3 class="col-span-2 text-lg font-semibold truncate">
                 {toTitle(transaction.source)}

@@ -12,6 +12,7 @@ import type {
 import { createSignal, createResource, lazy, For } from 'solid-js';
 
 // Import the components...
+import ProjectedIncomeDialog from '@/components/forms/ProjectedIncomeDialog';
 const ProjectedIncome = lazy(
   async () => await import('@components/cards/ProjectedIncome')
 );
@@ -205,10 +206,18 @@ const Dashboard: Component = () => {
 
       {/* Transactions */}
       <section class="pb-6">
-        <h1 class="mb-6 text-3xl text-gray-800 font-bold tracking-tight">
-          Transactions
-        </h1>
+        <div class="mb-8 flex justify-between items-center">
+          <h1 class="text-3xl text-gray-800 font-bold tracking-tight">
+            Transactions
+          </h1>
 
+          {/* Transaction actions */}
+          <div class="fixed bottom-4 right-4 md:static">
+            <ProjectedIncomeDialog />
+          </div>
+        </div>
+
+        {/* List all transactions */}
         <TransactionsSheet transactions={[...income(), ...expenses()]} />
       </section>
     </>

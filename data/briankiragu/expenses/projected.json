@@ -1,0 +1,42 @@
+[
+  {
+    "uid": "2784baf1",
+    "refs": ["all"],
+    "source": "tithe",
+    "type": "percentage",
+    "amount": 10,
+    "currency": "ZAR",
+    "date": "2023-01-07T06:35:34.155Z",
+    "nature": "investment"
+  },
+  {
+    "uid": "dd93b80a",
+    "refs": ["all"],
+    "source": "tax",
+    "type": "percentage",
+    "amount": 30,
+    "currency": "ZAR",
+    "date": "2023-01-07T06:35:34.155Z",
+    "nature": "expense"
+  },
+  {
+    "uid": "b83a38d6",
+    "refs": ["all"],
+    "source": "investment",
+    "type": "percentage",
+    "amount": 10,
+    "currency": "ZAR",
+    "date": "2023-01-07T06:35:34.155Z",
+    "nature": "investment"
+  },
+  {
+    "uid": "f22400fc",
+    "refs": ["8ddd6810"],
+    "source": "rent",
+    "type": "fixed",
+    "amount": 6500,
+    "currency": "ZAR",
+    "date": "2023-01-07T06:35:34.155Z",
+    "nature": "expense"
+  }
+]

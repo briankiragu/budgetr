@@ -14,7 +14,6 @@ export interface IProjectedIncome extends ITransaction {
     recurring: boolean;
     unit?: 'day' | 'week' | 'month' | 'year';
     value?: number;
-    start?: string;
     end?: string | null;
   };
 }

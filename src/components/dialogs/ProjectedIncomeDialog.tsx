@@ -29,25 +29,40 @@ const ProjectedIncomeDialog: Component = () => {
       </button>
 
       {/* Dialog */}
-      <dialog ref={dialogRef} id="MegaDialog" modal-mode="mega">
+      <dialog
+        ref={dialogRef}
+        id="MegaDialog"
+        modal-mode="mega"
+        class="w-full rounded-md p-0"
+      >
         <form method="dialog">
-          <header>
-            <h3>Projected Income</h3>
-            <button onClick={[handleDialogClose, 'close']}>X</button>
+          <header class="shadow px-5 py-3 flex justify-between items-center">
+            <h3 class="text-2xl font-bold">Projected Income</h3>
+            <button
+              class="w-9 h-9 rounded-full bg-gray-200 flex items-center justify-center text-gray-700 font-semibold"
+              onClick={[handleDialogClose, 'close']}
+            >
+              X
+            </button>
           </header>
 
-          <article>...</article>
+          <article class="px-5 py-3">...</article>
 
           <footer>
-            <menu>
+            <menu class="border-t px-5 py-3 flex justify-between">
               <button
                 autofocus
                 type="reset"
                 onClick={[handleDialogClose, 'cancel']}
+                class="rounded-md px-5 py-2 bg-gray-100 text-sm text-gray-700 font-medium tracking-tight"
               >
                 Cancel
               </button>
-              <button type="submit" value="confirm">
+              <button
+                type="submit"
+                value="confirm"
+                class="rounded-md px-5 py-2 bg-indigo-500 text-sm text-indigo-50 font-medium tracking-tight"
+              >
                 Confirm
               </button>
             </menu>

@@ -31,21 +31,5 @@
       "value": 1,
       "end": "2023-12-28T08:30:30.000Z"
     }
-  },
-  {
-    "uid": "537eabd8",
-    "refs": null,
-    "source": "bonus",
-    "amount": 12500,
-    "currency": "ZAR",
-    "date": "2024-02-28T08:30:30.000Z",
-    "nature": "income",
-    "description": "Y2 siging bonus.",
-    "frequency": {
-      "recurring": true,
-      "unit": "month",
-      "value": 1,
-      "end": "2024-12-28T08:30:30.000Z"
-    }
   }
 ]

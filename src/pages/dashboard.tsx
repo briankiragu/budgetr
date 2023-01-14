@@ -110,7 +110,8 @@ const Dashboard: Component = () => {
   const totalExpenses = (): number =>
     expenses().reduce((acc, expense) => acc + expense.amount, 0);
 
-  // Get the list of projected income streams and their fulfillments (whether they were received or not).
+  // Get the list of projected income streams and their fulfillments
+  // (whether they were received or not).
   const streams = (): IIncomeStream[] =>
     projectedIncome() !== undefined
       ? projectedIncome().map((stream) => ({
@@ -218,7 +219,9 @@ const Dashboard: Component = () => {
         </div>
 
         {/* List all transactions */}
-        <TransactionsSheet transactions={[...income(), ...expenses()]} />
+        <div class="bg-gray-100 p-4">
+          <TransactionsSheet transactions={[...income(), ...expenses()]} />
+        </div>
       </section>
     </>
   );

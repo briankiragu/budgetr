@@ -83,7 +83,7 @@ const TransactionsSheet: Component<{ transactions: ITransaction[] }> = (
             Filter by source:
             <select
               id="transaction-sheet-filter-source"
-              class="border border-gray-100 rounded-md px-3 py-2 bg-gray-100 text-gray-700 text-sm focus-visible:outline-none"
+              class="border border-gray-100 rounded-md px-3 py-2 bg-gray-200 text-gray-700 text-sm focus-visible:outline-none"
               onInput={(event) =>
                 setSourceFilter((event.target as HTMLSelectElement).value)
               }
@@ -103,7 +103,7 @@ const TransactionsSheet: Component<{ transactions: ITransaction[] }> = (
             Filter by nature:
             <select
               id="transaction-sheet-filter-nature"
-              class="border border-gray-100 rounded-md px-3 py-2 bg-gray-100 text-gray-700 text-sm focus-visible:outline-none"
+              class="border border-gray-100 rounded-md px-3 py-2 bg-gray-200 text-gray-700 text-sm focus-visible:outline-none"
               onInput={(event) =>
                 setNatureFilter((event.target as HTMLSelectElement).value)
               }
@@ -125,7 +125,7 @@ const TransactionsSheet: Component<{ transactions: ITransaction[] }> = (
           Sort by:
           <select
             id="transaction-sheet-sort-by"
-            class="border border-gray-100 rounded-md px-3 py-2 bg-gray-100 text-gray-700 text-sm focus-visible:outline-none"
+            class="border border-gray-100 rounded-md px-3 py-2 bg-gray-200 text-gray-700 text-sm focus-visible:outline-none"
             onInput={(event) =>
               setSortBy((event.target as HTMLSelectElement).value)
             }
@@ -142,24 +142,24 @@ const TransactionsSheet: Component<{ transactions: ITransaction[] }> = (
       <ul class="flex flex-col gap-2">
         <For each={filteredTransactions()}>
           {(transaction) => (
-            <li class="transition-all ease-in rounded-md px-5 py-4 bg-teal-100 grid grid-cols-5 gap-4 items-center text-teal-700 tracking-tighter md:px-8 md:grid-cols-12 hover:shadow-lg hover:bg-teal-200">
+            <li class="transition-all ease-in rounded-md px-5 py-4 bg-gray-200 grid grid-cols-5 gap-4 items-center text-gray-700 tracking-tighter md:px-8 md:grid-cols-12 hover:shadow-lg hover:bg-gray-700 hover:text-gray-50">
               {/* Source */}
               <h3 class="col-span-2 text-lg font-semibold truncate">
                 {toTitle(transaction.source)}
               </h3>
 
               {/* Description */}
-              <p class="hidden col-span-1 text-sm text-teal-400 md:inline-grid md:col-span-4">
+              <p class="hidden col-span-1 text-sm text-gray-400 md:inline-grid md:col-span-4">
                 {transaction.description}
               </p>
 
               {/* Date */}
-              <p class="hidden col-span-2 text-right text-sm text-teal-600 font-medium md:inline-grid">
+              <p class="hidden col-span-2 text-right text-sm text-gray-400 font-medium md:inline-grid">
                 {new Date(transaction.date).toUTCString()}
               </p>
 
               {/* Nature */}
-              <p class="hidden col-span-1 text-right text-sm text-teal-600 font-medium md:inline-grid">
+              <p class="hidden col-span-1 text-right text-sm text-gray-400 font-medium md:inline-grid">
                 {toTitle(transaction.nature)}
               </p>
 

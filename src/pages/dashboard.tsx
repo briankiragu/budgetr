@@ -11,6 +11,14 @@ import type {
 // Import the SolidJS modules...
 import { createSignal, createResource, lazy, For } from 'solid-js';
 
+// Import the necessary composables...
+import {
+  getActualExpenses,
+  getActualIncome,
+  getProjectedExpenses,
+  getProjectedIncome,
+} from '@composables/useData';
+
 // Import the components...
 const ProjectedIncomeDialog = lazy(
   async () => await import('@components/dialogs/ProjectedIncomeDialog')
@@ -46,26 +54,11 @@ const TransactionsSheet = lazy(
   async () => await import('@components/tables/TransactionsSheet')
 );
 
-// Create a FetchAPI call to get the projected income.
-const fetchProjectedIncome = async (uid: string): Promise<IProjectedIncome[]> =>
-  await (await fetch(`data/${uid}/income/projected.json`)).json();
-
-// Create a FetchAPI call to get the projected expenses.
-const fetchProjectedExpenses = async (
-  uid: string
-): Promise<IProjectedExpense[]> =>
-  await (await fetch(`data/${uid}/expenses/projected.json`)).json();
-
-// Create a FetchAPI call to get the actual income.
-const fetchActualIncome = async (uid: string): Promise<ITransaction[]> =>
-  await (await fetch(`data/${uid}/income/actual.json`)).json();
-
-// Create a FetchAPI call to get the actual expenses.
-const fetchActualExpenses = async (uid: string): Promise<ITransaction[]> =>
-  await (await fetch(`data/${uid}/expenses/actual.json`)).json();
-
 // Define the dashboard component.
 const Dashboard: Component = () => {
+  // Create a single to store the user ID.
+  const [userId] = createSignal('chariskiragu');
+
   // Define the period.
   const [period] = createSignal<IExpensePeriod>({
     range: 'monthly',
@@ -73,29 +66,23 @@ const Dashboard: Component = () => {
     end: new Date('2023-03-31'),
   });
 
-  // Create a single to store the user ID.
-  const [userId] = createSignal('briankiragu');
-
   // Create a resource to handle the projected and actual income.
   const [projectedIncome] = createResource<IProjectedIncome[]>(
     userId,
-    fetchProjectedIncome
+    getProjectedIncome
   );
 
   // Create a resource to handle the projected and actual income.
   const [projectedExpenses] = createResource<IProjectedExpense[]>(
     userId,
-    fetchProjectedExpenses
+    getProjectedExpenses
   );
 
   // Create a resource to handle the projected and actual income.
-  const [income] = createResource<ITransaction[]>(userId, fetchActualIncome);
+  const [income] = createResource<ITransaction[]>(userId, getActualIncome);
 
   // Create a resource to handle the projected and actual income.
-  const [expenses] = createResource<ITransaction[]>(
-    userId,
-    fetchActualExpenses
-  );
+  const [expenses] = createResource<ITransaction[]>(userId, getActualExpenses);
 
   // Calculate the total projected income.
   const totalProjectedIncome = (): number =>
@@ -229,7 +216,7 @@ const Dashboard: Component = () => {
         </div>
 
         {/* List all transactions */}
-        <div class="bg-gray-100 p-4">
+        <div class="rounded bg-gray-100 p-4">
           <TransactionsSheet transactions={[...income(), ...expenses()]} />
         </div>
       </section>

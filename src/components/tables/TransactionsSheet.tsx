@@ -1,6 +1,6 @@
 // Import interfaces...
 import type { Component } from 'solid-js';
-import type { ITransaction } from '@/interfaces/budget';
+import type { ITransaction } from '@interfaces/budget';
 
 // Import the SolidJS modules...
 import { createSignal, For } from 'solid-js';

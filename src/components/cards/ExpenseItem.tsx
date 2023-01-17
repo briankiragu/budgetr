@@ -1,6 +1,6 @@
 // Import interfaces...
 import type { Component } from 'solid-js';
-import type { ITransaction } from '@/interfaces/budget';
+import type { ITransaction } from '@interfaces/budget';
 
 // Import necessary composables...
 import { toPrice, toTitle } from '@composables/useFormatting';

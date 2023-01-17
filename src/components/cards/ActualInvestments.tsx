@@ -1,6 +1,6 @@
 // Import interfaces...
 import type { Component, JSXElement } from 'solid-js';
-import type { IExpensePeriod, ITransaction } from '@/interfaces/budget';
+import type { IExpensePeriod, ITransaction } from '@interfaces/budget';
 
 // Import necessary composables...
 import { toPrice, toTitle } from '@composables/useFormatting';

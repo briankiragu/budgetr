@@ -6,8 +6,9 @@
     "type": "percentage",
     "amount": 10,
     "currency": "ZAR",
-    "date": "2023-01-07T06:35:34.155Z",
-    "nature": "investment"
+    "nature": "investment",
+    "created_at": "2023-01-07T06:35:34.155Z",
+    "updated_at": "2023-01-07T06:35:34.155Z"
   },
   {
     "uid": "dd93b80a",
@@ -16,8 +17,9 @@
     "type": "percentage",
     "amount": 30,
     "currency": "ZAR",
-    "date": "2023-01-07T06:35:34.155Z",
-    "nature": "expense"
+    "nature": "expense",
+    "created_at": "2023-01-07T06:35:34.155Z",
+    "updated_at": "2023-01-07T06:35:34.155Z"
   },
   {
     "uid": "b83a38d6",
@@ -26,8 +28,9 @@
     "type": "percentage",
     "amount": 10,
     "currency": "ZAR",
-    "date": "2023-01-07T06:35:34.155Z",
-    "nature": "investment"
+    "nature": "investment",
+    "created_at": "2023-01-07T06:35:34.155Z",
+    "updated_at": "2023-01-07T06:35:34.155Z"
   },
   {
     "uid": "f22400fc",
@@ -36,7 +39,8 @@
     "type": "fixed",
     "amount": 6500,
     "currency": "ZAR",
-    "date": "2023-01-07T06:35:34.155Z",
-    "nature": "expense"
+    "nature": "expense",
+    "created_at": "2023-01-07T06:35:34.155Z",
+    "updated_at": "2023-01-07T06:35:34.155Z"
   }
 ]

@@ -4,9 +4,10 @@ export interface ITransaction {
   source: string;
   amount: number;
   currency: string;
-  date: Date;
   nature: 'income' | 'investment' | 'saving' | 'expense';
   description?: string;
+  created_at: string;
+  updated_at: string;
 }
 
 export interface IProjectedIncome extends ITransaction {
@@ -14,6 +15,7 @@ export interface IProjectedIncome extends ITransaction {
     recurring: boolean;
     unit?: 'day' | 'week' | 'month' | 'year';
     value?: number;
+    start?: string;
     end?: string | null;
   };
 }
@@ -31,4 +33,10 @@ export interface IExpensePeriod {
   start: Date;
   end: Date;
   range: 'weekly' | 'monthly' | 'annually';
+}
+
+export interface IBudget {
+  income: IProjectedIncome[];
+  expenses: IProjectedExpense[];
+  transactions: ITransaction[];
 }

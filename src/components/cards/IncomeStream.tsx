@@ -1,6 +1,6 @@
 // Import interfaces...
 import type { Component } from 'solid-js';
-import type { IIncomeStream } from '@/interfaces/budget';
+import type { IIncomeStream } from '@interfaces/budget';
 
 // Import necessary composables...
 import { toPrice, toTitle } from '@composables/useFormatting';

@@ -5,9 +5,10 @@
     "source": "rent",
     "amount": 15700,
     "currency": "ZAR",
-    "date": "2023-02-01T06:35:34.155Z",
     "nature": "expense",
-    "description": "First month's rent, deposit, service charge and application fee for the new apartment"
+    "description": "First month's rent, deposit, service charge and application fee for the new apartment",
+    "updated_at": "2023-02-01T06:35:34.155Z",
+    "created_at": "2023-02-01T06:35:34.155Z"
   },
   {
     "uid": "052d7675",
@@ -15,8 +16,9 @@
     "source": "housing",
     "amount": 4200,
     "currency": "ZAR",
-    "date": "2023-02-02T06:35:34.155Z",
-    "nature": "expense"
+    "nature": "expense",
+    "created_at": "2023-02-02T06:35:34.155Z",
+    "updated_at": "2023-02-02T06:35:34.155Z"
   },
   {
     "uid": "d41bd660",
@@ -24,7 +26,8 @@
     "source": "transport",
     "amount": 1200,
     "currency": "ZAR",
-    "date": "2023-02-15T10:35:34.155Z",
-    "nature": "expense"
+    "nature": "expense",
+    "created_at": "2023-02-15T10:35:34.155Z",
+    "updated_at": "2023-02-15T10:35:34.155Z"
   }
 ]

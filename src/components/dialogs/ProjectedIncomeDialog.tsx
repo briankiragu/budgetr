@@ -33,10 +33,10 @@ const ProjectedIncomeDialog: Component = () => {
         ref={dialogRef}
         id="MegaDialog"
         modal-mode="mega"
-        class="w-full rounded-md p-0"
+        class="w-full rounded-md md:w-[50vw]"
       >
         <form method="dialog">
-          <header class="shadow px-5 py-3 flex justify-between items-center">
+          <header class="shadow px-5 py-3 flex gap-4 justify-between items-center">
             <h3 class="text-2xl font-bold">Projected Income</h3>
             <button
               class="w-9 h-9 rounded-full bg-gray-200 flex items-center justify-center text-gray-700 font-semibold"
@@ -46,7 +46,72 @@ const ProjectedIncomeDialog: Component = () => {
             </button>
           </header>
 
-          <article class="px-5 py-3">...</article>
+          <article class="px-5 py-3 grid grid-cols-1 gap-4 text-sm text-gray-600 md:px-8 md:py-8">
+            {/* Source */}
+            <div class="col-span-1">
+              <label for="source" class="flex flex-col">
+                Source
+                <input
+                  type="text"
+                  id="source"
+                  name="source"
+                  placeholder="E.g. Salary"
+                  class="w-full rounded px-4 py-2 bg-gray-100 text-sm text-gray-700 tracking-tight focus:outline-none"
+                  required
+                />
+              </label>
+            </div>
+
+            {/* Amount and currency */}
+            <div class="col-span-1 grid grid-cols-6 gap-3 md:gap-6">
+              {/* Amount */}
+              <div class="col-span-4">
+                <label for="amount" class="flex flex-col">
+                  Amount
+                  <input
+                    type="number"
+                    id="amount"
+                    name="amount"
+                    min="1"
+                    placeholder="E.g. 65800"
+                    class="w-full rounded px-4 py-2 bg-gray-100 text-sm text-gray-700 tracking-tight focus:outline-none"
+                    required
+                  />
+                </label>
+              </div>
+
+              {/* Currency */}
+              <div class="col-span-2">
+                <label for="currency" class="flex flex-col">
+                  Currency
+                  <select
+                    name="currency"
+                    id="currency"
+                    class="w-full rounded px-4 py-2 bg-gray-100 text-right text-sm text-gray-700 tracking-tight focus:outline-none"
+                    required
+                  >
+                    <option value="ZAR">ZAR</option>
+                    <option value="KES">KES</option>
+                    <option value="USD">USD</option>
+                  </select>
+                </label>
+              </div>
+            </div>
+
+            {/* Description */}
+            <div class="col-span-1">
+              <label for="description" class="flex flex-col">
+                Description
+                <textarea
+                  id="description"
+                  name="description"
+                  rows="5"
+                  placeholder="E.g. Salary payment for the month of February 2023."
+                  class="w-full rounded-md px-4 py-2 bg-gray-100 text-sm text-gray-700 tracking-tight focus:outline-none"
+                />
+              </label>
+            </div>
+          </article>
 
           <footer>
             <menu class="border-t px-5 py-3 flex justify-between">

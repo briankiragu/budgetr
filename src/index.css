@@ -35,6 +35,11 @@ body {
 }
 
 dialog {
+  overflow: hidden;
+  margin: auto;
+  padding: 0;
+  position: fixed;
+  inset: 0;
   animation-fill-mode: forwards;
 }
 

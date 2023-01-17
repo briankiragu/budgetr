@@ -6,24 +6,6 @@ import {
 } from '@interfaces/budget';
 import { IUser } from '@interfaces/user';
 
-// Create a FetchAPI call to get the projected income.
-const fetchProjectedIncome = async (uid: string): Promise<IProjectedIncome[]> =>
-  await (await fetch(`data/${uid}/income/projected.json`)).json();
-
-// Create a FetchAPI call to get the projected expenses.
-const fetchProjectedExpenses = async (
-  uid: string
-): Promise<IProjectedExpense[]> =>
-  await (await fetch(`data/${uid}/expenses/projected.json`)).json();
-
-// Create a FetchAPI call to get the actual income.
-const fetchActualIncome = async (uid: string): Promise<ITransaction[]> =>
-  await (await fetch(`data/${uid}/income/actual.json`)).json();
-
-// Create a FetchAPI call to get the actual expenses.
-const fetchActualExpenses = async (uid: string): Promise<ITransaction[]> =>
-  await (await fetch(`data/${uid}/expenses/actual.json`)).json();
-
 const getProjectedIncome = async (
   username: string
 ): Promise<IProjectedIncome[]> => {
@@ -416,10 +398,6 @@ const addTransaction = async (
 };
 
 export {
-  fetchProjectedIncome,
-  fetchProjectedExpenses,
-  fetchActualIncome,
-  fetchActualExpenses,
   getProjectedIncome,
   getProjectedExpenses,
   getTransactions,

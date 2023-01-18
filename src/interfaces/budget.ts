@@ -5,7 +5,7 @@ export interface ITransaction {
   amount: number;
   currency: string;
   nature: 'income' | 'investment' | 'saving' | 'expense';
-  description?: string;
+  description: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -13,10 +13,10 @@ export interface ITransaction {
 export interface IProjectedIncome extends ITransaction {
   frequency: {
     recurring: boolean;
-    value?: number;
-    unit?: 'day' | 'week' | 'month' | 'year';
-    start?: string;
-    end?: string | null;
+    value: number | null;
+    unit: 'day' | 'week' | 'month' | 'year' | null;
+    start: string;
+    end: string | null;
   };
 }
 

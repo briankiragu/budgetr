@@ -31,6 +31,8 @@ const ProjectedIncomeDialog: Component<{
     frequencyEnd: undefined,
   });
 
+  const showFrequency = (): boolean => state.frequencyRecurring === 'true';
+
   // Create a function to handle the dialog trigger.
   const handleDialogTrigger = (): void => {
     // Open the dialog.
@@ -65,9 +67,13 @@ const ProjectedIncomeDialog: Component<{
       currency: state.currency,
       description: state.description,
       frequency: {
-        recurring: Boolean(state.frequencyRecurring),
-        value: parseInt(state.frequencyValue.toString(), 10),
-        unit: state.frequencyUnit as ETransactionFrequencyUnit,
+        recurring: showFrequency(),
+        value: showFrequency()
+          ? parseInt(state.frequencyValue.toString(), 10)
+          : null,
+        unit: showFrequency()
+          ? (state.frequencyUnit as ETransactionFrequencyUnit)
+          : null,
         start: state.frequencyStart,
         end: state.frequencyEnd,
       },
@@ -80,6 +86,19 @@ const ProjectedIncomeDialog: Component<{
 
     // Close the dialog.
     handleDialogClose('close');
+
+    // Reset the state.
+    setState({
+      source: '',
+      amount: 0,
+      currency: 'ZAR',
+      description: '',
+      frequencyRecurring: 'true',
+      frequencyValue: 1,
+      frequencyUnit: 'month',
+      frequencyStart: new Date().toISOString(),
+      frequencyEnd: undefined,
+    });
   };
 
   return (
@@ -199,6 +218,7 @@ const ProjectedIncomeDialog: Component<{
                     name="frequency-recurring"
                     value="true"
                     required
+                    checked
                     onInput={[handleFormInput, 'frequencyRecurring']}
                   />
                   Yes
@@ -219,7 +239,7 @@ const ProjectedIncomeDialog: Component<{
                 </label>
               </div>
 
-              <Show when={state.frequencyRecurring}>
+              <Show when={showFrequency()}>
                 {/* Value and Unit */}
                 <div class="col-span-6 grid grid-cols-3 gap-3 justify-between items-center md:gap-6">
                   {/* Value */}

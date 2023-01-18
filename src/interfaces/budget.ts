@@ -33,7 +33,7 @@ export interface IProjectedIncome extends ITransaction {
   frequency: {
     recurring: boolean;
     value: number | null;
-    unit: ETransactionFrequencyUnit;
+    unit: ETransactionFrequencyUnit | null;
     start: string;
     end: string | undefined;
   };

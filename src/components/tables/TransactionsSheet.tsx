@@ -6,7 +6,7 @@ import type { ITransaction } from '@interfaces/budget';
 import { createSignal, For } from 'solid-js';
 
 // Import the necessary composables...
-import { toPrice, toTitle } from '@/composables/useFormatting';
+import { toPrice, toTitle } from '@composables/useFormatting';
 
 // Define the component.
 const TransactionsSheet: Component<{ transactions: ITransaction[] }> = (

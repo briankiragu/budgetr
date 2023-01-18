@@ -11,12 +11,12 @@ import { For, Show } from 'solid-js';
 import { createStore } from 'solid-js/store';
 
 // Import the composables...
-import { generateUID } from '@/composables/useIdentity';
+import { generateUID } from '@composables/useIdentity';
 
 // Import interfaces...
 import type { Component } from 'solid-js';
 import type { IProjectedExpense } from '@interfaces/budget';
-import { toPrice, toTitle } from '@/composables/useFormatting';
+import { toPrice, toTitle } from '@composables/useFormatting';
 
 // Define the component.
 const ProjectedExpenseDialog: Component<{
@@ -28,13 +28,12 @@ const ProjectedExpenseDialog: Component<{
 
   // Create a signal to hold the form state.
   const [state, setState] = createStore({
-    source: '',
     refs: props.streams.map((stream) => stream.uid),
+    source: '',
     amount: 10,
     currency: 'ZAR',
     type: ETransactionType.Percentage,
     description: '',
-    referencesRecurring: 'true',
     frequencyRecurring: 'true',
     frequencyValue: 1,
     frequencyUnit: 'month',
@@ -139,7 +138,6 @@ const ProjectedExpenseDialog: Component<{
       currency: 'ZAR',
       type: ETransactionType.Percentage,
       description: '',
-      referencesRecurring: 'true',
       frequencyRecurring: 'true',
       frequencyValue: 1,
       frequencyUnit: 'month',
@@ -161,7 +159,7 @@ const ProjectedExpenseDialog: Component<{
       {/* Dialog */}
       <dialog
         ref={dialogRef}
-        id="MegaDialog"
+        id="ProjectedExpenseMegaDialog"
         modal-mode="mega"
         class="w-full rounded-md md:w-[50vw]"
       >
@@ -215,9 +213,11 @@ const ProjectedExpenseDialog: Component<{
                   required
                   onInput={[handleFormInput, 'type']}
                 >
-                  <option value={ETransactionType.Fixed}>Fixed</option>
+                  <option value={ETransactionType.Fixed}>
+                    {toTitle(ETransactionType.Fixed)}
+                  </option>
                   <option value={ETransactionType.Percentage} selected>
-                    Percentage
+                    {toTitle(ETransactionType.Percentage)}
                   </option>
                 </select>
               </label>

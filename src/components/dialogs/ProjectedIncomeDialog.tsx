@@ -9,7 +9,7 @@ import { Show } from 'solid-js';
 import { createStore } from 'solid-js/store';
 
 // Import the composables...
-import { generateUID } from '@/composables/useIdentity';
+import { generateUID } from '@composables/useIdentity';
 
 // Import interfaces...
 import type { Component } from 'solid-js';
@@ -118,7 +118,7 @@ const ProjectedIncomeDialog: Component<{
       {/* Dialog */}
       <dialog
         ref={dialogRef}
-        id="MegaDialog"
+        id="ProjectedIncomeMegaDialog"
         modal-mode="mega"
         class="w-full rounded-md md:w-[50vw]"
       >

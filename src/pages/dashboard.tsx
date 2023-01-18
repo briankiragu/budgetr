@@ -15,10 +15,10 @@ import { createSignal, createResource, lazy, For } from 'solid-js';
 import {
   addProjectedExpense,
   addProjectedIncome,
-  getActualExpenses,
-  getActualIncome,
+  addTransaction,
   getProjectedExpenses,
   getProjectedIncome,
+  getTransactions,
 } from '@composables/useData';
 
 // Import the components...
@@ -68,23 +68,35 @@ const Dashboard: Component = () => {
     end: new Date('2023-03-31'),
   });
 
-  // Create a resource to handle the projected and actual income.
+  // Create a resource to handle the projected income.
   const [projectedIncome] = createResource<IProjectedIncome[]>(
     userId,
     getProjectedIncome
   );
 
-  // Create a resource to handle the projected and actual income.
+  // Create a resource to handle the projected expenses.
   const [projectedExpenses] = createResource<IProjectedExpense[]>(
     userId,
     getProjectedExpenses
   );
 
-  // Create a resource to handle the projected and actual income.
-  const [income] = createResource<ITransaction[]>(userId, getActualIncome);
+  // Create a resource to handle the actual transactions.
+  const [transactions] = createResource<ITransaction[]>(
+    userId,
+    getTransactions
+  );
 
-  // Create a resource to handle the projected and actual income.
-  const [expenses] = createResource<ITransaction[]>(userId, getActualExpenses);
+  // Get the income transactions.
+  const income = (): ITransaction[] =>
+    transactions() !== undefined
+      ? transactions().filter((txn) => txn.nature === 'income')
+      : [];
+
+  // Get the income transactions.
+  const expenses = (): ITransaction[] =>
+    transactions() !== undefined
+      ? transactions().filter((txn) => txn.nature === 'expense')
+      : [];
 
   // Calculate the total projected income.
   const totalProjectedIncome = (): number =>
@@ -123,14 +135,19 @@ const Dashboard: Component = () => {
         }))
       : [];
 
-  const addIncome = async (data: IProjectedIncome): Promise<void> => {
+  const newIncome = async (data: IProjectedIncome): Promise<void> => {
     // Add the projected income to the database.
     await addProjectedIncome(userId(), data);
   };
 
-  const addExpense = async (data: IProjectedExpense): Promise<void> => {
+  const newExpense = async (data: IProjectedExpense): Promise<void> => {
     // Add the projected income to the database.
     await addProjectedExpense(userId(), data);
+  };
+
+  const newTransaction = async (data: ITransaction): Promise<void> => {
+    // Add the projected income to the database.
+    await addTransaction(userId(), data);
   };
 
   // Define the dashboard component's template.
@@ -178,7 +195,7 @@ const Dashboard: Component = () => {
             <ActualSavings
               period={period()}
               income={totalIncome()}
-              transactions={expenses()}
+              transactions={transactions()}
             />
           </div>
 
@@ -187,7 +204,7 @@ const Dashboard: Component = () => {
             <ActualInvestments
               period={period()}
               income={totalIncome()}
-              transactions={expenses()}
+              transactions={transactions()}
             />
           </div>
         </section>
@@ -221,18 +238,22 @@ const Dashboard: Component = () => {
 
           {/* Transaction actions */}
           <div class="fixed bottom-4 right-4 flex flex-col gap-1 md:static md:flex-row md:gap-2">
-            <ProjectedIncomeDialog onSubmit={addIncome} />
+            <ProjectedIncomeDialog onSubmit={newIncome} />
             <ProjectedExpenseDialog
               streams={projectedIncome()}
-              onSubmit={addExpense}
+              onSubmit={newExpense}
             />
-            <TransactionDialog />
+            <TransactionDialog
+              streams={projectedIncome()}
+              expenses={projectedExpenses()}
+              onSubmit={newTransaction}
+            />
           </div>
         </div>
 
         {/* List all transactions */}
         <div class="rounded bg-gray-100 p-4">
-          <TransactionsSheet transactions={[...income(), ...expenses()]} />
+          <TransactionsSheet transactions={transactions()} />
         </div>
       </section>
     </>

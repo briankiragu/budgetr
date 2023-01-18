@@ -76,50 +76,6 @@ const getTransactions = async (username: string): Promise<ITransaction[]> => {
   return user.budget.transactions;
 };
 
-const getActualIncome = async (username: string): Promise<ITransaction[]> => {
-  // Get the data from the store (local storage).
-  const item: string | null = localStorage.getItem(`users`);
-
-  // If the item is null, return an empty array.
-  if (item === null) return [];
-
-  // Parse the item into an array of IUser objects.
-  const users: IUser[] = JSON.parse(item);
-
-  // Find the user with the matching username.
-  const user: IUser | undefined = users.find(
-    (user: IUser) => user.username === username
-  );
-
-  // If the user is undefined, return an empty array.
-  if (user === undefined) return [];
-
-  // Return the income transactions for the user.
-  return user.budget.transactions.filter((txn) => txn.nature === 'income');
-};
-
-const getActualExpenses = async (username: string): Promise<ITransaction[]> => {
-  // Get the data from the store (local storage).
-  const item: string | null = localStorage.getItem(`users`);
-
-  // If the item is null, return an empty array.
-  if (item === null) return [];
-
-  // Parse the item into an array of IUser objects.
-  const users: IUser[] = JSON.parse(item);
-
-  // Find the user with the matching username.
-  const user: IUser | undefined = users.find(
-    (user: IUser) => user.username === username
-  );
-
-  // If the user is undefined, return an empty array.
-  if (user === undefined) return [];
-
-  // Return the income transactions for the user.
-  return user.budget.transactions.filter((txn) => txn.nature === 'expense');
-};
-
 const getBudget = async (username: string): Promise<IBudget> => {
   // Create a promise to return the budget.
   const [income, expenses, transactions] = await Promise.all([
@@ -401,8 +357,6 @@ export {
   getProjectedIncome,
   getProjectedExpenses,
   getTransactions,
-  getActualIncome,
-  getActualExpenses,
   getBudget,
   setProjectedIncome,
   setProjectedExpenses,

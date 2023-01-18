@@ -1,15 +1,19 @@
-// Import SolidJS interfaces...
-import { generateUID } from '@/composables/useIdentity';
+// Import the enums...
 import {
   ETransactionFrequencyUnit,
   ETransactionNature,
-  IProjectedIncome,
-} from '@/interfaces/budget';
-import type { Component } from 'solid-js';
-import { Show } from 'solid-js';
+} from '@interfaces/budget';
 
 // Import the SolidJS modules...
+import { Show } from 'solid-js';
 import { createStore } from 'solid-js/store';
+
+// Import the composables...
+import { generateUID } from '@/composables/useIdentity';
+
+// Import interfaces...
+import type { Component } from 'solid-js';
+import type { IProjectedIncome } from '@interfaces/budget';
 
 // Define the component.
 const ProjectedIncomeDialog: Component<{
@@ -205,7 +209,7 @@ const ProjectedIncomeDialog: Component<{
               {/* Recurring */}
               <div class="col-span-6">
                 <small class="w-full text-sm text-gray-600">
-                  Is this a recurring income stream.
+                  Is this a recurring income stream?
                 </small>
 
                 <label

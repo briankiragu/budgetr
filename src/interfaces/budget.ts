@@ -39,7 +39,7 @@ export interface IProjectedIncome extends ITransaction {
   };
 }
 
-export interface IProjectedExpense extends ITransaction {
+export interface IProjectedExpense extends IProjectedIncome {
   type: ETransactionType;
 }
 

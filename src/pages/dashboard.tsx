@@ -123,7 +123,6 @@ const Dashboard: Component = () => {
       : [];
 
   const addIncome = async (data: IProjectedIncome): Promise<void> => {
-    console.dir(data);
     // Add the projected income to the database.
     await addProjectedIncome(userId(), data);
   };

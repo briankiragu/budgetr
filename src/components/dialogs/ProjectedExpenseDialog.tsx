@@ -29,10 +29,10 @@ const ProjectedExpenseDialog: Component<{
   // Create a signal to hold the form state.
   const [state, setState] = createStore({
     source: '',
-    refs: [],
+    refs: props.streams.map((stream) => stream.uid),
     amount: 10,
     currency: 'ZAR',
-    type: 'percentage',
+    type: ETransactionType.Percentage,
     description: '',
     referencesRecurring: 'true',
     frequencyRecurring: 'true',
@@ -44,6 +44,11 @@ const ProjectedExpenseDialog: Component<{
 
   const showCurrency = (): boolean => state.type === ETransactionType.Fixed;
   const showFrequency = (): boolean => state.frequencyRecurring === 'true';
+  const calculatedAmount = (): number =>
+    props.streams
+      .filter((stream) => state.refs.includes(stream.uid))
+      .reduce((acc, stream) => acc + stream.amount, 0) *
+    (state.amount / 100);
 
   // Create a function to handle the dialog trigger.
   const handleDialogTrigger = (): void => {
@@ -65,6 +70,32 @@ const ProjectedExpenseDialog: Component<{
     setState({ [field]: value });
   };
 
+  const handleFormChecked = (field: 'refs', event: Event): void => {
+    // Get the value from the event.
+    const value = (event.target as HTMLInputElement).value;
+
+    // Create a clone of the array.
+    const clone = [...state[field]];
+
+    // Check if the value exists in the array.
+    const index = clone.indexOf(value);
+
+    // If the value exists, remove it.
+    if (index > -1) {
+      // Remove the value from the clone.
+      clone.splice(index, 1);
+
+      // Update the state.
+      setState({ [field]: clone });
+    } else {
+      // Add it.
+      clone.push(value);
+
+      // Update the state.
+      setState({ [field]: clone });
+    }
+  };
+
   const handleSubmission = (e: Event): void => {
     // Prevent the default form submission.
     e.preventDefault();
@@ -72,9 +103,9 @@ const ProjectedExpenseDialog: Component<{
     // Format the state.
     const data: IProjectedExpense = {
       uid: generateUID(),
-      refs: state.refs,
+      refs: showCurrency() ? [] : state.refs,
       source: state.source,
-      type: state.type as ETransactionType,
+      type: state.type,
       nature: ETransactionNature.Expense,
       amount: parseFloat(state.amount.toString()),
       currency: state.currency,
@@ -102,11 +133,11 @@ const ProjectedExpenseDialog: Component<{
 
     // Reset the state.
     setState({
-      refs: [],
+      refs: props.streams.map((stream) => stream.uid),
       source: '',
       amount: 0,
       currency: 'ZAR',
-      type: 'percentage',
+      type: ETransactionType.Percentage,
       description: '',
       referencesRecurring: 'true',
       frequencyRecurring: 'true',
@@ -184,8 +215,8 @@ const ProjectedExpenseDialog: Component<{
                   required
                   onInput={[handleFormInput, 'type']}
                 >
-                  <option value="fixed">Fixed</option>
-                  <option value="percentage" selected>
+                  <option value={ETransactionType.Fixed}>Fixed</option>
+                  <option value={ETransactionType.Percentage} selected>
                     Percentage
                   </option>
                 </select>
@@ -237,34 +268,45 @@ const ProjectedExpenseDialog: Component<{
 
             <hr />
 
-            {/* References */}
-            <div class="col-span-1 grid grid-cols-6 gap-4">
-              <h3 class="text-2xl font-semibold">References</h3>
+            {/* References & Total */}
+            <Show when={state.type === ETransactionType.Percentage}>
+              <div class="col-span-1 grid grid-cols-6 gap-4">
+                <h3 class="text-2xl font-semibold">References</h3>
 
-              {/* References */}
-              <div class="col-span-6 flex flex-col gap-1">
-                <For each={props.streams}>
-                  {(stream) => (
-                    <label
-                      for={`refs-${stream.uid}`}
-                      class="col-span-1 flex gap-2"
-                    >
-                      <input
-                        type="checkbox"
-                        id={`refs-${stream.uid}`}
-                        name="refs"
-                        value={stream.uid}
-                        onInput={[handleFormInput, 'refs']}
-                      />
-                      {toTitle(stream.source)} -
-                      {toPrice(stream.amount, stream.currency)}
-                    </label>
-                  )}
-                </For>
+                {/* References */}
+                <div class="col-span-6 flex flex-col gap-1">
+                  <For each={props.streams}>
+                    {(stream) => (
+                      <label
+                        for={`refs-${stream.uid}`}
+                        class="col-span-1 flex gap-2"
+                      >
+                        <input
+                          type="checkbox"
+                          id={`refs-${stream.uid}`}
+                          name="refs"
+                          value={stream.uid}
+                          checked={state.refs.includes(stream.uid)}
+                          onInput={[handleFormChecked, 'refs']}
+                        />
+                        {toTitle(stream.source)} (
+                        {toPrice(stream.amount, stream.currency ?? '')})
+                      </label>
+                    )}
+                  </For>
+                </div>
+
+                {/* Show total */}
+                <div class="col-span-6">
+                  <h3 class="text-xl font-semibold">Total</h3>
+                  <span class="text-sm text-gray-400 font-medium">
+                    {toPrice(calculatedAmount(), 'ZAR')}
+                  </span>
+                </div>
               </div>
-            </div>
 
-            <hr />
+              <hr />
+            </Show>
 
             {/* Frequency */}
             <div class="col-span-1 grid grid-cols-6 gap-4">

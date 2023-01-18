@@ -24,7 +24,7 @@ const ProjectedIncomeDialog: Component<{
     amount: 0,
     currency: 'ZAR',
     description: '',
-    frequencyRecurring: '',
+    frequencyRecurring: 'true',
     frequencyValue: 1,
     frequencyUnit: 'month',
     frequencyStart: new Date().toISOString(),
@@ -65,7 +65,7 @@ const ProjectedIncomeDialog: Component<{
       currency: state.currency,
       description: state.description,
       frequency: {
-        recurring: ['on', 'true'].includes(state.frequencyRecurring),
+        recurring: Boolean(state.frequencyRecurring),
         value: parseInt(state.frequencyValue.toString(), 10),
         unit: state.frequencyUnit as ETransactionFrequencyUnit,
         start: state.frequencyStart,
@@ -185,15 +185,37 @@ const ProjectedIncomeDialog: Component<{
 
               {/* Recurring */}
               <div class="col-span-6">
-                <label for="recurring" class="flex gap-2 items-center">
+                <small class="w-full text-sm text-gray-600">
+                  Is this a recurring income stream.
+                </small>
+
+                <label
+                  for="frequency-recurring-yes"
+                  class="flex gap-2 items-center"
+                >
                   <input
-                    type="checkbox"
-                    id="recurring"
-                    name="recurring"
+                    type="radio"
+                    id="frequency-recurring-yes"
+                    name="frequency-recurring"
+                    value="true"
                     required
                     onInput={[handleFormInput, 'frequencyRecurring']}
                   />
-                  This is a recurring income stream.
+                  Yes
+                </label>
+                <label
+                  for="frequency-recurring-no"
+                  class="flex gap-2 items-center"
+                >
+                  <input
+                    type="radio"
+                    id="frequency-recurring-no"
+                    name="frequency-recurring"
+                    value="false"
+                    required
+                    onInput={[handleFormInput, 'frequencyRecurring']}
+                  />
+                  No
                 </label>
               </div>
 

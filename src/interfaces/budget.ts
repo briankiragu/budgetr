@@ -13,8 +13,8 @@ export interface ITransaction {
 export interface IProjectedIncome extends ITransaction {
   frequency: {
     recurring: boolean;
-    unit?: 'day' | 'week' | 'month' | 'year';
     value?: number;
+    unit?: 'day' | 'week' | 'month' | 'year';
     start?: string;
     end?: string | null;
   };

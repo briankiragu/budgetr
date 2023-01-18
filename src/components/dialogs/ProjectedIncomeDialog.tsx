@@ -46,7 +46,7 @@ const ProjectedIncomeDialog: Component = () => {
             </button>
           </header>
 
-          <article class="px-5 py-3 grid grid-cols-1 gap-4 text-sm text-gray-600 md:px-8 md:py-8">
+          <article class="h-[60vh] overflow-y-scroll px-7 py-4 grid grid-cols-1 gap-4 text-sm text-gray-600 md:px-8 md:py-8">
             {/* Source */}
             <div class="col-span-1">
               <label for="source" class="flex flex-col">
@@ -85,8 +85,8 @@ const ProjectedIncomeDialog: Component = () => {
                 <label for="currency" class="flex flex-col">
                   Currency
                   <select
-                    name="currency"
                     id="currency"
+                    name="currency"
                     class="w-full rounded px-4 py-2 bg-gray-100 text-right text-sm text-gray-700 tracking-tight focus:outline-none"
                     required
                   >
@@ -97,6 +97,94 @@ const ProjectedIncomeDialog: Component = () => {
                 </label>
               </div>
             </div>
+
+            <hr />
+
+            {/* Frequency */}
+            <div class="col-span-1 grid grid-cols-6 gap-4">
+              <h3 class="text-2xl font-semibold">Frequency</h3>
+
+              {/* Recurring */}
+              <div class="col-span-6">
+                <label for="recurring" class="flex gap-2 items-center">
+                  <input
+                    type="checkbox"
+                    id="recurring"
+                    name="recurring"
+                    required
+                  />
+                  This is a recurring income stream.
+                </label>
+              </div>
+
+              {/* Value and Unit */}
+              <div class="col-span-6 grid grid-cols-3 gap-3 justify-between items-center md:gap-6">
+                {/* Value */}
+                <div class="col-span-2">
+                  <label for="frequency-value" class="flex gap-6 items-center">
+                    Every
+                    <input
+                      type="number"
+                      id="frequency-value"
+                      name="value"
+                      value="1"
+                      min="1"
+                      step="1"
+                      class="w-full rounded-md px-4 py-2 bg-gray-100 text-sm text-gray-700 tracking-tight focus:outline-none"
+                      required
+                    />
+                  </label>
+                </div>
+
+                {/* Unit */}
+                <div class="col-span-1">
+                  <label for="frequency-value" class="flex gap-2 items-center">
+                    <select
+                      id="frequency-unit"
+                      name="unit"
+                      class="w-full rounded px-4 py-2 bg-gray-100 text-right text-sm text-gray-700 tracking-tight focus:outline-none"
+                      required
+                    >
+                      <option value="day">days</option>
+                      <option value="week">weeks</option>
+                      <option value="month" selected>
+                        months
+                      </option>
+                      <option value="year">years</option>
+                    </select>
+                  </label>
+                </div>
+              </div>
+
+              {/* Start Date */}
+              <div class="col-span-6">
+                <label for="frequency-start" class="flex flex-col">
+                  Starting from
+                  <input
+                    type="datetime-local"
+                    id="frequency-start"
+                    name="start"
+                    class="w-full rounded-md px-4 py-2 bg-gray-100 text-sm text-gray-700 tracking-tight focus:outline-none"
+                    required
+                  />
+                </label>
+              </div>
+
+              {/* End Date */}
+              <div class="col-span-6">
+                <label for="frequency-end" class="flex flex-col">
+                  Ending on
+                  <input
+                    type="datetime-local"
+                    id="frequency-end"
+                    name="end"
+                    class="w-full rounded-md px-4 py-2 bg-gray-100 text-sm text-gray-700 tracking-tight focus:outline-none"
+                  />
+                </label>
+              </div>
+            </div>
+
+            <hr />
 
             {/* Description */}
             <div class="col-span-1">

@@ -32,6 +32,7 @@ export default defineConfig({
       '@components': path.resolve(__dirname, './src/components'),
       '@interfaces': path.resolve(__dirname, './src/interfaces'),
       '@pages': path.resolve(__dirname, './src/pages'),
+      '@assets': path.resolve(__dirname, './src/assets'),
       '@data': path.resolve(__dirname, './data'),
     },
     conditions: ['development', 'browser'],

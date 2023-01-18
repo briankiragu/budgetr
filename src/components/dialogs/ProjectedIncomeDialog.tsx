@@ -1,4 +1,10 @@
 // Import SolidJS interfaces...
+import { generateUID } from '@/composables/useIdentity';
+import {
+  ETransactionFrequencyUnit,
+  ETransactionNature,
+  IProjectedIncome,
+} from '@/interfaces/budget';
 import type { Component } from 'solid-js';
 import { Show } from 'solid-js';
 
@@ -6,7 +12,9 @@ import { Show } from 'solid-js';
 import { createStore } from 'solid-js/store';
 
 // Define the component.
-const ProjectedIncomeDialog: Component = () => {
+const ProjectedIncomeDialog: Component<{
+  onSubmit: Function;
+}> = (props) => {
   // Create a template ref to the dialog.
   let dialogRef: HTMLDialogElement;
 
@@ -15,12 +23,12 @@ const ProjectedIncomeDialog: Component = () => {
     source: '',
     amount: 0,
     currency: 'ZAR',
-    frequencyRecurring: false,
+    description: '',
+    frequencyRecurring: '',
     frequencyValue: 1,
     frequencyUnit: 'month',
     frequencyStart: new Date().toISOString(),
     frequencyEnd: undefined,
-    description: '',
   });
 
   // Create a function to handle the dialog trigger.
@@ -39,10 +47,39 @@ const ProjectedIncomeDialog: Component = () => {
     // Get the value from the event.
     const value = (event.target as HTMLInputElement).value;
 
-    console.dir(value);
-
     // Update the state.
     setState({ [field]: value });
+  };
+
+  const handleSubmission = (e: Event): void => {
+    // Prevent the default form submission.
+    e.preventDefault();
+
+    // Format the state.
+    const data: IProjectedIncome = {
+      uid: generateUID(),
+      refs: null,
+      source: state.source,
+      nature: ETransactionNature.Income,
+      amount: parseFloat(state.amount.toString()),
+      currency: state.currency,
+      description: state.description,
+      frequency: {
+        recurring: ['on', 'true'].includes(state.frequencyRecurring),
+        value: parseInt(state.frequencyValue.toString(), 10),
+        unit: state.frequencyUnit as ETransactionFrequencyUnit,
+        start: state.frequencyStart,
+        end: state.frequencyEnd,
+      },
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    };
+
+    // Call the parent's on submit function.
+    props.onSubmit(data);
+
+    // Close the dialog.
+    handleDialogClose('close');
   };
 
   return (
@@ -66,10 +103,19 @@ const ProjectedIncomeDialog: Component = () => {
           <header class="shadow px-5 py-3 flex gap-4 justify-between items-center">
             <h3 class="text-2xl font-bold">Projected Income</h3>
             <button
-              class="w-9 h-9 rounded-full bg-gray-200 flex items-center justify-center text-gray-700 font-semibold"
+              class="transition-colors w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center text-gray-700 font-semibold hover:bg-gray-200"
               onClick={[handleDialogClose, 'close']}
             >
-              X
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                height="24px"
+                viewBox="0 0 24 24"
+                width="24px"
+                fill="#000000"
+              >
+                <path d="M0 0h24v24H0V0z" fill="none" />
+                <path d="M18.3 5.71c-.39-.39-1.02-.39-1.41 0L12 10.59 7.11 5.7c-.39-.39-1.02-.39-1.41 0-.39.39-.39 1.02 0 1.41L10.59 12 5.7 16.89c-.39.39-.39 1.02 0 1.41.39.39 1.02.39 1.41 0L12 13.41l4.89 4.89c.39.39 1.02.39 1.41 0 .39-.39.39-1.02 0-1.41L13.41 12l4.89-4.89c.38-.38.38-1.02 0-1.4z" />
+              </svg>
             </button>
           </header>
 
@@ -266,6 +312,9 @@ const ProjectedIncomeDialog: Component = () => {
                 type="submit"
                 value="confirm"
                 class="rounded-md px-5 py-2 bg-indigo-500 text-sm text-indigo-50 font-medium tracking-tight"
+                onClick={(e) => {
+                  handleSubmission(e);
+                }}
               >
                 Confirm
               </button>

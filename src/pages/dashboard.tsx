@@ -13,6 +13,7 @@ import { createSignal, createResource, lazy, For } from 'solid-js';
 
 // Import the necessary composables...
 import {
+  addProjectedIncome,
   getActualExpenses,
   getActualIncome,
   getProjectedExpenses,
@@ -121,6 +122,11 @@ const Dashboard: Component = () => {
         }))
       : [];
 
+  const addIncome = async (data: IProjectedIncome): Promise<void> => {
+    // Add the projected income to the database.
+    await addProjectedIncome(userId(), data);
+  };
+
   // Define the dashboard component's template.
   return (
     <>
@@ -209,7 +215,7 @@ const Dashboard: Component = () => {
 
           {/* Transaction actions */}
           <div class="fixed bottom-4 right-4 flex flex-col gap-1 md:static md:flex-row md:gap-2">
-            <ProjectedIncomeDialog />
+            <ProjectedIncomeDialog onSubmit={addIncome} />
             <ProjectedExpenseDialog />
             <TransactionDialog />
           </div>

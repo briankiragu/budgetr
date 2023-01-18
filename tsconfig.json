@@ -30,6 +30,9 @@
       "@pages/*": [
         "./src/pages/*"
       ],
+      "@assets/*": [
+        "./src/assets/*"
+      ],
       "@data/*": [
         "./data/*"
       ],

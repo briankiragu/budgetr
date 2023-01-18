@@ -1,10 +1,29 @@
+export enum ETransactionNature {
+  Income = 'income',
+  Investment = 'investment',
+  Saving = 'saving',
+  Expense = 'expense',
+}
+
+export enum ETransactionFrequencyUnit {
+  Day = 'day',
+  Week = 'week',
+  Month = 'month',
+  Year = 'year',
+}
+
+export enum ETransactionType {
+  Fixed = 'fixed',
+  Percentage = 'percentage',
+}
+
 export interface ITransaction {
   uid: string;
   refs: string[] | null;
   source: string;
   amount: number;
   currency: string;
-  nature: 'income' | 'investment' | 'saving' | 'expense';
+  nature: ETransactionNature;
   description: string | null;
   created_at: string;
   updated_at: string;
@@ -14,14 +33,14 @@ export interface IProjectedIncome extends ITransaction {
   frequency: {
     recurring: boolean;
     value: number | null;
-    unit: 'day' | 'week' | 'month' | 'year' | null;
+    unit: ETransactionFrequencyUnit;
     start: string;
-    end: string | null;
+    end: string | undefined;
   };
 }
 
 export interface IProjectedExpense extends ITransaction {
-  type: 'fixed' | 'percentage';
+  type: ETransactionType;
 }
 
 export interface IIncomeStream {

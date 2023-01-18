@@ -216,7 +216,10 @@ const Dashboard: Component = () => {
           {/* Transaction actions */}
           <div class="fixed bottom-4 right-4 flex flex-col gap-1 md:static md:flex-row md:gap-2">
             <ProjectedIncomeDialog onSubmit={addIncome} />
-            <ProjectedExpenseDialog />
+            <ProjectedExpenseDialog
+              streams={projectedIncome()}
+              onSubmit={addIncome}
+            />
             <TransactionDialog />
           </div>
         </div>

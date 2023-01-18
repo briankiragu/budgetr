@@ -22,7 +22,7 @@ export interface ITransaction {
   refs: string[] | null;
   source: string;
   amount: number;
-  currency: string;
+  currency: string | null;
   nature: ETransactionNature;
   description: string | null;
   created_at: string;

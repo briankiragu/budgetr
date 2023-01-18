@@ -7,7 +7,7 @@ import {
 } from '@interfaces/budget';
 
 // Import the SolidJS modules...
-import { Show } from 'solid-js';
+import { For, Show } from 'solid-js';
 import { createStore } from 'solid-js/store';
 
 // Import the composables...
@@ -16,6 +16,7 @@ import { generateUID } from '@/composables/useIdentity';
 // Import interfaces...
 import type { Component } from 'solid-js';
 import type { IProjectedExpense } from '@interfaces/budget';
+import { toPrice, toTitle } from '@/composables/useFormatting';
 
 // Define the component.
 const ProjectedExpenseDialog: Component<{
@@ -29,10 +30,11 @@ const ProjectedExpenseDialog: Component<{
   const [state, setState] = createStore({
     source: '',
     refs: [],
-    amount: 0,
+    amount: 10,
     currency: 'ZAR',
     type: 'percentage',
     description: '',
+    referencesRecurring: 'true',
     frequencyRecurring: 'true',
     frequencyValue: 1,
     frequencyUnit: 'month',
@@ -40,6 +42,7 @@ const ProjectedExpenseDialog: Component<{
     frequencyEnd: undefined,
   });
 
+  const showCurrency = (): boolean => state.type === ETransactionType.Fixed;
   const showFrequency = (): boolean => state.frequencyRecurring === 'true';
 
   // Create a function to handle the dialog trigger.
@@ -105,6 +108,7 @@ const ProjectedExpenseDialog: Component<{
       currency: 'ZAR',
       type: 'percentage',
       description: '',
+      referencesRecurring: 'true',
       frequencyRecurring: 'true',
       frequencyValue: 1,
       frequencyUnit: 'month',
@@ -168,6 +172,26 @@ const ProjectedExpenseDialog: Component<{
               </label>
             </div>
 
+            {/* Type - Fixed or Percentage */}
+            <div class="col-span-1">
+              <label for="type" class="flex flex-col">
+                Type
+                <select
+                  id="type"
+                  name="type"
+                  value={state.type}
+                  class="w-full rounded px-4 py-2 bg-gray-100 text-sm text-gray-700 tracking-tight focus:outline-none"
+                  required
+                  onInput={[handleFormInput, 'type']}
+                >
+                  <option value="fixed">Fixed</option>
+                  <option value="percentage" selected>
+                    Percentage
+                  </option>
+                </select>
+              </label>
+            </div>
+
             {/* Amount and currency */}
             <div class="col-span-1 grid grid-cols-6 gap-3 md:gap-6">
               {/* Amount */}
@@ -180,6 +204,7 @@ const ProjectedExpenseDialog: Component<{
                     name="amount"
                     value={state.amount}
                     min="1"
+                    max={showCurrency() ? undefined : 100}
                     placeholder="E.g. 65800"
                     class="w-full rounded px-4 py-2 bg-gray-100 text-sm text-gray-700 tracking-tight focus:outline-none"
                     required
@@ -189,22 +214,53 @@ const ProjectedExpenseDialog: Component<{
               </div>
 
               {/* Currency */}
-              <div class="col-span-2">
-                <label for="currency" class="flex flex-col">
-                  Currency
-                  <select
-                    id="currency"
-                    name="currency"
-                    value={state.currency}
-                    class="w-full rounded px-4 py-2 bg-gray-100 text-right text-sm text-gray-700 tracking-tight focus:outline-none"
-                    required
-                    onInput={[handleFormInput, 'currency']}
-                  >
-                    <option value="ZAR">ZAR</option>
-                    <option value="KES">KES</option>
-                    <option value="USD">USD</option>
-                  </select>
-                </label>
+              <Show when={showCurrency()}>
+                <div class="col-span-2">
+                  <label for="currency" class="flex flex-col">
+                    Currency
+                    <select
+                      id="currency"
+                      name="currency"
+                      value={state.currency}
+                      class="w-full rounded px-4 py-2 bg-gray-100 text-right text-sm text-gray-700 tracking-tight focus:outline-none"
+                      required
+                      onInput={[handleFormInput, 'currency']}
+                    >
+                      <option value="ZAR">ZAR</option>
+                      <option value="KES">KES</option>
+                      <option value="USD">USD</option>
+                    </select>
+                  </label>
+                </div>
+              </Show>
+            </div>
+
+            <hr />
+
+            {/* References */}
+            <div class="col-span-1 grid grid-cols-6 gap-4">
+              <h3 class="text-2xl font-semibold">References</h3>
+
+              {/* References */}
+              <div class="col-span-6 flex flex-col gap-1">
+                <For each={props.streams}>
+                  {(stream) => (
+                    <label
+                      for={`refs-${stream.uid}`}
+                      class="col-span-1 flex gap-2"
+                    >
+                      <input
+                        type="checkbox"
+                        id={`refs-${stream.uid}`}
+                        name="refs"
+                        value={stream.uid}
+                        onInput={[handleFormInput, 'refs']}
+                      />
+                      {toTitle(stream.source)} -
+                      {toPrice(stream.amount, stream.currency)}
+                    </label>
+                  )}
+                </For>
               </div>
             </div>
 

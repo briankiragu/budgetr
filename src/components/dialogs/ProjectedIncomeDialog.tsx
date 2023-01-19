@@ -14,6 +14,7 @@ import { generateUID } from '@composables/useIdentity';
 // Import interfaces...
 import type { Component } from 'solid-js';
 import type { IProjectedIncome } from '@interfaces/budget';
+import type { IProjectedIncomeForm } from '@interfaces/forms';
 
 // Define the component.
 const ProjectedIncomeDialog: Component<{
@@ -23,7 +24,7 @@ const ProjectedIncomeDialog: Component<{
   let dialogRef: HTMLDialogElement;
 
   // Create a signal to hold the form state.
-  const [state, setState] = createStore({
+  const [state, setState] = createStore<IProjectedIncomeForm>({
     source: '',
     amount: 0,
     currency: 'ZAR',

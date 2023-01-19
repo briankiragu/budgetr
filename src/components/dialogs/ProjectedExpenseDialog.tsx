@@ -12,11 +12,12 @@ import { createStore } from 'solid-js/store';
 
 // Import the composables...
 import { generateUID } from '@composables/useIdentity';
+import { toPrice, toTitle } from '@composables/useFormatting';
 
 // Import interfaces...
 import type { Component } from 'solid-js';
 import type { IProjectedExpense } from '@interfaces/budget';
-import { toPrice, toTitle } from '@composables/useFormatting';
+import type { IProjectedExpenseForm } from '@interfaces/forms';
 
 // Define the component.
 const ProjectedExpenseDialog: Component<{
@@ -27,7 +28,7 @@ const ProjectedExpenseDialog: Component<{
   let dialogRef: HTMLDialogElement;
 
   // Create a signal to hold the form state.
-  const [state, setState] = createStore({
+  const [state, setState] = createStore<IProjectedExpenseForm>({
     refs: props.streams.map((stream) => stream.uid),
     source: '',
     amount: 10,

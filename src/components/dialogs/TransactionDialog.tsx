@@ -1,12 +1,13 @@
 // Import the enums...
 import {
   ETransactionNature,
+  ETransactionType,
   IProjectedIncome,
   ITransaction,
 } from '@interfaces/budget';
 
 // Import the SolidJS modules...
-import { For } from 'solid-js';
+import { For, Show } from 'solid-js';
 import { createStore } from 'solid-js/store';
 
 // Import the composables...
@@ -253,21 +254,30 @@ const TransactionDialog: Component<{
               {/* References */}
               <div class="col-span-6 flex flex-col gap-1">
                 <For each={references()}>
-                  {(stream) => (
+                  {(txn) => (
                     <label
-                      for={`refs-${stream.uid}`}
+                      for={`refs-${txn.uid}`}
                       class="col-span-1 flex gap-2"
                     >
                       <input
                         type="checkbox"
-                        id={`refs-${stream.uid}`}
+                        id={`refs-${txn.uid}`}
                         name="refs"
-                        value={stream.uid}
-                        checked={state.refs.includes(stream.uid)}
+                        value={txn.uid}
+                        checked={state.refs.includes(txn.uid)}
                         onInput={[handleFormChecked, 'refs']}
                       />
-                      {toTitle(stream.source)} (
-                      {toPrice(stream.amount, stream.currency ?? '')})
+                      {toTitle(txn.source)} (
+                      <Show
+                        when={
+                          (txn as IProjectedExpense).type ===
+                          ETransactionType.Percentage
+                        }
+                        fallback={toPrice(txn.amount, txn.currency ?? '')}
+                      >
+                        {txn.amount}%
+                      </Show>
+                      )
                     </label>
                   )}
                 </For>

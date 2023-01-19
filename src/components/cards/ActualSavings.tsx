@@ -1,6 +1,9 @@
+// Import the enums...
+import { ETransactionNature, IExpensePeriod } from '@interfaces/budget';
+
 // Import interfaces...
 import type { Component, JSXElement } from 'solid-js';
-import type { IExpensePeriod, ITransaction } from '@interfaces/budget';
+import type { ITransaction } from '@interfaces/budget';
 
 // Import necessary composables...
 import { toPrice, toTitle } from '@composables/useFormatting';
@@ -13,18 +16,21 @@ const ActualSavings: Component<{
 }> = (props) => {
   // Get the total amount of expenses.
   const expenses = (): number =>
-    props.transactions.reduce(
-      (acc, transaction) => acc + transaction.amount,
-      0
-    );
+    props.transactions
+      .filter(
+        (transaction) => transaction.nature === ETransactionNature.Expense
+      )
+      .reduce((acc, transaction) => acc + transaction.amount, 0);
 
   // Determine how many transactions were actually savings.
   const savings = (): number =>
-    props.transactions.reduce(
-      (acc, transaction) =>
-        transaction.nature === 'saving' ? acc + transaction.amount : acc,
-      0
-    );
+    props.transactions
+      .filter((transaction) => transaction.nature === ETransactionNature.Saving)
+      .reduce(
+        (acc, transaction) =>
+          transaction.nature === 'saving' ? acc + transaction.amount : acc,
+        0
+      );
 
   // Determine the total amount of money saved, as well as the total amount not expended.
   const surplus = (): number => props.income - expenses() + savings();

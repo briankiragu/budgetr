@@ -195,7 +195,7 @@ const Dashboard: Component = () => {
             <ActualSavings
               period={period()}
               income={totalIncome()}
-              transactions={expenses()}
+              transactions={transactions()}
             />
           </div>
 

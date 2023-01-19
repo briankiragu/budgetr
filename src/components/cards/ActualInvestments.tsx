@@ -24,7 +24,7 @@ const ActualSavings: Component<{
 
   // Create JSX emoji for the reaction.
   const emoji = (): JSXElement =>
-    investment() > 0 ? <span>🎉🎉</span> : <span>😟</span>;
+    investment() > 0 ? <span>🎉🎉</span> : <span>🔻</span>;
 
   // Define the JSX...
   return (

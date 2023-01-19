@@ -16,7 +16,7 @@ const ActualIncome: Component<{
 
   // Create JSX emoji for the reaction.
   const emoji = (): JSXElement =>
-    improvement() ? <span>🎉</span> : <span>😟</span>;
+    improvement() ? <span>🎉</span> : <span>🔻</span>;
 
   // Return the component's JSX.
   return (

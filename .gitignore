@@ -1,9 +1,17 @@
-# Sensitive data
-# data/**
-!data/.gitignore
-
 # Dependencies
-/node_modules
+node_modules
+
+# Environment variables
+.env*
+!.env.example
+
+# Testing coverage files
+coverage
+
+# Sensitive data
+data/**
+!data/users.json
+!data/.gitignore
 
 # Editor directories and files
 .vscode

@@ -8,6 +8,10 @@
     "esModuleInterop": true,
     "jsx": "preserve",
     "jsxImportSource": "solid-js",
+    "lib": [
+      "DOM",
+      "WebWorker"
+    ],
     "types": [
       "vite/client",
       "@testing-library/jest-dom"

@@ -1,6 +1,7 @@
 // Import interfaces...
 import type { Component } from 'solid-js';
-import type {
+import {
+  ETransactionNature,
   IExpensePeriod,
   IIncomeStream,
   IProjectedExpense,
@@ -89,13 +90,15 @@ const Dashboard: Component = () => {
   // Get the income transactions.
   const income = (): ITransaction[] =>
     transactions() !== undefined
-      ? transactions().filter((txn) => txn.nature === 'income')
+      ? transactions().filter((txn) => txn.nature === ETransactionNature.Income)
       : [];
 
-  // Get the income transactions.
+  // Get the expense transactions.
   const expenses = (): ITransaction[] =>
     transactions() !== undefined
-      ? transactions().filter((txn) => txn.nature === 'expense')
+      ? transactions().filter(
+          (txn) => txn.nature === ETransactionNature.Expense
+        )
       : [];
 
   // Calculate the total projected income.

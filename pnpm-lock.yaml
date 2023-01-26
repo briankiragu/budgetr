@@ -12,6 +12,7 @@ specifiers:
   eslint-config-prettier: ^8.6.0
   eslint-config-standard-with-typescript: ^26.0.0
   eslint-plugin-import: ^2.27.5
+  eslint-plugin-jest-dom: ^4.0.3
   eslint-plugin-jsx-a11y: ^6.7.1
   eslint-plugin-n: ^15.6.1
   eslint-plugin-promise: ^6.1.1
@@ -3689,6 +3690,11 @@ packages:
   /require-directory/2.1.1:
     resolution: {integrity: sha512-fGxEI7+wsG9xrvdjsrlmL22OMTTiHRwAMroiEeMgq8gzoLC/PQr7RsRDSTLUg/bZAZtF+TVIkHc6/4RIKrui+Q==}
     engines: {node: '>=0.10.0'}
+    dev: true
+
+  /requireindex/1.2.0:
+    resolution: {integrity: sha512-L9jEkOi3ASd9PYit2cwRfyppc9NoABujTP8/5gFcbERmo5jUoAKovIC3fsF17pkTnGsrByysqX+Kxd2OTNI1ww==}
+    engines: {node: '>=0.10.5'}
     dev: true
 
   /requires-port/1.0.0:

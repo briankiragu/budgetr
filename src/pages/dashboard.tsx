@@ -23,7 +23,7 @@ import {
 } from '@composables/useData';
 
 // Import the components...
-const ProjectedIncomeDialog = lazy(
+const ProjectedIncomeCardDialog = lazy(
   async () => await import('@components/dialogs/ProjectedIncomeDialog')
 );
 const ProjectedExpenseDialog = lazy(
@@ -32,8 +32,8 @@ const ProjectedExpenseDialog = lazy(
 const TransactionDialog = lazy(
   async () => await import('@components/dialogs/TransactionDialog')
 );
-const ProjectedIncome = lazy(
-  async () => await import('@components/cards/ProjectedIncome')
+const ProjectedIncomeCard = lazy(
+  async () => await import('@/components/cards/ProjectedIncomeCard')
 );
 const ProjectedExpenses = lazy(
   async () => await import('@components/cards/ProjectedExpenses')
@@ -102,14 +102,14 @@ const Dashboard: Component = () => {
       : [];
 
   // Calculate the total projected income.
-  const totalProjectedIncome = (): number =>
+  const totalProjectedIncomeCard = (): number =>
     projectedIncome().reduce((acc, stream) => acc + stream.amount, 0);
 
   // Calculate the total projected expenses.
   const totalProjectedExpenses = (): number =>
     projectedExpenses().reduce((acc, expense) => {
       if (expense.type === 'percentage') {
-        return acc + totalProjectedIncome() * (expense.amount / 100);
+        return acc + totalProjectedIncomeCard() * (expense.amount / 100);
       }
       return acc + expense.amount;
     }, 0);
@@ -163,15 +163,15 @@ const Dashboard: Component = () => {
         <section class="grid grid-cols-1 gap-4 items-stretch md:grid-cols-4 md:gap-6">
           <section class="col-span-1 grid grid-cols-1 gap-4 md:col-span-2 md:grid-cols-2 md:gap-6">
             {/* Projected Income */}
-            <ProjectedIncome
+            <ProjectedIncomeCard
               period={period()}
-              income={totalProjectedIncome()}
+              income={totalProjectedIncomeCard()}
             />
 
             {/* Projected Expenses */}
             <ProjectedExpenses
               period={period()}
-              income={totalProjectedIncome()}
+              income={totalProjectedIncomeCard()}
               expenses={totalProjectedExpenses()}
             />
             <hr class="block md:hidden my-2" />
@@ -179,7 +179,7 @@ const Dashboard: Component = () => {
             {/* Actual Income */}
             <ActualIncome
               period={period()}
-              projected={totalProjectedIncome()}
+              projected={totalProjectedIncomeCard()}
               actual={totalIncome()}
             />
 
@@ -241,7 +241,7 @@ const Dashboard: Component = () => {
 
           {/* Transaction actions */}
           <div class="fixed bottom-4 right-4 flex flex-col gap-1 md:static md:flex-row md:gap-2">
-            <ProjectedIncomeDialog onSubmit={newIncome} />
+            <ProjectedIncomeCardDialog onSubmit={newIncome} />
             <ProjectedExpenseDialog
               streams={projectedIncome()}
               onSubmit={newExpense}

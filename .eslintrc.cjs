@@ -6,9 +6,15 @@ module.exports = {
   plugins: ['solid', 'jsx-a11y'],
   extends: [
     'standard-with-typescript',
-    'plugin:solid/recommended',
-    'plugin:jsx-a11y/recommended',
+    'plugin:solid/typescript',
+    'plugin:jsx-a11y/strict',
     'prettier',
+  ],
+  overrides: [
+    {
+      files: ['**/__tests__/**/*.[jt]s?(x)', '**/?(*.)+(spec|test).[jt]s?(x)'],
+      extends: ['plugin:testing-library/dom', 'plugin:jest-dom/recommended'],
+    },
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {

@@ -21,6 +21,9 @@ export default defineConfig({
     // or both out to improve performance:
     threads: false,
     isolate: false,
+    coverage: {
+      reportsDirectory: './src/__tests__/coverage',
+    },
   },
   build: {
     target: 'esnext',

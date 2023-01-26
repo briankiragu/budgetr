@@ -5,9 +5,6 @@ node_modules
 .env*
 !.env.example
 
-# Testing coverage files
-coverage
-
 # Sensitive data
 data/**
 !data/.gitignore

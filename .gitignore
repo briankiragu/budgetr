@@ -10,7 +10,6 @@ coverage
 
 # Sensitive data
 data/**
-!data/users.json
 !data/.gitignore
 
 # Editor directories and files

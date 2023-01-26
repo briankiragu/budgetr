@@ -22,7 +22,7 @@ export default defineConfig({
     threads: false,
     isolate: false,
     coverage: {
-      reportsDirectory: './src/__tests__/coverage',
+      reportsDirectory: './tests/coverage',
     },
   },
   build: {

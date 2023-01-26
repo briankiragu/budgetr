@@ -14,10 +14,10 @@
     ],
     "types": [
       "vite/client",
+      "vitest/globals",
       "@testing-library/jest-dom"
     ],
     "rootDir": ".",
-    "baseUrl": ".",
     "paths": {
       "@/*": [
         "./src/*"
@@ -42,9 +42,9 @@
       ],
     }
   },
-  "includes": [
+  "include": [
     ".eslintrc.cjs",
-    "./**/*.ts",
-    "./**/*.tsx",
+    "tests/**/*",
+    "src/**/*"
   ],
 }

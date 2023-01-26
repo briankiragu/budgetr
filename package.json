@@ -8,7 +8,11 @@
     "dev": "vite --host",
     "build": "vite build",
     "serve": "vite preview",
+<<<<<<< HEAD
     "test": "vitest --ui",
+=======
+    "test": "vitest",
+>>>>>>> 6ead3aa (Added test directory and removed data folder)
     "coverage": "vitest run --coverage"
   },
   "license": "MIT",

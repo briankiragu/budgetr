@@ -8,8 +8,12 @@ dist
 .env*
 !.env.example
 
+# Testing coverage files
+coverage
+
 # Sensitive data
 data/**
+!data/users.json
 !data/.gitignore
 
 # Editor directories and files

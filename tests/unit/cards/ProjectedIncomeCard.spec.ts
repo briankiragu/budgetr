@@ -49,9 +49,9 @@ describe('ProjectedIncomeCard', () => {
     },
   ];
 
-  it('displays the title', async () => {
+  it('displays the title', () => {
     // Render the component
-    render(() => <ProjectedIncomeCard period={period} income={income} />);
+    render(() => <ProjectedIncomeCard />);
 
     // Get the title based on the period.
     const title = screen.getByRole('heading', {
@@ -59,7 +59,8 @@ describe('ProjectedIncomeCard', () => {
     });
 
     // Assert that the title exists.
-    expect(title).toBeTruthy();
+    expect(title).toBeInTheDocument();
+    expect(title).toHaveTextContent('Projected monthly income');
   });
 
   it('displays the amount', async () => {

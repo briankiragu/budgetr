@@ -29,7 +29,7 @@ module.exports = {
     'import/resolver': {
       node: {
         paths: ['src'],
-        extensions: ['.js', '.jsx', '.ts', '.tsx'],
+        extensions: ['.cjs', '.js', '.jsx', '.ts', '.tsx'],
       },
     },
     'jsx-a11y': {

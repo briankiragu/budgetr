@@ -17,7 +17,8 @@
       "vitest/globals",
       "@testing-library/jest-dom"
     ],
-    "rootDir": ".",
+    "rootDir": "./",
+    "baseUrl": "./",
     "paths": {
       "@/*": [
         "./src/*"
@@ -44,6 +45,8 @@
   },
   "include": [
     ".eslintrc.cjs",
+    "vitest-setup.ts",
+    "jest.config.ts",
     "tests/**/*",
     "src/**/*"
   ],

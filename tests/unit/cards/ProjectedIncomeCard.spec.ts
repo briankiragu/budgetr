@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { render, screen } from '@solidjs/testing-library';
-import ProjectedIncomeCard from '@/components/cards/ProjectedIncomeCard';
+import ProjectedIncomeCard from '@components/cards/ProjectedIncomeCard';
 
 describe('ProjectedIncomeCard', () => {
   // Create a period object to use in the tests.
@@ -61,9 +61,5 @@ describe('ProjectedIncomeCard', () => {
     // Assert that the title exists.
     expect(title).toBeInTheDocument();
     expect(title).toHaveTextContent('Projected monthly income');
-  });
-
-  it('displays the amount', async () => {
-    expect(true).toBeTruthy();
   });
 });

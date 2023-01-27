@@ -46,7 +46,6 @@
   "include": [
     ".eslintrc.cjs",
     "vitest-setup.ts",
-    "jest.config.ts",
     "tests/**/*",
     "src/**/*"
   ],

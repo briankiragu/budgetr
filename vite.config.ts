@@ -1,50 +1,52 @@
 /// <reference types="vitest" />
 /// <reference types="vite/client" />
 
-import { defineConfig } from 'vite';
-import path from 'path';
-import solidPlugin from 'vite-plugin-solid';
+import { defineConfig } from "vite";
+import path from "path";
+import solidPlugin from "vite-plugin-solid";
 
 export default defineConfig({
   plugins: [solidPlugin()],
   server: {
-    port: 3000,
+    port: 3000
   },
   test: {
-    environment: 'jsdom',
+    environment: "jsdom",
     globals: true,
     transformMode: { web: [/\.[jt]sx?$/] },
     setupFiles: [
       // 'node_modules/@testing-library/jest-dom/extend-expect.js',
-      'node_modules/@testing-library/jest-dom/extend-expect',
-      './vitest-setup.ts',
+      "node_modules/@testing-library/jest-dom/extend-expect",
+      "./vitest-setup.ts"
     ],
     // otherwise, solid would be loaded twice:
     deps: {
       registerNodeLoader: true,
-      inline: [/solid-js/],
+      inline: [/solid-js/]
     },
     // if you have few tests, try commenting one
     // or both out to improve performance:
     threads: false,
     isolate: false,
     coverage: {
-      reportsDirectory: './tests/coverage',
-    },
+      provider: "istanbul", // or 'c8'
+      reporter: ["text", "json", "html"],
+      reportsDirectory: "./tests/coverage"
+    }
   },
   build: {
-    target: 'esnext',
+    target: "esnext"
   },
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './src'),
-      '@composables': path.resolve(__dirname, './src/composables'),
-      '@components': path.resolve(__dirname, './src/components'),
-      '@interfaces': path.resolve(__dirname, './src/interfaces'),
-      '@pages': path.resolve(__dirname, './src/pages'),
-      '@assets': path.resolve(__dirname, './src/assets'),
-      '@data': path.resolve(__dirname, './data'),
+      "@": path.resolve(__dirname, "./src"),
+      "@composables": path.resolve(__dirname, "./src/composables"),
+      "@components": path.resolve(__dirname, "./src/components"),
+      "@interfaces": path.resolve(__dirname, "./src/interfaces"),
+      "@pages": path.resolve(__dirname, "./src/pages"),
+      "@assets": path.resolve(__dirname, "./src/assets"),
+      "@data": path.resolve(__dirname, "./data")
     },
-    conditions: ['development', 'browser'],
-  },
+    conditions: ["development", "browser"]
+  }
 });

@@ -1,0 +1,53 @@
+---
+// Import interfaces...
+import type { IExpensePeriod, ITransaction } from '@interfaces/budget';
+
+// Import necessary composables...
+import useFormatting from '@composables/useFormatting';
+
+// Define the
+type Props = {
+  period: IExpensePeriod;
+  income: number;
+  transactions: ITransaction[];
+};
+
+// Get the
+const { period, income, transactions } = Astro.props;
+
+// Get the methods from the composables.
+const { toPrice, toTitle } = useFormatting();
+
+// Determine how many transactions were actually investments.
+const investment: number = transactions.reduce(
+  (acc, transaction) =>
+    transaction.nature === 'investment' ? acc + transaction.amount : acc,
+  0
+);
+
+// Calculate the percentage difference between the projected and actual income.
+const percentage = (): number => (investment / income) * 100;
+---
+
+<div
+  class="transition-shadow ease-in duration-300 h-full rounded-lg px-6 py-6 bg-cyan-700 flex flex-col justify-between items-end text-right md:px-8 md:py-6 hover:shadow-lg"
+>
+  <div class="mb-2 flex flex-col">
+    <h1
+      class="flex justify-end gap-2 text-md text-cyan-100 font-semibold tracking-tight leading-4 md:text-lg"
+    >
+      {toTitle(period.range)} investment
+      {investment ? <span>🎉🎉</span> : <span>🔻</span>}
+    </h1>
+    <h2
+      class="text-2xl text-cyan-50 tracking-tighter font-extrabold md:text-2xl"
+    >
+      {toPrice(investment, 'ZAR')}
+    </h2>
+  </div>
+
+  {/* Percentage saved */}
+  <p class="text-7xl text-cyan-100 tracking-tighter font-extrabold">
+    {percentage().toFixed(1)}%
+  </p>
+</div>

@@ -1,17 +1,333 @@
 ---
-import HelloCard from '../components/cards/HelloCard.tsx'
+// Import the interfaces
+import {
+  ETransactionFrequencyUnit,
+  ETransactionNature,
+  ETransactionType,
+  IExpensePeriod,
+  IIncomeStream,
+  ITransaction,
+} from '@interfaces/budget';
+import type { IUser } from '@interfaces/user';
+
+// Import the components
+import TheNavbar from '@layouts/TheNavbar.astro';
+import ProjectedIncomeCard from '@components/cards/ProjectedIncomeCard.astro';
+import ProjectedExpensesCard from '@components/cards/ProjectedExpensesCard.astro';
+import ActualIncome from '@components/cards/ActualIncome.astro';
+import ActualExpenses from '@components/cards/ActualExpenses.astro';
+import ActualSavings from '@components/cards/ActualSavings.astro';
+import Actualinvestments from '@components/cards/Actualinvestments.astro';
+import IncomeStream from '@components/cards/IncomeStream.astro';
+
+// Define the period.
+const period: IExpensePeriod = {
+  range: 'monthly',
+  start: new Date('2023-02-01'),
+  end: new Date('2023-03-31'),
+};
+
+const user: IUser = {
+  username: 'chariskiragu',
+  budget: {
+    income: [
+      {
+        uid: '8ddd6810',
+        refs: undefined,
+        source: 'salary',
+        amount: 65800,
+        currency: 'ZAR',
+        nature: ETransactionNature.Income,
+        description: 'Base salary.',
+        frequency: {
+          recurring: true,
+          unit: ETransactionFrequencyUnit.Month,
+          value: 1,
+          start: '2023-02-28T08:30:30.000Z',
+          end: undefined,
+        },
+        created_at: '2023-01-07T06:35:34.155Z',
+        updated_at: '2023-01-07T06:35:34.155Z',
+      },
+      {
+        uid: '75a700fe',
+        refs: undefined,
+        source: 'bonus',
+        amount: 14200,
+        currency: 'ZAR',
+        nature: ETransactionNature.Income,
+        description: 'Y1 siging bonus.',
+        frequency: {
+          recurring: true,
+          unit: ETransactionFrequencyUnit.Month,
+          value: 1,
+          start: '2023-12-28T08:30:30.000Z',
+          end: '2023-12-28T08:30:30.000Z',
+        },
+        created_at: '2023-02-28T08:30:30.000Z',
+        updated_at: '2023-02-28T08:30:30.000Z',
+      },
+    ],
+    expenses: [
+      {
+        uid: '2784baf1',
+        refs: ['all'],
+        source: 'tithe',
+        type: ETransactionType.Percentage,
+        amount: 10,
+        currency: 'ZAR',
+        nature: ETransactionNature.Investment,
+        created_at: '2023-01-07T06:35:34.155Z',
+        updated_at: '2023-01-07T06:35:34.155Z',
+      },
+      {
+        uid: 'dd93b80a',
+        refs: ['all'],
+        source: 'tax',
+        type: ETransactionType.Percentage,
+        amount: 30,
+        currency: 'ZAR',
+        nature: ETransactionNature.Expense,
+        created_at: '2023-01-07T06:35:34.155Z',
+        updated_at: '2023-01-07T06:35:34.155Z',
+      },
+      {
+        uid: 'b83a38d6',
+        refs: ['all'],
+        source: 'investment',
+        type: ETransactionType.Percentage,
+        amount: 10,
+        currency: 'ZAR',
+        nature: ETransactionNature.Investment,
+        created_at: '2023-01-07T06:35:34.155Z',
+        updated_at: '2023-01-07T06:35:34.155Z',
+      },
+      {
+        uid: 'f22400fc',
+        refs: ['8ddd6810'],
+        source: 'rent',
+        type: ETransactionType.Fixed,
+        amount: 6500,
+        currency: 'ZAR',
+        nature: ETransactionNature.Expense,
+        created_at: '2023-01-07T06:35:34.155Z',
+        updated_at: '2023-01-07T06:35:34.155Z',
+      },
+    ],
+    transactions: [
+      {
+        uid: '852b0411',
+        refs: undefined,
+        source: 'bonus',
+        amount: 86400,
+        currency: 'ZAR',
+        nature: ETransactionNature.Income,
+        description: 'Relocation lumpsome',
+        created_at: '2022-12-15T06:35:34.155Z',
+        updated_at: '2022-12-15T06:35:34.155Z',
+      },
+      {
+        uid: '463d0331',
+        refs: ['f22400fc'],
+        source: 'rent',
+        amount: 15700,
+        currency: 'ZAR',
+        nature: ETransactionNature.Expense,
+        description:
+          "First month's rent, deposit, service charge and application fee for the new apartment",
+        updated_at: '2023-02-01T06:35:34.155Z',
+        created_at: '2023-02-01T06:35:34.155Z',
+      },
+      {
+        uid: '052d7675',
+        refs: undefined,
+        source: 'housing',
+        description: '',
+        amount: 4200,
+        currency: 'ZAR',
+        nature: ETransactionNature.Expense,
+        created_at: '2023-02-02T06:35:34.155Z',
+        updated_at: '2023-02-02T06:35:34.155Z',
+      },
+      {
+        uid: 'd41bd660',
+        refs: undefined,
+        source: 'transport',
+        description: '',
+        amount: 1200,
+        currency: 'ZAR',
+        nature: ETransactionNature.Expense,
+        created_at: '2023-02-15T10:35:34.155Z',
+        updated_at: '2023-02-15T10:35:34.155Z',
+      },
+    ],
+  },
+};
+
+// Get the income transactions.
+const income: ITransaction[] =
+  user.budget.transactions !== undefined
+    ? user.budget.transactions.filter(
+        (txn) => txn.nature === ETransactionNature.Income
+      )
+    : [];
+
+// Get the expense transactions.
+const expenses: ITransaction[] =
+  user.budget.transactions !== undefined
+    ? user.budget.transactions.filter(
+        (txn) => txn.nature === ETransactionNature.Expense
+      )
+    : [];
+
+// Calculate the total projected income.
+const totalProjectedIncomeCard: number = user.budget.income.reduce(
+  (acc, stream) => acc + stream.amount,
+  0
+);
+
+// Calculate the total projected expenses.
+const totalProjectedExpenses: number = user.budget.expenses.reduce(
+  (acc, expense) => {
+    if (expense.type === 'percentage') {
+      return acc + totalProjectedIncomeCard * (expense.amount / 100);
+    }
+    return acc + expense.amount;
+  },
+  0
+);
+
+// Calculate the total actual income.
+const totalIncome: number = income.reduce(
+  (acc, stream) => acc + stream.amount,
+  0
+);
+
+// Calculate the total actual expenses.
+const totalExpenses: number = expenses.reduce(
+  (acc, expense) => acc + expense.amount,
+  0
+);
+
+// Get the list of projected income streams and their fulfillments
+// (whether they were received or not).
+const streams: IIncomeStream[] =
+  user.budget.income !== undefined
+    ? user.budget.income.map((stream) => ({
+        projected: stream,
+        // Check if it was fulfilled in the actual income transaction.
+        actual:
+          income !== undefined
+            ? income.filter((transaction) =>
+                transaction.refs?.includes(stream.uid)
+              )
+            : [],
+      }))
+    : [];
 ---
 
 <html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-		<HelloCard client:visible />
-	</body>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="description" content="Budgetr" />
+    <title>Budgetr</title>
+  </head>
+  <body>
+    <!-- Navigation bar -->
+    <header class="sticky top-0 z-10">
+      <TheNavbar />
+    </header>
+
+    <!-- Content -->
+    <section class="relative h-screen">
+      <!-- Main content -->
+      <main class="h-full pl-6 p-6">
+        <div>
+          <!-- Summary -->
+          <div>
+            <h1 class="mb-6 text-gray-800 text-5xl font-extrabold">
+              At a glance
+            </h1>
+
+            <section
+              class="grid grid-cols-1 gap-4 items-stretch md:grid-cols-4 md:gap-6"
+            >
+              <section
+                class="col-span-1 grid grid-cols-1 gap-4 md:col-span-2 md:grid-cols-2 md:gap-6"
+              >
+                <!-- Projected Income -->
+                <ProjectedIncomeCard
+                  period={period}
+                  income={totalProjectedIncomeCard}
+                />
+
+                <!-- Projected Expenses -->
+                <ProjectedExpensesCard
+                  period={period}
+                  income={totalProjectedIncomeCard}
+                  expenses={totalProjectedExpenses}
+                />
+
+                <!-- Actual Income -->
+                <ActualIncome
+                  period={period}
+                  projected={totalProjectedIncomeCard}
+                  actual={totalIncome}
+                />
+
+                <!-- Actual Expenses -->
+                <ActualExpenses
+                  period={period}
+                  income={totalIncome}
+                  projected={totalProjectedIncomeCard}
+                  actual={totalExpenses}
+                />
+                <hr class="block md:hidden my-2" />
+              </section>
+
+              <!-- Actual Savings -->
+              <div class="col-span-1">
+                <ActualSavings
+                  period={period}
+                  income={totalIncome}
+                  transactions={user.budget.transactions}
+                />
+              </div>
+
+              <!-- Actual Investments -->
+              <div class="col-span-1">
+                <Actualinvestments
+                  period={period}
+                  income={totalIncome}
+                  transactions={user.budget.transactions}
+                />
+              </div>
+            </section>
+          </div>
+          <hr class="my-8" />
+
+          {/* Income streams */}
+          <section>
+            <h1 class="mb-6 text-4xl text-gray-800 font-bold tracking-tight">
+              Income Streams
+            </h1>
+
+            <div class="grid grid-cols-1 gap-5 md:grid-cols-5">
+              {
+                streams.map((stream) => (
+                  <div class="col-span-1">
+                    <IncomeStream stream={stream} />
+                  </div>
+                ))
+              }
+            </div>
+          </section>
+          <hr class="my-8" />
+        </div>
+      </main>
+    </section>
+  </body>
 </html>

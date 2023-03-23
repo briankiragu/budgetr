@@ -1,0 +1,45 @@
+---
+// Import interfaces...
+import type { IExpensePeriod } from '@interfaces/budget';
+
+// Import necessary composables...
+import useFormatting from '@composables/useFormatting';
+
+// Define the
+type Props = {
+  period: IExpensePeriod;
+  income: number;
+  projected: number;
+  actual: number;
+};
+
+// Get the
+const { period, income, projected, actual } = Astro.props;
+
+// Get the methods from the composables.
+const { toPrice } = useFormatting();
+
+// Calculate the difference between the actual income.
+const lessThanIncome: boolean = actual < income;
+
+// Calculate the difference between the projected expenses.
+const lessThanBudget: boolean = actual < projected;
+---
+
+<div
+  class="transition-shadow ease-in duration-300 h-full rounded-lg px-6 py-6 bg-teal-700 flex flex-col gap-2 justify-between md:px-8 md:py-6 xl:px-4 hover:shadow-lg"
+>
+  <h1
+    class="flex justify-between text-sm text-teal-50 font-semibold tracking-tight leading-4 md:text-lg"
+  >
+    Actual {period.range} expenses
+    {lessThanIncome && lessThanBudget && <span>🎉🎉</span>}
+    {lessThanIncome && !lessThanBudget && <span>🎉</span>}
+    {!lessThanIncome && lessThanBudget && <span>🎉</span>}
+    {!lessThanIncome && !lessThanBudget && <span>🔻</span>}
+  </h1>
+
+  <p class="text-4xl text-teal-50 tracking-tighter font-extrabold">
+    {toPrice(actual, 'ZAR')}
+  </p>
+</div>

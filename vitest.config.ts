@@ -10,6 +10,7 @@ export default getViteConfig({
       '@composables': path.resolve(__dirname, './src/composables'),
       '@interfaces': path.resolve(__dirname, './src/interfaces'),
       '@layouts': path.resolve(__dirname, './src/layouts'),
+      '@pages': path.resolve(__dirname, './src/pages'),
     },
   },
   test: {

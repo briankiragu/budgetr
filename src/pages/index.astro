@@ -1,15 +1,4 @@
 ---
-// Import the interfaces
-import {
-  ETransactionFrequencyUnit,
-  ETransactionNature,
-  ETransactionType,
-  IExpensePeriod,
-  IIncomeStream,
-  ITransaction,
-} from '@interfaces/budget';
-import type { IUser } from '@interfaces/user';
-
 // Import the components
 import TheNavbar from '@layouts/TheNavbar.astro';
 import ProjectedIncomeCard from '@components/cards/ProjectedIncomeCard.astro';
@@ -20,6 +9,24 @@ import ActualSavings from '@components/cards/ActualSavings.astro';
 import Actualinvestments from '@components/cards/Actualinvestments.astro';
 import IncomeStream from '@components/cards/IncomeStream.astro';
 import TransactionsSheet from '@components/tables/TransactionSheet';
+import ProjectedIncomeDialog from '@components/dialogs/ProjectedIncomeDialog';
+import ProjectedExpenseDialog from '@components/dialogs/ProjectedExpenseDialog';
+import NewTransactionDialog from '@components/dialogs/NewTransactionDialog';
+
+// Import the composables
+import useFinances from '@composables/useFinances';
+
+// Import the interfaces
+import {
+  ETransactionFrequencyUnit,
+  ETransactionNature,
+  ETransactionType,
+  IExpensePeriod,
+  IProjectedExpense,
+  IProjectedIncome,
+  ITransaction,
+} from '@interfaces/budget';
+import type { IUser } from '@interfaces/user';
 
 // Define the period.
 const period: IExpensePeriod = {
@@ -28,7 +35,8 @@ const period: IExpensePeriod = {
   end: new Date('2023-03-31'),
 };
 
-const user: IUser = {
+// Get the data
+const data: IUser = {
   username: 'chariskiragu',
   budget: {
     income: [
@@ -165,66 +173,29 @@ const user: IUser = {
   },
 };
 
-// Get the income transactions.
-const income: ITransaction[] =
-  user.budget.transactions !== undefined
-    ? user.budget.transactions.filter(
-        (txn) => txn.nature === ETransactionNature.Income
-      )
-    : [];
+// Create a user finances object.
+const {
+  totalProjectedIncomeCard,
+  totalProjectedExpenses,
+  totalIncome,
+  totalExpenses,
+  incomeStreams,
+  projectedIncome,
+  projectedExpenses,
+  transactions,
+} = useFinances(data);
 
-// Get the expense transactions.
-const expenses: ITransaction[] =
-  user.budget.transactions !== undefined
-    ? user.budget.transactions.filter(
-        (txn) => txn.nature === ETransactionNature.Expense
-      )
-    : [];
+const newIncome = async (data: IProjectedIncome): Promise<void> => {
+  console.dir(data);
+};
 
-// Calculate the total projected income.
-const totalProjectedIncomeCard: number = user.budget.income.reduce(
-  (acc, stream) => acc + stream.amount,
-  0
-);
+const newExpense = async (data: IProjectedExpense): Promise<void> => {
+  console.dir(data);
+};
 
-// Calculate the total projected expenses.
-const totalProjectedExpenses: number = user.budget.expenses.reduce(
-  (acc, expense) => {
-    if (expense.type === 'percentage') {
-      return acc + totalProjectedIncomeCard * (expense.amount / 100);
-    }
-    return acc + expense.amount;
-  },
-  0
-);
-
-// Calculate the total actual income.
-const totalIncome: number = income.reduce(
-  (acc, stream) => acc + stream.amount,
-  0
-);
-
-// Calculate the total actual expenses.
-const totalExpenses: number = expenses.reduce(
-  (acc, expense) => acc + expense.amount,
-  0
-);
-
-// Get the list of projected income streams and their fulfillments
-// (whether they were received or not).
-const streams: IIncomeStream[] =
-  user.budget.income !== undefined
-    ? user.budget.income.map((stream) => ({
-        projected: stream,
-        // Check if it was fulfilled in the actual income transaction.
-        actual:
-          income !== undefined
-            ? income.filter((transaction) =>
-                transaction.refs?.includes(stream.uid)
-              )
-            : [],
-      }))
-    : [];
+const newTransaction = async (data: ITransaction): Promise<void> => {
+  console.dir(data);
+};
 ---
 
 <html lang="en">
@@ -294,7 +265,7 @@ const streams: IIncomeStream[] =
                 <ActualSavings
                   period={period}
                   income={totalIncome}
-                  transactions={user.budget.transactions}
+                  transactions={transactions}
                 />
               </div>
 
@@ -303,7 +274,7 @@ const streams: IIncomeStream[] =
                 <Actualinvestments
                   period={period}
                   income={totalIncome}
-                  transactions={user.budget.transactions}
+                  transactions={transactions}
                 />
               </div>
             </section>
@@ -318,7 +289,7 @@ const streams: IIncomeStream[] =
 
             <div class="grid grid-cols-1 gap-5 md:grid-cols-5">
               {
-                streams.map((stream) => (
+                incomeStreams.map((stream) => (
                   <div class="col-span-1">
                     <IncomeStream stream={stream} />
                   </div>
@@ -339,25 +310,22 @@ const streams: IIncomeStream[] =
               <div
                 class="fixed bottom-4 right-4 flex flex-col gap-1 md:static md:flex-row md:gap-2"
               >
-                <!-- <ProjectedIncomeCardDialog onSubmit={newIncome} />
+                <ProjectedIncomeDialog onSubmit={newIncome} />
                 <ProjectedExpenseDialog
-                  streams={projectedIncome()}
+                  streams={projectedIncome}
                   onSubmit={newExpense}
                 />
-                <TransactionDialog
-                  streams={projectedIncome()}
-                  expenses={projectedExpenses()}
+                <NewTransactionDialog
+                  streams={projectedIncome}
+                  expenses={projectedExpenses}
                   onSubmit={newTransaction}
-                /> -->
+                />
               </div>
             </div>
 
             {/* List all transactions */}
             <div class="rounded bg-gray-100 p-4">
-              <TransactionsSheet
-                client:visible
-                transactions={user.budget.transactions}
-              />
+              <TransactionsSheet client:visible transactions={transactions} />
             </div>
           </section>
         </div>

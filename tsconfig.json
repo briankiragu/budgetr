@@ -29,7 +29,8 @@
       "@components/*": ["src/components/*"],
       "@composables/*": ["src/composables/*"],
       "@interfaces/*": ["src/interfaces/*"],
-      "@layouts/*": ["src/layouts/*"]
+      "@layouts/*": ["src/layouts/*"],
+      "@pages/*": ["src/pages/*"]
     }
   }
 }

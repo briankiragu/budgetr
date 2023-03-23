@@ -8,8 +8,6 @@ describe('HelloCard', () => {
   });
 
   it('displays the title', async () => {
-    expect(
-      await screen.getByRole('heading', { name: 'Hello' })
-    ).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Hello' })).toBeInTheDocument();
   });
 });

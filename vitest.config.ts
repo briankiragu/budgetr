@@ -2,8 +2,17 @@
 import { getViteConfig } from 'astro/config';
 
 export default getViteConfig({
-	test: {
-		/* for example, use global to avoid globals imports (describe, test, expect): */
-		// globals: true,
-	},
+  test: {
+    environment: 'jsdom',
+    transformMode: {
+      web: [/.[jt]sx?/],
+    },
+    threads: false,
+    isolate: false,
+    setupFiles: ['./tests/setup-tests.ts'],
+    coverage: {
+      provider: 'c8',
+      reporter: ['text', 'json', 'html'],
+    },
+  },
 });

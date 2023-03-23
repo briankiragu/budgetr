@@ -1,0 +1,34 @@
+---
+// Import interfaces...
+import type { ITransaction } from '@interfaces/budget';
+
+// Import necessary composables...
+import useFormatting from '@composables/useFormatting';
+
+// Define the
+type Props = {
+  item: ITransaction;
+};
+
+// Get the
+const { item } = Astro.props;
+
+// Get the methods from the composables.
+const { toPrice, toTitle } = useFormatting();
+---
+
+<div
+  class="transition-shadow ease-in rounded-lg px-6 py-4 bg-teal-400 flex flex-col justify-between md:px-8 md:py-6 xl:px-5 hover:shadow-lg"
+>
+  <h1
+    class="mb-1 flex flex-col justify-between text-md text-teal-700 font-medium tracking-tight leading-3 md:text-md"
+  >
+    {toTitle(item.source)}
+    <small class="text-sm text-teal-600">
+      {toTitle(item.description?.toLowerCase() ?? '')}
+    </small>
+  </h1>
+  <p class="text-3xl text-teal-50 tracking-tighter font-extrabold md:text-2xl">
+    {toPrice(item.amount, item.currency)}
+  </p>
+</div>

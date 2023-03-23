@@ -19,6 +19,7 @@ import ActualExpenses from '@components/cards/ActualExpenses.astro';
 import ActualSavings from '@components/cards/ActualSavings.astro';
 import Actualinvestments from '@components/cards/Actualinvestments.astro';
 import IncomeStream from '@components/cards/IncomeStream.astro';
+import TransactionsSheet from '@components/tables/TransactionSheet';
 
 // Define the period.
 const period: IExpensePeriod = {
@@ -326,6 +327,39 @@ const streams: IIncomeStream[] =
             </div>
           </section>
           <hr class="my-8" />
+
+          {/* Transactions */}
+          <section class="pb-6">
+            <div class="mb-8 flex justify-between items-center">
+              <h1 class="text-3xl text-gray-800 font-bold tracking-tight">
+                Transactions
+              </h1>
+
+              {/* Transaction actions */}
+              <div
+                class="fixed bottom-4 right-4 flex flex-col gap-1 md:static md:flex-row md:gap-2"
+              >
+                <!-- <ProjectedIncomeCardDialog onSubmit={newIncome} />
+                <ProjectedExpenseDialog
+                  streams={projectedIncome()}
+                  onSubmit={newExpense}
+                />
+                <TransactionDialog
+                  streams={projectedIncome()}
+                  expenses={projectedExpenses()}
+                  onSubmit={newTransaction}
+                /> -->
+              </div>
+            </div>
+
+            {/* List all transactions */}
+            <div class="rounded bg-gray-100 p-4">
+              <TransactionsSheet
+                client:visible
+                transactions={user.budget.transactions}
+              />
+            </div>
+          </section>
         </div>
       </main>
     </section>

@@ -310,15 +310,17 @@ const newTransaction = async (data: ITransaction): Promise<void> => {
               <div
                 class="fixed bottom-4 right-4 flex flex-col gap-1 md:static md:flex-row md:gap-2"
               >
-                <ProjectedIncomeDialog onSubmit={newIncome} />
+                <ProjectedIncomeDialog onSubmit={newIncome} client:visible />
                 <ProjectedExpenseDialog
                   streams={projectedIncome}
                   onSubmit={newExpense}
+                  client:visible
                 />
                 <NewTransactionDialog
                   streams={projectedIncome}
                   expenses={projectedExpenses}
                   onSubmit={newTransaction}
+                  client:visible
                 />
               </div>
             </div>

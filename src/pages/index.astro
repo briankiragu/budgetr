@@ -7,11 +7,12 @@ import ActualIncome from '@components/cards/ActualIncome.astro';
 import ActualExpenses from '@components/cards/ActualExpenses.astro';
 import ActualSavings from '@components/cards/ActualSavings.astro';
 import Actualinvestments from '@components/cards/Actualinvestments.astro';
+import ExpensesReport from '@components/graphs/ExpensesReport';
 import IncomeStream from '@components/cards/IncomeStream.astro';
-import TransactionsSheet from '@components/tables/TransactionSheet';
 import ProjectedIncomeDialog from '@components/dialogs/ProjectedIncomeDialog';
 import ProjectedExpenseDialog from '@components/dialogs/ProjectedExpenseDialog';
 import NewTransactionDialog from '@components/dialogs/NewTransactionDialog';
+import TransactionsSheet from '@components/tables/TransactionSheet';
 
 // Import the composables
 import useFinances from '@composables/useFinances';
@@ -173,6 +174,22 @@ const data: IUser = {
   },
 };
 
+const dataset: number[][] = [
+  [1, 1],
+  [12, 20],
+  [24, 36],
+  [32, 50],
+  [40, 70],
+  [50, 100],
+  [55, 106],
+  [65, 123],
+  [73, 130],
+  [78, 134],
+  [83, 136],
+  [89, 138],
+  [100, 140],
+];
+
 // Create a user finances object.
 const {
   totalProjectedIncomeCard,
@@ -218,16 +235,16 @@ const newTransaction = async (data: ITransaction): Promise<void> => {
       <!-- Main content -->
       <main class="h-full pl-6 p-6">
         <div>
-          <!-- Summary -->
-          <div>
+          <!-- At a glance -->
+          <section>
             <h1 class="mb-6 text-gray-800 text-5xl font-extrabold">
               At a glance
             </h1>
 
-            <section
+            <div
               class="grid grid-cols-1 gap-4 items-stretch md:grid-cols-4 md:gap-6"
             >
-              <section
+              <div
                 class="col-span-1 grid grid-cols-1 gap-4 md:col-span-2 md:grid-cols-2 md:gap-6"
               >
                 <!-- Projected Income -->
@@ -258,7 +275,7 @@ const newTransaction = async (data: ITransaction): Promise<void> => {
                   actual={totalExpenses}
                 />
                 <hr class="block md:hidden my-2" />
-              </section>
+              </div>
 
               <!-- Actual Savings -->
               <div class="col-span-1">
@@ -277,8 +294,22 @@ const newTransaction = async (data: ITransaction): Promise<void> => {
                   transactions={transactions}
                 />
               </div>
-            </section>
-          </div>
+            </div>
+          </section>
+          <hr class="my-8" />
+
+          <!-- Reports -->
+          <section>
+            <h1 class="mb-6 text-gray-800 text-5xl font-extrabold">Metrics</h1>
+
+            <div
+              class="grid grid-cols-1 gap-4 items-stretch md:grid-cols-4 md:gap-6"
+            >
+              <div class="col-span-1 md:col-span-2">
+                <ExpensesReport client:only dataset={dataset} />
+              </div>
+            </div>
+          </section>
           <hr class="my-8" />
 
           {/* Income streams */}

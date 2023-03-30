@@ -2,6 +2,7 @@ import { type Component, For, createSignal, createMemo } from 'solid-js';
 
 // Import interfaces...
 import type { ITransaction } from '@interfaces/budget';
+import type { IStackedDataSet } from '@interfaces/datasets';
 
 // Import composables..
 import useDatasets from '@composables/useDatasets';
@@ -37,14 +38,16 @@ const IncomeReport: Component<{ income: ITransaction[] }> = ({ income }) => {
   /**
    * Create the data to display as a memo of the transactions and filter value.
    *
-   * @return {Record<string|number, ITransaction[]>} Grouped dataset.
+   * @return {IStackedDataSet} Grouped dataset.
    */
-  const dataset = createMemo(() => stackByPeriod(income, activeFilterId()));
+  const dataset = createMemo<IStackedDataSet>(() =>
+    stackByPeriod(income, activeFilterId(), ['salary', 'bonus'])
+  );
 
   return (
-    <div class="w-full h-full rounded-lg bg-gray-100 px-3 py-2 md:px-4 md:py-3">
+    <div class="w-full h-full rounded-lg bg-gray-100 px-3 py-2 md:px-4 md:py-3 flex flex-col gap-2">
       {/* Title */}
-      <h2 class="mb-2 text-gray-600 font-semibold">Summary of income</h2>
+      <h2 class="text-gray-600 font-semibold">Summary of income</h2>
 
       {/* Filters */}
       <div class="rounded border-gray-300 border flex justify-end text-sm text-gray-600 font-semibold">
@@ -63,6 +66,9 @@ const IncomeReport: Component<{ income: ITransaction[] }> = ({ income }) => {
           )}
         </For>
       </div>
+
+      {/* Stacked Bar Chart */}
+      <svg></svg>
     </div>
   );
 };

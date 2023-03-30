@@ -6,6 +6,7 @@ import type { ITransaction } from '@interfaces/budget';
 // Import composables..
 import useDatasets from '@composables/useDatasets';
 import useFormatting from '@composables/useFormatting';
+import type { IStackedDataSet } from '@interfaces/datasets';
 
 // Define the component.
 const ExpensesReport: Component<{ expenses: ITransaction[] }> = ({
@@ -39,9 +40,11 @@ const ExpensesReport: Component<{ expenses: ITransaction[] }> = ({
   /**
    * Create the data to display as a memo of the transactions and filter value.
    *
-   * @return {Record<string|number, ITransaction[]>} Grouped dataset.
+   * @return {IStackedDataSet} Grouped dataset.
    */
-  const dataset = createMemo(() => stackByPeriod(expenses, activeFilterId()));
+  const dataset = createMemo<IStackedDataSet>(() =>
+    stackByPeriod(expenses, activeFilterId(), ['rent', 'transport'])
+  );
 
   return (
     <div class="w-full h-full rounded-lg bg-gray-100 px-3 py-2 md:p-3">

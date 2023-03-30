@@ -8,9 +8,7 @@ import useDatasets from '@composables/useDatasets';
 import useFormatting from '@composables/useFormatting';
 
 // Define the component.
-const ExpensesReport: Component<{ expenses: ITransaction[] }> = ({
-  expenses,
-}) => {
+const IncomeReport: Component<{ income: ITransaction[] }> = ({ income }) => {
   // Define the interfaces
   // eslint-disable-next-line @typescript-eslint/naming-convention
   type IFilter = {
@@ -41,19 +39,18 @@ const ExpensesReport: Component<{ expenses: ITransaction[] }> = ({
    *
    * @return {Record<string|number, ITransaction[]>} Grouped dataset.
    */
-  const dataset = createMemo(() => stackByPeriod(expenses, activeFilterId()));
+  const dataset = createMemo(() => stackByPeriod(income, activeFilterId()));
 
   return (
-    <div class="w-full h-full rounded-lg bg-gray-100 px-3 py-2 md:p-3">
+    <div class="w-full h-full rounded-lg bg-gray-100 px-3 py-2 md:px-4 md:py-3">
       {/* Title */}
-      <h2 class="mb-2 text-gray-600 font-semibold">Summary of expenses</h2>
+      <h2 class="mb-2 text-gray-600 font-semibold">Summary of income</h2>
 
       {/* Filters */}
       <div class="rounded border-gray-300 border flex justify-end text-sm text-gray-600 font-semibold">
         <For each={filters} fallback={<span>No filters</span>}>
           {(filter) => (
             <button
-              title={filter.title}
               class="transition-colors border-l px-3 py-1 cursor-pointer hover:bg-gray-300"
               classList={{ 'bg-gray-300': activeFilterId() === filter.id }}
               onClick={() => {
@@ -70,4 +67,4 @@ const ExpensesReport: Component<{ expenses: ITransaction[] }> = ({
   );
 };
 
-export default ExpensesReport;
+export default IncomeReport;

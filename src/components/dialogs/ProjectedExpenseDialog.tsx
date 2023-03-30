@@ -2,7 +2,7 @@
 import {
   type ETransactionFrequencyPeriod,
   ETransactionType,
-  type IProjectedIncome,
+   type IProjectedIncome,
   EProjectedExpenseCategory,
 } from '@interfaces/budget';
 
@@ -125,9 +125,9 @@ const ProjectedExpenseDialog: Component<{
         start: state.frequencyStart,
         end: state.frequencyEnd,
       },
-      // eslint-disable-next-line @typescript-eslint/naming-convention
+       
       createdAt: new Date().toISOString(),
-      // eslint-disable-next-line @typescript-eslint/naming-convention
+       
       updatedAt: new Date().toISOString(),
     };
 

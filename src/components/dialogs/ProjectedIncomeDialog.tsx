@@ -19,7 +19,7 @@ import type { IProjectedIncomeForm } from '@interfaces/forms';
 // Define the component.
 const ProjectedIncomeDialog: Component<{
   onSubmit: (data: IProjectedIncome) => void;
-}> = (props) => {
+}> = ({ onSubmit }) => {
   // Create a template ref to the dialog.
   let dialogRef: HTMLDialogElement;
 
@@ -86,14 +86,12 @@ const ProjectedIncomeDialog: Component<{
         start: state.frequencyStart,
         end: state.frequencyEnd,
       },
-      // eslint-disable-next-line @typescript-eslint/naming-convention
       createdAt: new Date().toISOString(),
-      // eslint-disable-next-line @typescript-eslint/naming-convention
       updatedAt: new Date().toISOString(),
     };
 
     // Call the parent's on submit function.
-    props.onSubmit(data);
+    onSubmit(data);
 
     // Close the dialog.
     handleDialogClose('close');

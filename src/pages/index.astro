@@ -1,4 +1,19 @@
 ---
+// Import the interfaces...
+import {
+EProjectedExpenseCategory,
+ETransactionFrequencyPeriod,
+  ETransactionType,
+  type IExpensePeriod,
+  type IProjectedExpense,
+  type IProjectedIncome,
+  type ITransaction,
+} from '@interfaces/budget';
+import type { IUser } from '@interfaces/user';
+
+// Import the composables...
+import useFinances from '@composables/useFinances';
+
 // Import the components
 import TheNavbar from '@layouts/TheNavbar.astro';
 import ProjectedIncomeCard from '@components/cards/ProjectedIncomeCard.astro';
@@ -9,26 +24,10 @@ import ActualSavings from '@components/cards/ActualSavings.astro';
 import Actualinvestments from '@components/cards/Actualinvestments.astro';
 import IncomeReport from '@components/reports/IncomeReport';
 import ExpensesReport from '@components/reports/ExpensesReport';
-import IncomeStream from '@components/cards/IncomeStream.astro';
 import ProjectedIncomeDialog from '@components/dialogs/ProjectedIncomeDialog';
 import ProjectedExpenseDialog from '@components/dialogs/ProjectedExpenseDialog';
 import NewTransactionDialog from '@components/dialogs/NewTransactionDialog';
 import TransactionsSheet from '@components/tables/TransactionSheet';
-
-// Import the composables
-import useFinances from '@composables/useFinances';
-
-// Import the interfaces
-import {
-  ETransactionFrequencyPeriod,
-  ETransactionType,
-  type IExpensePeriod,
-  type IProjectedExpense,
-  EProjectedExpenseCategory,
-  type IProjectedIncome,
-  type ITransaction,
-} from '@interfaces/budget';
-import type { IUser } from '@interfaces/user';
 
 // Define the period.
 const period: IExpensePeriod = {
@@ -57,8 +56,8 @@ const user: IUser = {
           start: '2023-02-28T08:30:30.000Z',
           end: undefined,
         },
-        createdAt: '2023-01-07T06:35:34.155Z',
-        updatedAt: '2023-01-07T06:35:34.155Z',
+        created_at: '2023-01-07T06:35:34.155Z',
+        updated_at: '2023-01-07T06:35:34.155Z',
       },
       {
         uid: '75a700fe',
@@ -75,8 +74,8 @@ const user: IUser = {
           start: '2023-12-28T08:30:30.000Z',
           end: '2023-12-28T08:30:30.000Z',
         },
-        createdAt: '2023-02-28T08:30:30.000Z',
-        updatedAt: '2023-02-28T08:30:30.000Z',
+        created_at: '2023-02-28T08:30:30.000Z',
+        updated_at: '2023-02-28T08:30:30.000Z',
       },
     ],
     expenses: [
@@ -217,17 +216,10 @@ const {
   actualExpenses,
   totalActualIncome,
   totalActualExpenses,
-} = useFinances(user);
+} = useFinances(user.budget);
 
 // Get the list of projected income streams and their fulfillments
 // (whether they were received or not).
-const incomeStreams: IIncomeStream[] = projectedIncome.map((stream) => ({
-  projected: stream,
-  // Check if it was fulfilled in the actual income transaction.
-  actual: actualIncome.filter((transaction) =>
-    transaction.refs?.includes(stream.uid)
-  ),
-}));
 
 const newIncome = async (data: IProjectedIncome): Promise<void> => {
   console.dir(data);
@@ -361,7 +353,7 @@ const newTransaction = async (data: ITransaction): Promise<void> => {
               </h1>
 
               <!-- Transaction actions -->
-              <div
+              <!-- <div
                 class="fixed bottom-4 right-4 flex flex-col gap-1 md:static md:flex-row md:gap-2"
               >
                 <ProjectedIncomeDialog onSubmit={newIncome} client:visible />
@@ -376,7 +368,7 @@ const newTransaction = async (data: ITransaction): Promise<void> => {
                   onSubmit={newTransaction}
                   client:visible
                 />
-              </div>
+              </div> -->
             </div>
 
             <!-- List all transactions -->

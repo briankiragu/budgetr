@@ -3,12 +3,13 @@ import {
   type IIncomeStream,
   type ITransaction,
   EProjectedExpenseCategory,
+  type IBudget,
 } from '@interfaces/budget';
 import type { IUser } from '@interfaces/user';
 
-export default (user: IUser) => {
+export default (budget: IBudget) => {
   // Extract the transactions.
-  const {transactions} = user.budget
+  const {transactions} = budget
   
   // Get the income transactions.
   const income: ITransaction[] = transactions.filter(
@@ -27,7 +28,7 @@ export default (user: IUser) => {
   );
 
   // Calculate the total projected expenses.
-  const totalProjectedExpenses: number = user.budget.expenses.reduce(
+  const totalProjectedExpenses: number = budget.expenses.reduce(
     (acc, expense) => {
       if (expense.category === EProjectedExpenseCategory.PERCENTAGE) {
         return acc + totalProjectedIncome * (expense.amount / 100);
@@ -60,7 +61,7 @@ export default (user: IUser) => {
 
   // Get the list of projected income streams and their fulfillments
   // (whether they were received or not).
-  const incomeStreams: IIncomeStream[] = user.budget.income.map((stream) => ({
+  const incomeStreams: IIncomeStream[] = budget.income.map((stream) => ({
     projected: stream,
     // Check if it was fulfilled in the actual income transaction.
     actual: income.filter((transaction) =>

@@ -7,6 +7,7 @@ import ActualIncome from '@components/cards/ActualIncome.astro';
 import ActualExpenses from '@components/cards/ActualExpenses.astro';
 import ActualSavings from '@components/cards/ActualSavings.astro';
 import Actualinvestments from '@components/cards/Actualinvestments.astro';
+import IncomeReport from '@components/graphs/IncomeReport';
 import ExpensesReport from '@components/graphs/ExpensesReport';
 import IncomeStream from '@components/cards/IncomeStream.astro';
 import ProjectedIncomeDialog from '@components/dialogs/ProjectedIncomeDialog';
@@ -22,10 +23,11 @@ import {
   ETransactionFrequencyUnit,
   ETransactionNature,
   ETransactionType,
-  IExpensePeriod,
-  IProjectedExpense,
-  IProjectedIncome,
-  ITransaction,
+  IIncomeStream,
+  type IExpensePeriod,
+  type IProjectedExpense,
+  type IProjectedIncome,
+  type ITransaction,
 } from '@interfaces/budget';
 import type { IUser } from '@interfaces/user';
 
@@ -37,7 +39,7 @@ const period: IExpensePeriod = {
 };
 
 // Get the data
-const data: IUser = {
+const user: IUser = {
   username: 'chariskiragu',
   budget: {
     income: [
@@ -56,8 +58,8 @@ const data: IUser = {
           start: '2023-02-28T08:30:30.000Z',
           end: undefined,
         },
-        created_at: '2023-01-07T06:35:34.155Z',
-        updated_at: '2023-01-07T06:35:34.155Z',
+        createdAt: '2023-01-07T06:35:34.155Z',
+        updatedAt: '2023-01-07T06:35:34.155Z',
       },
       {
         uid: '75a700fe',
@@ -74,8 +76,8 @@ const data: IUser = {
           start: '2023-12-28T08:30:30.000Z',
           end: '2023-12-28T08:30:30.000Z',
         },
-        created_at: '2023-02-28T08:30:30.000Z',
-        updated_at: '2023-02-28T08:30:30.000Z',
+        createdAt: '2023-02-28T08:30:30.000Z',
+        updatedAt: '2023-02-28T08:30:30.000Z',
       },
     ],
     expenses: [
@@ -87,8 +89,8 @@ const data: IUser = {
         amount: 10,
         currency: 'ZAR',
         nature: ETransactionNature.Investment,
-        created_at: '2023-01-07T06:35:34.155Z',
-        updated_at: '2023-01-07T06:35:34.155Z',
+        createdAt: '2023-01-07T06:35:34.155Z',
+        updatedAt: '2023-01-07T06:35:34.155Z',
       },
       {
         uid: 'dd93b80a',
@@ -98,8 +100,8 @@ const data: IUser = {
         amount: 30,
         currency: 'ZAR',
         nature: ETransactionNature.Expense,
-        created_at: '2023-01-07T06:35:34.155Z',
-        updated_at: '2023-01-07T06:35:34.155Z',
+        createdAt: '2023-01-07T06:35:34.155Z',
+        updatedAt: '2023-01-07T06:35:34.155Z',
       },
       {
         uid: 'b83a38d6',
@@ -109,8 +111,8 @@ const data: IUser = {
         amount: 10,
         currency: 'ZAR',
         nature: ETransactionNature.Investment,
-        created_at: '2023-01-07T06:35:34.155Z',
-        updated_at: '2023-01-07T06:35:34.155Z',
+        createdAt: '2023-01-07T06:35:34.155Z',
+        updatedAt: '2023-01-07T06:35:34.155Z',
       },
       {
         uid: 'f22400fc',
@@ -120,87 +122,150 @@ const data: IUser = {
         amount: 6500,
         currency: 'ZAR',
         nature: ETransactionNature.Expense,
-        created_at: '2023-01-07T06:35:34.155Z',
-        updated_at: '2023-01-07T06:35:34.155Z',
+        createdAt: '2023-01-07T06:35:34.155Z',
+        updatedAt: '2023-01-07T06:35:34.155Z',
       },
     ],
     transactions: [
       {
         uid: '852b0411',
         refs: undefined,
-        source: 'bonus',
-        amount: 86400,
+        source: 'salary',
+        amount: 65800,
         currency: 'ZAR',
         nature: ETransactionNature.Income,
         description: 'Relocation lumpsome',
-        created_at: '2022-12-15T06:35:34.155Z',
-        updated_at: '2022-12-15T06:35:34.155Z',
+        createdAt: '2022-12-15T06:35:34.155Z',
+        updatedAt: '2022-12-15T06:35:34.155Z',
+      },
+      {
+        uid: '852b0411',
+        refs: undefined,
+        source: 'bonus',
+        amount: 14200,
+        currency: 'ZAR',
+        nature: ETransactionNature.Income,
+        description: 'Relocation lumpsome',
+        createdAt: '2022-12-15T06:35:34.155Z',
+        updatedAt: '2022-12-15T06:35:34.155Z',
       },
       {
         uid: '463d0331',
         refs: ['f22400fc'],
         source: 'rent',
-        amount: 15700,
+        amount: 12000,
         currency: 'ZAR',
         nature: ETransactionNature.Expense,
         description:
           "First month's rent, deposit, service charge and application fee for the new apartment",
-        updated_at: '2023-02-01T06:35:34.155Z',
-        created_at: '2023-02-01T06:35:34.155Z',
+        updatedAt: '2023-02-01T06:35:34.155Z',
+        createdAt: '2023-02-01T06:35:34.155Z',
       },
       {
         uid: '052d7675',
         refs: undefined,
-        source: 'housing',
+        source: 'tithe',
         description: '',
-        amount: 4200,
+        amount: 8000,
         currency: 'ZAR',
-        nature: ETransactionNature.Expense,
-        created_at: '2023-02-02T06:35:34.155Z',
-        updated_at: '2023-02-02T06:35:34.155Z',
+        nature: ETransactionNature.Investment,
+        createdAt: '2023-02-02T06:35:34.155Z',
+        updatedAt: '2023-02-02T06:35:34.155Z',
       },
       {
         uid: 'd41bd660',
         refs: undefined,
         source: 'transport',
         description: '',
-        amount: 1200,
+        amount: 500,
         currency: 'ZAR',
         nature: ETransactionNature.Expense,
-        created_at: '2023-02-15T10:35:34.155Z',
-        updated_at: '2023-02-15T10:35:34.155Z',
+        createdAt: '2023-02-15T10:35:34.155Z',
+        updatedAt: '2023-02-15T10:35:34.155Z',
+      },
+
+      {
+        uid: '852b0411',
+        refs: undefined,
+        source: 'salary',
+        amount: 65800,
+        currency: 'ZAR',
+        nature: ETransactionNature.Income,
+        description: 'Relocation lumpsome',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      },
+      {
+        uid: '852b0411',
+        refs: undefined,
+        source: 'bonus',
+        amount: 14200,
+        currency: 'ZAR',
+        nature: ETransactionNature.Income,
+        description: 'Relocation lumpsome',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      },
+      {
+        uid: '463d0331',
+        refs: ['f22400fc'],
+        source: 'rent',
+        amount: 12000,
+        currency: 'ZAR',
+        nature: ETransactionNature.Expense,
+        description:
+          "First month's rent, deposit, service charge and application fee for the new apartment",
+        updatedAt: new Date().toISOString(),
+        createdAt: new Date().toISOString(),
+      },
+      {
+        uid: '052d7675',
+        refs: undefined,
+        source: 'tithe',
+        description: '',
+        amount: 8000,
+        currency: 'ZAR',
+        nature: ETransactionNature.Investment,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      },
+      {
+        uid: 'd41bd660',
+        refs: undefined,
+        source: 'transport',
+        description: '',
+        amount: 500,
+        currency: 'ZAR',
+        nature: ETransactionNature.Expense,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
       },
     ],
   },
 };
 
-const dataset: number[][] = [
-  [1, 1],
-  [12, 20],
-  [24, 36],
-  [32, 50],
-  [40, 70],
-  [50, 100],
-  [55, 106],
-  [65, 123],
-  [73, 130],
-  [78, 134],
-  [83, 136],
-  [89, 138],
-  [100, 140],
-];
-
 // Create a user finances object.
 const {
-  totalProjectedIncomeCard,
-  totalProjectedExpenses,
-  totalIncome,
-  totalExpenses,
-  incomeStreams,
   projectedIncome,
   projectedExpenses,
+  totalProjectedIncome,
+  totalProjectedExpenses,
   transactions,
-} = useFinances(data);
+  actualIncome,
+  actualExpenses,
+  totalActualIncome,
+  totalActualExpenses,
+} = useFinances(user);
+
+// Get the list of projected income streams and their fulfillments
+// (whether they were received or not).
+const incomeStreams: IIncomeStream[] = projectedIncome.map((stream) => ({
+  projected: stream,
+  // Check if it was fulfilled in the actual income transaction.
+  actual: actualIncome.filter((transaction) =>
+    transaction.refs?.includes(stream.uid)
+  ),
+}));
 
 const newIncome = async (data: IProjectedIncome): Promise<void> => {
   console.dir(data);
@@ -233,135 +298,139 @@ const newTransaction = async (data: ITransaction): Promise<void> => {
     <!-- Content -->
     <section class="relative h-screen">
       <!-- Main content -->
-      <main class="h-full pl-6 p-6">
-        <div>
-          <!-- At a glance -->
-          <section>
-            <h1 class="mb-6 text-gray-800 text-5xl font-extrabold">
-              At a glance
+      <main class="h-full pl-6 p-6 md:px-12 md:py-12 2xl:px-20">
+        <!-- At a glance -->
+        <section>
+          <h1 class="mb-6 text-gray-800 text-5xl font-extrabold">
+            At a glance
+          </h1>
+
+          <div
+            class="grid grid-cols-1 gap-4 items-stretch md:grid-cols-4 md:gap-6"
+          >
+            <div
+              class="col-span-1 grid grid-cols-1 gap-4 md:col-span-2 md:grid-cols-2 md:gap-6"
+            >
+              <!-- Projected Income -->
+              <ProjectedIncomeCard
+                period={period}
+                income={totalProjectedIncome}
+              />
+
+              <!-- Projected Expenses -->
+              <ProjectedExpensesCard
+                period={period}
+                income={totalProjectedIncome}
+                expenses={totalProjectedExpenses}
+              />
+
+              <!-- Actual Income -->
+              <ActualIncome
+                period={period}
+                projected={totalProjectedIncome}
+                actual={totalActualIncome}
+              />
+
+              <!-- Actual Expenses -->
+              <ActualExpenses
+                period={period}
+                projected={totalProjectedIncome}
+                income={totalActualIncome}
+                actual={totalActualExpenses}
+              />
+              <hr class="block md:hidden my-2" />
+            </div>
+
+            <!-- Actual Savings -->
+            <div class="col-span-1">
+              <ActualSavings
+                period={period}
+                income={totalActualIncome}
+                transactions={transactions}
+              />
+            </div>
+
+            <!-- Actual Investments -->
+            <div class="col-span-1">
+              <Actualinvestments
+                period={period}
+                income={totalActualIncome}
+                transactions={transactions}
+              />
+            </div>
+          </div>
+        </section>
+        <hr class="my-8" />
+
+        <!-- Reports -->
+        <section>
+          <h1 class="mb-6 text-gray-800 text-5xl font-extrabold">Metrics</h1>
+
+          <div
+            class="grid grid-cols-1 gap-4 items-stretch md:grid-cols-4 md:gap-6"
+          >
+            <!-- Income summary graph -->
+            <div class="h-64 col-span-1 md:h-96 md:col-span-2">
+              <IncomeReport client:only income={actualIncome} />
+            </div>
+
+            <!-- Expenses summary graph -->
+            <div class="h-64 col-span-1 md:h-96 md:col-span-2">
+              <ExpensesReport client:only expenses={actualExpenses} />
+            </div>
+          </div>
+        </section>
+        <hr class="my-8" />
+
+        {/* Income streams */}
+        <section>
+          <h1 class="mb-6 text-4xl text-gray-800 font-bold tracking-tight">
+            Income Streams
+          </h1>
+
+          <div class="grid grid-cols-1 gap-5 md:grid-cols-5">
+            {
+              incomeStreams.map((stream) => (
+                <div class="col-span-1">
+                  <IncomeStream stream={stream} />
+                </div>
+              ))
+            }
+          </div>
+        </section>
+        <hr class="my-8" />
+
+        {/* Transactions */}
+        <section class="pb-6">
+          <div class="mb-8 flex justify-between items-center">
+            <h1 class="text-3xl text-gray-800 font-bold tracking-tight">
+              Transactions
             </h1>
 
+            {/* Transaction actions */}
             <div
-              class="grid grid-cols-1 gap-4 items-stretch md:grid-cols-4 md:gap-6"
+              class="fixed bottom-4 right-4 flex flex-col gap-1 md:static md:flex-row md:gap-2"
             >
-              <div
-                class="col-span-1 grid grid-cols-1 gap-4 md:col-span-2 md:grid-cols-2 md:gap-6"
-              >
-                <!-- Projected Income -->
-                <ProjectedIncomeCard
-                  period={period}
-                  income={totalProjectedIncomeCard}
-                />
-
-                <!-- Projected Expenses -->
-                <ProjectedExpensesCard
-                  period={period}
-                  income={totalProjectedIncomeCard}
-                  expenses={totalProjectedExpenses}
-                />
-
-                <!-- Actual Income -->
-                <ActualIncome
-                  period={period}
-                  projected={totalProjectedIncomeCard}
-                  actual={totalIncome}
-                />
-
-                <!-- Actual Expenses -->
-                <ActualExpenses
-                  period={period}
-                  income={totalIncome}
-                  projected={totalProjectedIncomeCard}
-                  actual={totalExpenses}
-                />
-                <hr class="block md:hidden my-2" />
-              </div>
-
-              <!-- Actual Savings -->
-              <div class="col-span-1">
-                <ActualSavings
-                  period={period}
-                  income={totalIncome}
-                  transactions={transactions}
-                />
-              </div>
-
-              <!-- Actual Investments -->
-              <div class="col-span-1">
-                <Actualinvestments
-                  period={period}
-                  income={totalIncome}
-                  transactions={transactions}
-                />
-              </div>
+              <ProjectedIncomeDialog onSubmit={newIncome} client:visible />
+              <ProjectedExpenseDialog
+                streams={projectedIncome}
+                onSubmit={newExpense}
+                client:visible
+              />
+              <NewTransactionDialog
+                streams={projectedIncome}
+                expenses={projectedExpenses}
+                onSubmit={newTransaction}
+                client:visible
+              />
             </div>
-          </section>
-          <hr class="my-8" />
+          </div>
 
-          <!-- Reports -->
-          <section>
-            <h1 class="mb-6 text-gray-800 text-5xl font-extrabold">Metrics</h1>
-
-            <div
-              class="grid grid-cols-1 gap-4 items-stretch md:grid-cols-4 md:gap-6"
-            >
-              <div class="col-span-1 md:col-span-2">
-                <ExpensesReport client:only dataset={dataset} />
-              </div>
-            </div>
-          </section>
-          <hr class="my-8" />
-
-          {/* Income streams */}
-          <section>
-            <h1 class="mb-6 text-4xl text-gray-800 font-bold tracking-tight">
-              Income Streams
-            </h1>
-
-            <div class="grid grid-cols-1 gap-5 md:grid-cols-5">
-              {
-                incomeStreams.map((stream) => (
-                  <div class="col-span-1">
-                    <IncomeStream stream={stream} />
-                  </div>
-                ))
-              }
-            </div>
-          </section>
-          <hr class="my-8" />
-
-          {/* Transactions */}
-          <section class="pb-6">
-            <div class="mb-8 flex justify-between items-center">
-              <h1 class="text-3xl text-gray-800 font-bold tracking-tight">
-                Transactions
-              </h1>
-
-              {/* Transaction actions */}
-              <div
-                class="fixed bottom-4 right-4 flex flex-col gap-1 md:static md:flex-row md:gap-2"
-              >
-                <ProjectedIncomeDialog onSubmit={newIncome} client:visible />
-                <ProjectedExpenseDialog
-                  streams={projectedIncome}
-                  onSubmit={newExpense}
-                  client:visible
-                />
-                <NewTransactionDialog
-                  streams={projectedIncome}
-                  expenses={projectedExpenses}
-                  onSubmit={newTransaction}
-                  client:visible
-                />
-              </div>
-            </div>
-
-            {/* List all transactions */}
-            <div class="rounded bg-gray-100 p-4">
-              <TransactionsSheet client:visible transactions={transactions} />
-            </div>
-          </section>
-        </div>
+          {/* List all transactions */}
+          <div class="rounded bg-gray-100 p-4">
+            <TransactionsSheet client:visible transactions={transactions} />
+          </div>
+        </section>
       </main>
     </section>
   </body>

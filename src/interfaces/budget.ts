@@ -27,8 +27,8 @@ export type ITransaction = {
   currency: string | undefined;
   nature: ETransactionNature;
   description: string | undefined;
-  created_at: string;
-  updated_at: string;
+  createdAt: string;
+  updatedAt: string;
 };
 
 export type IProjectedIncome = {

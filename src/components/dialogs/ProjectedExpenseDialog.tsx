@@ -126,9 +126,9 @@ const ProjectedExpenseDialog: Component<{
         end: state.frequencyEnd,
       },
       // eslint-disable-next-line @typescript-eslint/naming-convention
-      created_at: new Date().toISOString(),
+      createdAt: new Date().toISOString(),
       // eslint-disable-next-line @typescript-eslint/naming-convention
-      updated_at: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
     };
 
     // Call the parent's on submit function.

@@ -1,9 +1,12 @@
-import { ETransactionNature, type ITransaction } from '@interfaces/budget';
-import type { IUser } from '@interfaces/user';
+import {
+  ETransactionNature,
+  type IBudget,
+  type ITransaction,
+} from '@interfaces/budget';
 
-export default (user: IUser) => {
+export default (budget: IBudget) => {
   // Get the items from the user object.
-  const { income, expenses, transactions } = user.budget;
+  const { income, expenses, transactions } = budget;
 
   // Calculate the total projected income.
   const totalProjectedIncome: number = income.reduce(

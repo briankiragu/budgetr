@@ -1,4 +1,5 @@
 import type { ITransaction } from '@interfaces/budget';
+import type { IGroupedDataSet, IStackedDataSet } from '@interfaces/datasets';
 
 export default () => {
   /**
@@ -59,41 +60,31 @@ export default () => {
    *
    * @param {ITransaction[]} transactions The transactions to group (income, expense, etc...)
    * @param {string} period The period to group them into (day, month, year, etc...)
-   * @param {string[]|undefined} sources The sources to create the stacks based on...
    *
-   * @returns {Record<string|number, number>} Transactions grouped by period.
+   * @returns {IGroupedDataSet} Transactions grouped by period.
    */
   const groupByPeriod = (
     transactions: ITransaction[],
-    period: string,
-    sources: string[] | undefined = undefined
-  ): Record<string | number, number> =>
-    transactions.reduce(
-      (group: Record<string | number, number>, transaction) => {
-        // Get only the transactions with the specified natures (if sources were provided).
-        if (sources && !sources.includes(transaction.source)) {
-          return group;
-        }
+    period: string
+  ): IGroupedDataSet =>
+    transactions.reduce((group: IGroupedDataSet, transaction) => {
+      // Get the date to use to filter.
+      const { amount, updatedAt } = transaction;
 
-        // Get the date to use to filter.
-        const { amount, source, updatedAt } = transaction;
+      // Interval to use (based on active filter).
+      const interval = getTimePeriod(period, updatedAt);
 
-        // Interval to use (based on active filter).
-        const interval = getTimePeriod(period, updatedAt);
+      // If the group does not exist, create it.
+      if (!(interval in group)) {
+        group[interval] = 0;
+      }
 
-        // If the group does not exist, create it.
-        if (!(interval in group)) {
-          group[interval] = 0;
-        }
+      // Add the transaction to the group.
+      group[interval] += amount;
 
-        // Add the transaction to the group.
-        group[interval] += amount;
-
-        // Return the new group.
-        return group;
-      },
-      {}
-    );
+      // Return the new group.
+      return group;
+    }, {});
 
   /**
    * Stack the transactions into natures by the period.
@@ -102,49 +93,21 @@ export default () => {
    * @param {string} period The period to group them into (day, month, year, etc...)
    * @param {string[]|undefined} sources The sources to create the stacks based on...
    *
-   * @returns {Record<string|number, Record<string, number>>} Transactions stacked by period.
+   * @returns {IGroupedDataSet[]} Transactions stacked by period.
    */
   const stackByPeriod = (
     transactions: ITransaction[],
     period: string,
-    sources: string[] | undefined = undefined
-  ): Record<string | number, Record<string, number>> =>
-    transactions
-      // Group the transactions based on their period
-      .reduce(
-        (
-          stack: Record<string | number, Record<string, number>>,
-          transaction
-        ) => {
-          // Get only the transactions with the specified natures (if sources were provided).
-          if (sources && !sources.includes(transaction.source)) {
-            return stack;
-          }
-
-          // Get the date to use to filter.
-          const { amount, source, updatedAt } = transaction;
-
-          // Interval to use (based on active filter).
-          const interval = getTimePeriod(period, updatedAt);
-
-          // If the stack does not exist, create it.
-          if (!(interval in stack)) {
-            stack[interval] = {};
-          }
-
-          // Check the transaction source
-          if (!(source in stack[interval])) {
-            stack[interval][source] = 0;
-          }
-
-          // Add the transaction to the stack.
-          stack[interval][source] += amount;
-
-          // Return the new stack.
-          return stack;
-        },
-        {}
-      );
+    sources: string[]
+  ): IStackedDataSet =>
+    // Create an array of values for each source to stack.
+    sources.reduce(
+      (stacks, source) => ({
+        ...stacks,
+        [source]: groupByPeriod(transactions, period),
+      }),
+      {}
+    );
 
   return { groupByPeriod, stackByPeriod };
 };

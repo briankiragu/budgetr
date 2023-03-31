@@ -34,8 +34,8 @@ export type ITransaction = {
 export type IProjectedIncome = {
   frequency: {
     recurring: boolean;
-    value: number | undefined;
     unit: ETransactionFrequencyUnit | undefined;
+    value: number | undefined;
     start: string;
     end: string | undefined;
   };

@@ -32,5 +32,6 @@
       "@layouts/*": ["src/layouts/*"],
       "@pages/*": ["src/pages/*"]
     }
-  }
+  },
+  "include": ["./src", "./tests"]
 }

@@ -22,7 +22,7 @@ import ProjectedExpensesCard from '@components/cards/ProjectedExpensesCard.astro
 import ActualIncome from '@components/cards/ActualIncome.astro';
 import ActualExpenses from '@components/cards/ActualExpenses.astro';
 import ActualSavings from '@components/cards/ActualSavings.astro';
-import Actualinvestments from '@components/cards/Actualinvestments.astro';
+import ActualInvestments from '../components/cards/ActualInvestments.astro';
 import IncomeReport from '@components/reports/IncomeReport';
 import ExpensesReport from '@components/reports/ExpensesReport';
 import IncomeStream from '@components/cards/IncomeStream.astro';
@@ -78,10 +78,18 @@ const user: IUser = {
         uid: '2784baf1',
         refs: ['all'],
         source: 'tithe',
+        description: undefined,
         type: ETransactionType.Percentage,
         amount: 10,
         currency: 'ZAR',
         nature: ETransactionNature.Investment,
+        frequency: {
+          recurring: true,
+          unit: ETransactionFrequencyUnit.Month,
+          value: 1,
+          start: '2023-12-28T08:30:30.000Z',
+          end: undefined,
+        },
         createdAt: '2023-01-07T06:35:34.155Z',
         updatedAt: '2023-01-07T06:35:34.155Z',
       },
@@ -89,10 +97,18 @@ const user: IUser = {
         uid: 'dd93b80a',
         refs: ['all'],
         source: 'tax',
+        description: undefined,
         type: ETransactionType.Percentage,
         amount: 30,
         currency: 'ZAR',
         nature: ETransactionNature.Expense,
+        frequency: {
+          recurring: true,
+          unit: ETransactionFrequencyUnit.Month,
+          value: 1,
+          start: '2023-12-28T08:30:30.000Z',
+          end: undefined,
+        },
         createdAt: '2023-01-07T06:35:34.155Z',
         updatedAt: '2023-01-07T06:35:34.155Z',
       },
@@ -100,10 +116,18 @@ const user: IUser = {
         uid: 'b83a38d6',
         refs: ['all'],
         source: 'investment',
+        description: undefined,
         type: ETransactionType.Percentage,
         amount: 10,
         currency: 'ZAR',
         nature: ETransactionNature.Investment,
+        frequency: {
+          recurring: true,
+          unit: ETransactionFrequencyUnit.Month,
+          value: 1,
+          start: '2023-12-28T08:30:30.000Z',
+          end: undefined,
+        },
         createdAt: '2023-01-07T06:35:34.155Z',
         updatedAt: '2023-01-07T06:35:34.155Z',
       },
@@ -111,10 +135,18 @@ const user: IUser = {
         uid: 'f22400fc',
         refs: ['8ddd6810'],
         source: 'rent',
+        description: undefined,
         type: ETransactionType.Fixed,
         amount: 6500,
         currency: 'ZAR',
         nature: ETransactionNature.Expense,
+        frequency: {
+          recurring: true,
+          unit: ETransactionFrequencyUnit.Month,
+          value: 1,
+          start: '2023-12-28T08:30:30.000Z',
+          end: undefined,
+        },
         createdAt: '2023-01-07T06:35:34.155Z',
         updatedAt: '2023-01-07T06:35:34.155Z',
       },
@@ -257,7 +289,7 @@ const {
   totalActualExpenses,
 } = useFinances(user.budget);
 
-// Get the list of projected income streams and their fulfillments
+// Get the list of projected income streams and their fulfillment
 // (whether they were received or not).
 const incomeStreams: IIncomeStream[] = projectedIncome.map((stream) => ({
   projected: stream,
@@ -352,7 +384,7 @@ const newTransaction = async (data: ITransaction): Promise<void> => {
 
             <!-- Actual Investments -->
             <div class="col-span-1">
-              <Actualinvestments
+              <ActualInvestments
                 period={period}
                 income={totalActualIncome}
                 transactions={transactions}
@@ -371,12 +403,15 @@ const newTransaction = async (data: ITransaction): Promise<void> => {
           >
             <!-- Income summary graph -->
             <div class="h-64 col-span-1 md:h-96 md:col-span-2">
-              <IncomeReport client:only income={actualIncome} />
+              <IncomeReport client:only="solid-js" income={actualIncome} />
             </div>
 
             <!-- Expenses summary graph -->
             <div class="h-64 col-span-1 md:h-96 md:col-span-2">
-              <ExpensesReport client:only expenses={actualExpenses} />
+              <ExpensesReport
+                client:only="solid-js"
+                expenses={actualExpenses}
+              />
             </div>
           </div>
         </section>

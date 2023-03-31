@@ -21,7 +21,7 @@ import ProjectedExpensesCard from '@components/cards/ProjectedExpensesCard.astro
 import ActualIncome from '@components/cards/ActualIncome.astro';
 import ActualExpenses from '@components/cards/ActualExpenses.astro';
 import ActualSavings from '@components/cards/ActualSavings.astro';
-import Actualinvestments from '@components/cards/Actualinvestments.astro';
+import ActualInvestments from '../components/cards/ActualInvestments.astro';
 import IncomeReport from '@components/reports/IncomeReport';
 import ExpensesReport from '@components/reports/ExpensesReport';
 import ProjectedIncomeDialog from '@components/dialogs/ProjectedIncomeDialog';
@@ -218,7 +218,7 @@ const {
   totalActualExpenses,
 } = useFinances(user.budget);
 
-// Get the list of projected income streams and their fulfillments
+// Get the list of projected income streams and their fulfillment
 // (whether they were received or not).
 
 const newIncome = async (data: IProjectedIncome): Promise<void> => {
@@ -307,7 +307,7 @@ const newTransaction = async (data: ITransaction): Promise<void> => {
 
             <!-- Actual Investments -->
             <div class="col-span-1">
-              <Actualinvestments
+              <ActualInvestments
                 period={period}
                 income={totalActualIncome}
                 transactions={transactions}
@@ -326,7 +326,7 @@ const newTransaction = async (data: ITransaction): Promise<void> => {
           >
             <!-- Income summary graph -->
             <div class="h-64 col-span-1 md:h-96 md:col-span-2">
-              <IncomeReport client:only income={actualIncome} />
+              <IncomeReport client:only="solid-js" income={actualIncome} />
             </div>
           </section>
           <hr class="my-8" />
@@ -339,7 +339,10 @@ const newTransaction = async (data: ITransaction): Promise<void> => {
 
             <!-- Expenses summary graph -->
             <div class="h-64 col-span-1 md:h-96 md:col-span-2">
-              <ExpensesReport client:only expenses={actualExpenses} />
+              <ExpensesReport
+                client:only="solid-js"
+                expenses={actualExpenses}
+              />
             </div>
           </div>
         </section>

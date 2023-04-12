@@ -8,32 +8,17 @@ import type { IStackedDataSet } from '@interfaces/datasets';
 import useDatasets from '@composables/useDatasets';
 import useFormatting from '@composables/useFormatting';
 
+// Import components...
+import StackedBarChart from '@components/charts/StackedBarChart';
+
 // Define the component.
 const IncomeReport: Component<{ income: ITransaction[] }> = ({ income }) => {
-  // Define the interfaces
-  // eslint-disable-next-line @typescript-eslint/naming-convention
-  type IFilter = {
-    id: string;
-    title: string;
-    symbol: string;
-    isActive: boolean;
-  };
-
-  // Get the filters...
-  const filters: IFilter[] = [
-    { id: 'day', title: 'Today', symbol: 'd', isActive: false },
-    { id: 'week', title: 'Week', symbol: '7D', isActive: false },
-    { id: 'month', title: 'Month', symbol: '30D', isActive: false },
-    { id: 'months', title: 'Months', symbol: 'm', isActive: false },
-    { id: 'years', title: 'Years', symbol: 'y', isActive: true },
-  ];
+  // Get the composable functions...
+  const { filters, stackByPeriod } = useDatasets();
+  const { toTitle } = useFormatting();
 
   // Currently active filter.
   const [activeFilterId, setActiveFilterId] = createSignal<string>('month');
-
-  // Get the composable functions...
-  const { stackByPeriod } = useDatasets();
-  const { toTitle } = useFormatting();
 
   /**
    * Create the data to display as a memo of the transactions and filter value.
@@ -45,7 +30,7 @@ const IncomeReport: Component<{ income: ITransaction[] }> = ({ income }) => {
   );
 
   return (
-    <div class="w-full h-full rounded-lg bg-gray-100 px-3 py-2 md:px-4 md:py-3 flex flex-col gap-2">
+    <div class="w-full h-full rounded-lg bg-gray-100 px-3 py-2 md:px-4 md:py-3 flex flex-col justify-between gap-2">
       {/* Title */}
       <h2 class="text-gray-600 font-semibold">Summary of income</h2>
 
@@ -68,7 +53,7 @@ const IncomeReport: Component<{ income: ITransaction[] }> = ({ income }) => {
       </div>
 
       {/* Stacked Bar Chart */}
-      <svg></svg>
+      <StackedBarChart dataset={dataset()} />
     </div>
   );
 };

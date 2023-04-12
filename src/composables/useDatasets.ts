@@ -1,7 +1,17 @@
+import type { IFilter } from '@interfaces/datasets';
 import type { ITransaction } from '@interfaces/budget';
 import type { IGroupedDataSet, IStackedDataSet } from '@interfaces/datasets';
 
 export default () => {
+  // Get the filters...
+  const filters: IFilter[] = [
+    { id: 'day', title: 'Today', symbol: 'd', isActive: false },
+    { id: 'week', title: 'Week', symbol: '7D', isActive: false },
+    { id: 'month', title: 'Month', symbol: '30D', isActive: false },
+    { id: 'months', title: 'Months', symbol: 'm', isActive: false },
+    { id: 'years', title: 'Years', symbol: 'y', isActive: true },
+  ];
+
   /**
    *
    * @param {string} filterId The filter ID being used
@@ -109,5 +119,5 @@ export default () => {
       {}
     );
 
-  return { groupByPeriod, stackByPeriod };
+  return { filters, groupByPeriod, stackByPeriod };
 };

@@ -61,7 +61,7 @@ const user: IUser = {
         amount: 14200,
         currency: 'ZAR',
         nature: ETransactionNature.Income,
-        description: 'Y1 siging bonus.',
+        description: 'Y1 signing bonus.',
         frequency: {
           recurring: true,
           unit: ETransactionFrequencyUnit.Month,
@@ -159,7 +159,7 @@ const user: IUser = {
         amount: 65800,
         currency: 'ZAR',
         nature: ETransactionNature.Income,
-        description: 'Relocation lumpsome',
+        description: 'Relocation lump-some',
         createdAt: '2022-12-15T06:35:34.155Z',
         updatedAt: '2022-12-15T06:35:34.155Z',
       },
@@ -170,7 +170,7 @@ const user: IUser = {
         amount: 14200,
         currency: 'ZAR',
         nature: ETransactionNature.Income,
-        description: 'Relocation lumpsome',
+        description: 'Relocation lump-some',
         createdAt: '2022-12-15T06:35:34.155Z',
         updatedAt: '2022-12-15T06:35:34.155Z',
       },
@@ -216,7 +216,7 @@ const user: IUser = {
         amount: 65800,
         currency: 'ZAR',
         nature: ETransactionNature.Income,
-        description: 'Relocation lumpsome',
+        description: 'Relocation lump-some',
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
       },
@@ -227,7 +227,7 @@ const user: IUser = {
         amount: 14200,
         currency: 'ZAR',
         nature: ETransactionNature.Income,
-        description: 'Relocation lumpsome',
+        description: 'Relocation lump-some',
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
       },
@@ -299,15 +299,19 @@ const incomeStreams: IIncomeStream[] = projectedIncome.map((stream) => ({
   ),
 }));
 
-const newIncome = async (data: IProjectedIncome): Promise<void> => {
+const handleNewProjectedIncome = async (
+  data: IProjectedIncome
+): Promise<void> => {
   console.dir(data);
 };
 
-const newExpense = async (data: IProjectedExpense): Promise<void> => {
+const handleNewProjectedExpense = async (
+  data: IProjectedExpense
+): Promise<void> => {
   console.dir(data);
 };
 
-const newTransaction = async (data: ITransaction): Promise<void> => {
+const handleNewTransaction = async (data: ITransaction): Promise<void> => {
   console.dir(data);
 };
 ---
@@ -446,16 +450,14 @@ const newTransaction = async (data: ITransaction): Promise<void> => {
             <div
               class="fixed bottom-4 right-4 flex flex-col gap-1 md:static md:flex-row md:gap-2"
             >
-              <ProjectedIncomeDialog onSubmit={newIncome} client:visible />
+              <ProjectedIncomeDialog client:visible />
               <ProjectedExpenseDialog
                 streams={projectedIncome}
-                onSubmit={newExpense}
                 client:visible
               />
               <NewTransactionDialog
                 streams={projectedIncome}
                 expenses={projectedExpenses}
-                onSubmit={newTransaction}
                 client:visible
               />
             </div>

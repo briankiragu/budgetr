@@ -21,8 +21,7 @@ import useIdentity from '@composables/useIdentity';
 const NewTransactionDialog: Component<{
   streams: IProjectedIncome[];
   expenses: IProjectedExpense[];
-  onSubmit: (data: ITransaction) => void;
-}> = (props) => {
+}> = ({ streams, expenses }) => {
   // Create a template ref to the dialog.
   let dialogRef: HTMLDialogElement;
 
@@ -37,9 +36,7 @@ const NewTransactionDialog: Component<{
   });
 
   const references = (): ITransaction[] =>
-    [...props.streams, ...props.expenses].filter(
-      (txn) => txn.nature === state.nature
-    );
+    [...streams, ...expenses].filter((txn) => txn.nature === state.nature);
 
   // Get the composables
   const { toPrice, toTitle } = useFormatting();
@@ -104,14 +101,9 @@ const NewTransactionDialog: Component<{
       amount: parseFloat(state.amount.toString()),
       currency: state.currency,
       description: state.description,
-      // eslint-disable-next-line @typescript-eslint/naming-convention
       createdAt: new Date().toISOString(),
-      // eslint-disable-next-line @typescript-eslint/naming-convention
       updatedAt: new Date().toISOString(),
     };
-
-    // Call the parent's on submit function.
-    props.onSubmit(data);
 
     // Close the dialog.
     handleDialogClose('close');
@@ -142,7 +134,7 @@ const NewTransactionDialog: Component<{
         ref={dialogRef}
         id="TransactionMegaDialog"
         modal-mode="mega"
-        class="w-full rounded-md md:w-[50vw]"
+        class="w-full rounded-md p-0 md:w-[50vw]"
       >
         <form method="dialog">
           <header class="shadow px-5 py-3 flex gap-4 justify-between items-center">

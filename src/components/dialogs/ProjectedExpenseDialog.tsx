@@ -22,14 +22,13 @@ import useIdentity from '@composables/useIdentity';
 // Define the component.
 const ProjectedExpenseDialog: Component<{
   streams: IProjectedIncome[];
-  onSubmit: (data: IProjectedExpense) => void;
-}> = (props) => {
+}> = ({ streams }) => {
   // Create a template ref to the dialog.
   let dialogRef: HTMLDialogElement;
 
   // Create a signal to hold the form state.
   const [state, setState] = createStore<IProjectedExpenseForm>({
-    refs: props.streams.map((stream) => stream.uid),
+    refs: streams.map((stream) => stream.uid),
     source: '',
     amount: 10,
     currency: 'ZAR',
@@ -45,7 +44,7 @@ const ProjectedExpenseDialog: Component<{
   const showCurrency = (): boolean => state.type === ETransactionType.Fixed;
   const showFrequency = (): boolean => state.frequencyRecurring === 'true';
   const calculatedAmount = (): number =>
-    props.streams
+    streams
       .filter((stream) => state.refs.includes(stream.uid))
       .reduce((acc, stream) => acc + stream.amount, 0) *
     (state.amount / 100);
@@ -125,21 +124,16 @@ const ProjectedExpenseDialog: Component<{
         start: state.frequencyStart,
         end: state.frequencyEnd,
       },
-      // eslint-disable-next-line @typescript-eslint/naming-convention
       createdAt: new Date().toISOString(),
-      // eslint-disable-next-line @typescript-eslint/naming-convention
       updatedAt: new Date().toISOString(),
     };
-
-    // Call the parent's on submit function.
-    props.onSubmit(data);
 
     // Close the dialog.
     handleDialogClose('close');
 
     // Reset the state.
     setState({
-      refs: props.streams.map((stream) => stream.uid),
+      refs: streams.map((stream) => stream.uid),
       source: '',
       amount: 0,
       currency: 'ZAR',
@@ -168,7 +162,7 @@ const ProjectedExpenseDialog: Component<{
         ref={dialogRef}
         id="ProjectedExpenseMegaDialog"
         modal-mode="mega"
-        class="w-full rounded-md md:w-[50vw]"
+        class="w-full rounded-md p-0 md:w-[50vw]"
       >
         <form method="dialog">
           <header class="shadow px-5 py-3 flex gap-4 justify-between items-center">
@@ -282,7 +276,7 @@ const ProjectedExpenseDialog: Component<{
 
                 {/* References */}
                 <div class="col-span-6 flex flex-col gap-1">
-                  <For each={props.streams}>
+                  <For each={streams}>
                     {(stream) => (
                       <label
                         for={`refs-${stream.uid}`}

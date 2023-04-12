@@ -17,9 +17,7 @@ import type { IProjectedIncome } from '@interfaces/budget';
 import type { IProjectedIncomeForm } from '@interfaces/forms';
 
 // Define the component.
-const ProjectedIncomeDialog: Component<{
-  onSubmit: (data: IProjectedIncome) => void;
-}> = ({ onSubmit }) => {
+const ProjectedIncomeDialog: Component = () => {
   // Create a template ref to the dialog.
   let dialogRef: HTMLDialogElement;
 
@@ -90,11 +88,10 @@ const ProjectedIncomeDialog: Component<{
       updatedAt: new Date().toISOString(),
     };
 
-    // Call the parent's on submit function.
-    onSubmit(data);
-
     // Close the dialog.
     handleDialogClose('close');
+
+    console.dir(data);
 
     // Reset the state.
     setState({
@@ -125,7 +122,7 @@ const ProjectedIncomeDialog: Component<{
         ref={dialogRef}
         id="ProjectedIncomeMegaDialog"
         modal-mode="mega"
-        class="w-full rounded-md md:w-[50vw]"
+        class="w-full rounded-md p-0 md:w-[50vw]"
       >
         <form method="dialog">
           <header class="shadow px-5 py-3 flex gap-4 justify-between items-center">

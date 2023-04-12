@@ -221,15 +221,19 @@ const {
 // Get the list of projected income streams and their fulfillment
 // (whether they were received or not).
 
-const newIncome = async (data: IProjectedIncome): Promise<void> => {
+const handleNewProjectedIncome = async (
+  data: IProjectedIncome
+): Promise<void> => {
   console.dir(data);
 };
 
-const newExpense = async (data: IProjectedExpense): Promise<void> => {
+const handleNewProjectedExpense = async (
+  data: IProjectedExpense
+): Promise<void> => {
   console.dir(data);
 };
 
-const newTransaction = async (data: ITransaction): Promise<void> => {
+const handleNewTransaction = async (data: ITransaction): Promise<void> => {
   console.dir(data);
 };
 

@@ -19,7 +19,7 @@ const TransactionsSheet: Component<{ transactions: ITransaction[] }> = (
   const sources = (): string[] =>
     Array.from(
       new Set(
-        props.transactions.map((transaction) => transaction.source)
+        props.transactions.map((transaction) => transaction.nature)
       ).values()
     );
 
@@ -35,7 +35,7 @@ const TransactionsSheet: Component<{ transactions: ITransaction[] }> = (
     props.transactions
       // If the source filter is set to "all", return all transactions.
       .filter((transaction) =>
-        sourceFilter() === 'all' ? true : transaction.source === sourceFilter()
+        sourceFilter() === 'all' ? true : transaction.nature === sourceFilter()
       )
       // If the nature filter is set to "all", return all transactions.
       .filter((transaction) =>
@@ -150,7 +150,7 @@ const TransactionsSheet: Component<{ transactions: ITransaction[] }> = (
             <li class="transition-all ease-in rounded-md px-5 py-4 bg-gray-200 grid grid-cols-5 gap-4 items-center text-gray-700 tracking-tighter md:px-8 md:grid-cols-12 hover:shadow-lg hover:bg-gray-700 hover:text-gray-50">
               {/* Source */}
               <p class="col-span-2 text-lg font-semibold truncate">
-                {toTitle(transaction.source)}
+                {toTitle(transaction.nature)}
               </p>
 
               {/* Description */}

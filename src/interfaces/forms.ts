@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 
-import type { ETransactionNature, ETransactionType } from '@interfaces/budget';
+import type { ETransactionType } from '@interfaces/budget';
 
 export type IProjectedIncomeForm = {
-  source: string;
+  nature: string;
   amount: number;
   currency: string;
   description: string;
@@ -16,7 +16,7 @@ export type IProjectedIncomeForm = {
 
 export type IProjectedExpenseForm = {
   refs: string[];
-  source: string;
+  nature: string;
   type: ETransactionType;
   amount: number;
   currency: string;
@@ -30,8 +30,7 @@ export type IProjectedExpenseForm = {
 
 export type ITransactionForm = {
   refs: string[];
-  source: string;
-  nature: ETransactionNature;
+  nature: string;
   amount: number;
   currency: string;
   description: string;

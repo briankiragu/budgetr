@@ -18,13 +18,13 @@ import useFinances from '@composables/useFinances';
 
 // Import the interfaces
 import {
-  ETransactionFrequencyUnit,
-  ETransactionNature,
+  ETransactionFrequencyPeriod,
   ETransactionType,
-  IExpensePeriod,
-  IProjectedExpense,
-  IProjectedIncome,
-  ITransaction,
+  type IExpensePeriod,
+  type IProjectedExpense,
+  EProjectedExpenseCategory,
+  type IProjectedIncome,
+  type ITransaction,
 } from '@interfaces/budget';
 import type { IUser } from '@interfaces/user';
 
@@ -42,15 +42,15 @@ const data: IUser = {
     income: [
       {
         uid: '8ddd6810',
-        refs: undefined,
-        source: 'salary',
+        refs: [],
         amount: 65800,
         currency: 'ZAR',
-        nature: ETransactionNature.Income,
+        type: ETransactionType.CREDIT,
+        nature: 'paycheck',
         description: 'Base salary.',
         frequency: {
-          recurring: true,
-          unit: ETransactionFrequencyUnit.Month,
+          isRecurring: true,
+          period: ETransactionFrequencyPeriod.MONTH,
           value: 1,
           start: '2023-02-28T08:30:30.000Z',
           end: undefined,
@@ -60,15 +60,15 @@ const data: IUser = {
       },
       {
         uid: '75a700fe',
-        refs: undefined,
-        source: 'bonus',
+        refs: [],
         amount: 14200,
         currency: 'ZAR',
-        nature: ETransactionNature.Income,
+        type: ETransactionType.CREDIT,
+        nature: 'bonus',
         description: 'Y1 siging bonus.',
         frequency: {
-          recurring: true,
-          unit: ETransactionFrequencyUnit.Month,
+          isRecurring: true,
+          period: ETransactionFrequencyPeriod.MONTH,
           value: 1,
           start: '2023-12-28T08:30:30.000Z',
           end: '2023-12-28T08:30:30.000Z',
@@ -81,44 +81,76 @@ const data: IUser = {
       {
         uid: '2784baf1',
         refs: ['all'],
-        source: 'tithe',
-        type: ETransactionType.Percentage,
+        type: ETransactionType.DEBIT,
+        nature: 'tithe',
+        category: EProjectedExpenseCategory.PERCENTAGE,
         amount: 10,
         currency: 'ZAR',
-        nature: ETransactionNature.Investment,
+        description: 'Monthly Tithe payment',
+        frequency: {
+          isRecurring: true,
+          period: ETransactionFrequencyPeriod.MONTH,
+          value: 1,
+          start: '2023-02-28T08:30:30.000Z',
+          end: undefined,
+        },
         created_at: '2023-01-07T06:35:34.155Z',
         updated_at: '2023-01-07T06:35:34.155Z',
       },
       {
         uid: 'dd93b80a',
         refs: ['all'],
-        source: 'tax',
-        type: ETransactionType.Percentage,
+        type: ETransactionType.DEBIT,
+        category: EProjectedExpenseCategory.PERCENTAGE,
         amount: 30,
         currency: 'ZAR',
-        nature: ETransactionNature.Expense,
+        frequency: {
+          isRecurring: true,
+          period: ETransactionFrequencyPeriod.MONTH,
+          value: 1,
+          start: '2023-02-28T08:30:30.000Z',
+          end: undefined,
+        },
+        nature: 'tax',
+        description: 'Income Tax',
         created_at: '2023-01-07T06:35:34.155Z',
         updated_at: '2023-01-07T06:35:34.155Z',
       },
       {
         uid: 'b83a38d6',
         refs: ['all'],
-        source: 'investment',
-        type: ETransactionType.Percentage,
+        type: ETransactionType.DEBIT,
+        category: EProjectedExpenseCategory.PERCENTAGE,
         amount: 10,
         currency: 'ZAR',
-        nature: ETransactionNature.Investment,
+        frequency: {
+          isRecurring: true,
+          period: ETransactionFrequencyPeriod.MONTH,
+          value: 1,
+          start: '2023-02-28T08:30:30.000Z',
+          end: undefined,
+        },
+        nature: 'investment',
+        description: 'Monthly Investment',
         created_at: '2023-01-07T06:35:34.155Z',
         updated_at: '2023-01-07T06:35:34.155Z',
       },
       {
         uid: 'f22400fc',
         refs: ['8ddd6810'],
-        source: 'rent',
-        type: ETransactionType.Fixed,
-        amount: 6500,
+        type: ETransactionType.DEBIT,
+        category: EProjectedExpenseCategory.FIXED,
+        amount: 11000,
         currency: 'ZAR',
-        nature: ETransactionNature.Expense,
+        frequency: {
+          isRecurring: true,
+          period: ETransactionFrequencyPeriod.MONTH,
+          value: 1,
+          start: '2023-02-28T08:30:30.000Z',
+          end: undefined,
+        },
+        nature: 'rent',
+        description: 'Monthly rent',
         created_at: '2023-01-07T06:35:34.155Z',
         updated_at: '2023-01-07T06:35:34.155Z',
       },
@@ -126,46 +158,45 @@ const data: IUser = {
     transactions: [
       {
         uid: '852b0411',
-        refs: undefined,
-        source: 'bonus',
-        amount: 86400,
+        refs: [],
         currency: 'ZAR',
-        nature: ETransactionNature.Income,
+        type: ETransactionType.CREDIT,
         description: 'Relocation lumpsome',
+        nature: 'bonus',
+        amount: 86400,
         created_at: '2022-12-15T06:35:34.155Z',
         updated_at: '2022-12-15T06:35:34.155Z',
       },
       {
         uid: '463d0331',
         refs: ['f22400fc'],
-        source: 'rent',
-        amount: 15700,
         currency: 'ZAR',
-        nature: ETransactionNature.Expense,
-        description:
-          "First month's rent, deposit, service charge and application fee for the new apartment",
+        type: ETransactionType.DEBIT,
+        description: "First month's rent, deposit, service charge and application fee for the new apartment",
+        nature: 'rent',
+        amount: 15700,
         updated_at: '2023-02-01T06:35:34.155Z',
         created_at: '2023-02-01T06:35:34.155Z',
       },
       {
         uid: '052d7675',
-        refs: undefined,
-        source: 'housing',
-        description: '',
+        refs: [],
         amount: 4200,
         currency: 'ZAR',
-        nature: ETransactionNature.Expense,
+        type: ETransactionType.DEBIT,
+        nature: 'housing',
+        description: '',
         created_at: '2023-02-02T06:35:34.155Z',
         updated_at: '2023-02-02T06:35:34.155Z',
       },
       {
         uid: 'd41bd660',
-        refs: undefined,
-        source: 'transport',
-        description: '',
+        refs: [],
         amount: 1200,
         currency: 'ZAR',
-        nature: ETransactionNature.Expense,
+        type: ETransactionType.DEBIT,
+        nature: 'transport',
+        description: '',
         created_at: '2023-02-15T10:35:34.155Z',
         updated_at: '2023-02-15T10:35:34.155Z',
       },
@@ -196,6 +227,7 @@ const newExpense = async (data: IProjectedExpense): Promise<void> => {
 const newTransaction = async (data: ITransaction): Promise<void> => {
   console.dir(data);
 };
+
 ---
 
 <html lang="en">
@@ -281,7 +313,7 @@ const newTransaction = async (data: ITransaction): Promise<void> => {
           </div>
           <hr class="my-8" />
 
-          {/* Income streams */}
+          <!-- Income streams -->
           <section>
             <h1 class="mb-6 text-4xl text-gray-800 font-bold tracking-tight">
               Income Streams
@@ -299,14 +331,14 @@ const newTransaction = async (data: ITransaction): Promise<void> => {
           </section>
           <hr class="my-8" />
 
-          {/* Transactions */}
+          <!-- Transactions -->
           <section class="pb-6">
             <div class="mb-8 flex justify-between items-center">
               <h1 class="text-3xl text-gray-800 font-bold tracking-tight">
                 Transactions
               </h1>
 
-              {/* Transaction actions */}
+              <!-- Transaction actions -->
               <div
                 class="fixed bottom-4 right-4 flex flex-col gap-1 md:static md:flex-row md:gap-2"
               >
@@ -325,7 +357,7 @@ const newTransaction = async (data: ITransaction): Promise<void> => {
               </div>
             </div>
 
-            {/* List all transactions */}
+            <!-- List all transactions -->
             <div class="rounded bg-gray-100 p-4">
               <TransactionsSheet client:visible transactions={transactions} />
             </div>

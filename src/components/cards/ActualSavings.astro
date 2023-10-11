@@ -1,9 +1,9 @@
 ---
 // Import interfaces...
 import {
-  ETransactionNature,
-  IExpensePeriod,
-  ITransaction,
+  ETransactionType,
+  type IExpensePeriod,
+  type ITransaction,
 } from '@interfaces/budget';
 
 // Import necessary composables...
@@ -24,12 +24,12 @@ const { toPrice, toTitle } = useFormatting();
 
 // Get the total amount of expenses.
 const expenses: number = transactions
-  .filter((transaction) => transaction.nature === ETransactionNature.Expense)
+  .filter((transaction) => transaction.nature === ETransactionType.DEBIT)
   .reduce((acc, transaction) => acc + transaction.amount, 0);
 
 // Determine how many transactions were actually savings.
 const savings: number = transactions
-  .filter((transaction) => transaction.nature === ETransactionNature.Saving)
+  .filter((transaction) => transaction.nature === ETransactionType.CREDIT)
   .reduce(
     (acc, transaction) =>
       transaction.nature === 'saving' ? acc + transaction.amount : acc,

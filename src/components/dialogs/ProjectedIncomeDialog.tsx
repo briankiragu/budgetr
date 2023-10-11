@@ -1,7 +1,7 @@
 // Import the enums...
 import {
-  type ETransactionFrequencyUnit,
-  ETransactionNature,
+  ETransactionType,
+  type ETransactionFrequencyPeriod,
 } from '@interfaces/budget';
 
 // Import the SolidJS modules...
@@ -25,7 +25,7 @@ const ProjectedIncomeDialog: Component<{
 
   // Create a signal to hold the form state.
   const [state, setState] = createStore<IProjectedIncomeForm>({
-    source: '',
+    nature: '',
     amount: 0,
     currency: 'ZAR',
     description: '',
@@ -69,19 +69,19 @@ const ProjectedIncomeDialog: Component<{
     // Format the state.
     const data: IProjectedIncome = {
       uid: generateUid(),
-      refs: undefined,
-      source: state.source,
-      nature: ETransactionNature.Income,
+      refs: [],
+      type: ETransactionType.CREDIT,
+      nature: state.nature,
       amount: parseFloat(state.amount.toString()),
       currency: state.currency,
       description: state.description,
       frequency: {
-        recurring: showFrequency(),
+        isRecurring: showFrequency(),
         value: showFrequency()
           ? parseInt(state.frequencyValue.toString(), 10)
           : undefined,
-        unit: showFrequency()
-          ? (state.frequencyUnit as ETransactionFrequencyUnit)
+        period: showFrequency()
+          ? (state.frequencyUnit as ETransactionFrequencyPeriod)
           : undefined,
         start: state.frequencyStart,
         end: state.frequencyEnd,
@@ -100,7 +100,7 @@ const ProjectedIncomeDialog: Component<{
 
     // Reset the state.
     setState({
-      source: '',
+      nature: '',
       amount: 0,
       currency: 'ZAR',
       description: '',
@@ -158,7 +158,7 @@ const ProjectedIncomeDialog: Component<{
                   type="text"
                   id="projected-income-source"
                   name="projected-income-source"
-                  value={state.source}
+                  value={state.nature}
                   placeholder="E.g. Salary"
                   class="w-full rounded px-4 py-2 bg-gray-100 text-sm text-gray-700 tracking-tight focus:outline-none"
                   required

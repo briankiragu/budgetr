@@ -1,9 +1,9 @@
 // Import the enums...
 import {
-  type ETransactionFrequencyUnit,
-  ETransactionNature,
+  type ETransactionFrequencyPeriod,
   ETransactionType,
   type IProjectedIncome,
+  EProjectedExpenseCategory,
 } from '@interfaces/budget';
 
 // Import the SolidJS modules...
@@ -30,10 +30,10 @@ const ProjectedExpenseDialog: Component<{
   // Create a signal to hold the form state.
   const [state, setState] = createStore<IProjectedExpenseForm>({
     refs: props.streams.map((stream) => stream.uid),
-    source: '',
+    nature: '',
     amount: 10,
     currency: 'ZAR',
-    type: ETransactionType.Percentage,
+    type: ETransactionType.DEBIT,
     description: '',
     frequencyRecurring: 'true',
     frequencyValue: 1,
@@ -42,7 +42,7 @@ const ProjectedExpenseDialog: Component<{
     frequencyEnd: undefined,
   });
 
-  const showCurrency = (): boolean => state.type === ETransactionType.Fixed;
+  const showCurrency = (): boolean => state.type === ETransactionType.DEBIT;
   const showFrequency = (): boolean => state.frequencyRecurring === 'true';
   const calculatedAmount = (): number =>
     props.streams
@@ -108,19 +108,19 @@ const ProjectedExpenseDialog: Component<{
     const data: IProjectedExpense = {
       uid: generateUid(),
       refs: showCurrency() ? [] : state.refs,
-      source: state.source,
+      nature: state.nature,
       type: state.type,
-      nature: ETransactionNature.Expense,
       amount: parseFloat(state.amount.toString()),
       currency: state.currency,
       description: state.description,
+      category: EProjectedExpenseCategory.PERCENTAGE,
       frequency: {
-        recurring: showFrequency(),
+        isRecurring: showFrequency(),
         value: showFrequency()
           ? parseInt(state.frequencyValue.toString(), 10)
           : undefined,
-        unit: showFrequency()
-          ? (state.frequencyUnit as ETransactionFrequencyUnit)
+        period: showFrequency()
+          ? (state.frequencyUnit as ETransactionFrequencyPeriod)
           : undefined,
         start: state.frequencyStart,
         end: state.frequencyEnd,
@@ -140,10 +140,10 @@ const ProjectedExpenseDialog: Component<{
     // Reset the state.
     setState({
       refs: props.streams.map((stream) => stream.uid),
-      source: '',
+      nature: '',
       amount: 0,
       currency: 'ZAR',
-      type: ETransactionType.Percentage,
+      type: ETransactionType.DEBIT,
       description: '',
       frequencyRecurring: 'true',
       frequencyValue: 1,
@@ -199,7 +199,7 @@ const ProjectedExpenseDialog: Component<{
                   type="text"
                   id="projected-expense-source"
                   name="projected-expense-source"
-                  value={state.source}
+                  value={state.nature}
                   placeholder="E.g. Salary"
                   class="w-full rounded px-4 py-2 bg-gray-100 text-sm text-gray-700 tracking-tight focus:outline-none"
                   required
@@ -220,11 +220,11 @@ const ProjectedExpenseDialog: Component<{
                   required
                   onInput={[handleFormInput, 'type']}
                 >
-                  <option value={ETransactionType.Fixed}>
-                    {toTitle(ETransactionType.Fixed)}
+                  <option value={ETransactionType.DEBIT}>
+                    {toTitle(ETransactionType.DEBIT)}
                   </option>
-                  <option value={ETransactionType.Percentage} selected>
-                    {toTitle(ETransactionType.Percentage)}
+                  <option value={EProjectedExpenseCategory.PERCENTAGE} selected>
+                    {toTitle(EProjectedExpenseCategory.PERCENTAGE)}
                   </option>
                 </select>
               </label>
@@ -276,7 +276,7 @@ const ProjectedExpenseDialog: Component<{
             <hr />
 
             {/* References & Total */}
-            <Show when={state.type === ETransactionType.Percentage}>
+            <Show when={state.type === ETransactionType.DEBIT}>
               <div class="col-span-1 grid grid-cols-6 gap-4">
                 <h3 class="text-2xl font-semibold">References</h3>
 
@@ -296,7 +296,7 @@ const ProjectedExpenseDialog: Component<{
                           checked={state.refs.includes(stream.uid)}
                           onInput={[handleFormChecked, 'refs']}
                         />
-                        {toTitle(stream.source)} (
+                        {toTitle(stream.nature)} (
                         {toPrice(stream.amount, stream.currency ?? '')})
                       </label>
                     )}

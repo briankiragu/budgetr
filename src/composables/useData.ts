@@ -11,13 +11,14 @@ export default () => {
     username: string
   ): Promise<IProjectedIncome[]> => {
     // Get the data from the store (local storage).
-    const item: string | undefined = localStorage.getItem(`users`);
+    // eslint-disable-next-line @typescript-eslint/ban-types
+    const item: string | null = localStorage.getItem(`users`);
 
     // If the item is null, return an empty array.
-    if (item === null) return [];
+    if (!item) return [];
 
     // Parse the item into an array of IUser objects.
-    const users: IUser[] = JSON.parse(item);
+    const users: IUser[] = JSON.parse(item) as unknown as IUser[];
 
     // Find the user with the matching username.
     const user: IUser | undefined = users.find(
@@ -35,13 +36,14 @@ export default () => {
     username: string
   ): Promise<IProjectedExpense[]> => {
     // Get the data from the store (local storage).
-    const item: string | undefined = localStorage.getItem(`users`);
+    // eslint-disable-next-line @typescript-eslint/ban-types
+    const item: string | null = localStorage.getItem(`users`);
 
     // If the item is null, return an empty array.
-    if (item === null) return [];
+    if (!item) return [];
 
     // Parse the item into an array of IUser objects.
-    const users: IUser[] = JSON.parse(item);
+    const users: IUser[] = JSON.parse(item) as unknown as IUser[];
 
     // Find the user with the matching username.
     const user: IUser | undefined = users.find(
@@ -57,13 +59,14 @@ export default () => {
 
   const getTransactions = async (username: string): Promise<ITransaction[]> => {
     // Get the data from the store (local storage).
-    const item: string | undefined = localStorage.getItem(`users`);
+    // eslint-disable-next-line @typescript-eslint/ban-types
+    const item: string | null = localStorage.getItem(`users`);
 
     // If the item is null, return an empty array.
-    if (item === null) return [];
+    if (!item) return [];
 
     // Parse the item into an array of IUser objects.
-    const users: IUser[] = JSON.parse(item);
+    const users: IUser[] = JSON.parse(item) as unknown as IUser[];
 
     // Find the user with the matching username.
     const user: IUser | undefined = users.find(
@@ -101,14 +104,15 @@ export default () => {
     let users: IUser[] = [];
 
     // Get the user object from the store (local storage).
-    const item: string | undefined = localStorage.getItem(`users`);
+    // eslint-disable-next-line @typescript-eslint/ban-types
+    const item: string | null = localStorage.getItem(`users`);
 
     // If the item is null, create an empty object.
-    if (item === null) {
-      localStorage.setItem(`users`, JSON.stringify([]));
-    } else {
+    if (item) {
       // Parse the item into an array of IUser objects.
-      users = JSON.parse(item);
+      users = JSON.parse(item) as unknown as IUser[];
+    } else {
+      localStorage.setItem(`users`, JSON.stringify([]));
     }
 
     // Find the index of the user with the matching username.
@@ -143,14 +147,15 @@ export default () => {
     let users: IUser[] = [];
 
     // Get the user object from the store (local storage).
-    const item: string | undefined = localStorage.getItem(`users`);
+    // eslint-disable-next-line @typescript-eslint/ban-types
+    const item: string | null = localStorage.getItem(`users`);
 
     // If the item is null, create an empty object.
-    if (item === null) {
-      localStorage.setItem(`users`, JSON.stringify([]));
-    } else {
+    if (item) {
       // Parse the item into an array of IUser objects.
-      users = JSON.parse(item);
+      users = JSON.parse(item) as unknown as IUser[];
+    } else {
+      localStorage.setItem(`users`, JSON.stringify([]));
     }
 
     // Find the index of the user with the matching username.
@@ -185,14 +190,15 @@ export default () => {
     let users: IUser[] = [];
 
     // Get the user object from the store (local storage).
-    const item: string | undefined = localStorage.getItem(`users`);
+    // eslint-disable-next-line @typescript-eslint/ban-types
+    const item: string | null = localStorage.getItem(`users`);
 
     // If the item is null, create an empty object.
-    if (item === null) {
-      localStorage.setItem(`users`, JSON.stringify([]));
-    } else {
+    if (item) {
       // Parse the item into an array of IUser objects.
-      users = JSON.parse(item);
+      users = JSON.parse(item) as unknown as IUser[];
+    } else {
+      localStorage.setItem(`users`, JSON.stringify([]));
     }
 
     // Find the index of the user with the matching username.
@@ -239,14 +245,15 @@ export default () => {
     let users: IUser[] = [];
 
     // Get the user object from the store (local storage).
-    const item: string | undefined = localStorage.getItem(`users`);
+    // eslint-disable-next-line @typescript-eslint/ban-types
+    const item: string | null = localStorage.getItem(`users`);
 
     // If the item is null, create an empty object.
-    if (item === null) {
-      localStorage.setItem(`users`, JSON.stringify([]));
-    } else {
+    if (item) {
       // Parse the item into an array of IUser objects.
-      users = JSON.parse(item);
+      users = JSON.parse(item) as unknown as IUser[];
+    } else {
+      localStorage.setItem(`users`, JSON.stringify([]));
     }
 
     // Find the index of the user with the matching username.
@@ -281,14 +288,15 @@ export default () => {
     let users: IUser[] = [];
 
     // Get the user object from the store (local storage).
-    const item: string | undefined = localStorage.getItem(`users`);
+    // eslint-disable-next-line @typescript-eslint/ban-types
+    const item: string | null = localStorage.getItem(`users`);
 
     // If the item is null, create an empty object.
-    if (item === null) {
-      localStorage.setItem(`users`, JSON.stringify([]));
-    } else {
+    if (item) {
       // Parse the item into an array of IUser objects.
-      users = JSON.parse(item);
+      users = JSON.parse(item) as unknown as IUser[];
+    } else {
+      localStorage.setItem(`users`, JSON.stringify([]));
     }
 
     // Find the index of the user with the matching username.
@@ -323,14 +331,15 @@ export default () => {
     let users: IUser[] = [];
 
     // Get the user object from the store (local storage).
-    const item: string | undefined = localStorage.getItem(`users`);
+    // eslint-disable-next-line @typescript-eslint/ban-types
+    const item: string | null = localStorage.getItem(`users`);
 
     // If the item is null, create an empty object.
-    if (item === null) {
-      localStorage.setItem(`users`, JSON.stringify([]));
-    } else {
+    if (item) {
       // Parse the item into an array of IUser objects.
-      users = JSON.parse(item);
+      users = JSON.parse(item) as unknown as IUser[];
+    } else {
+      localStorage.setItem(`users`, JSON.stringify([]));
     }
 
     // Find the index of the user with the matching username.

@@ -1,19 +1,20 @@
 import {
-  ETransactionNature,
+  ETransactionType,
   type IIncomeStream,
   type ITransaction,
+  EProjectedExpenseCategory,
 } from '@interfaces/budget';
 import type { IUser } from '@interfaces/user';
 
 export default (user: IUser) => {
   // Get the income transactions.
   const income: ITransaction[] = user.budget.transactions.filter(
-    (txn) => txn.nature === ETransactionNature.Income
+    (txn) => txn.nature === ETransactionType.CREDIT
   );
 
   // Get the expense transactions.
   const expenses: ITransaction[] = user.budget.transactions.filter(
-    (txn) => txn.nature === ETransactionNature.Expense
+    (txn) => txn.nature === ETransactionType.DEBIT
   );
 
   // Calculate the total projected income.
@@ -25,7 +26,7 @@ export default (user: IUser) => {
   // Calculate the total projected expenses.
   const totalProjectedExpenses: number = user.budget.expenses.reduce(
     (acc, expense) => {
-      if (expense.type === 'percentage') {
+      if (expense.category === EProjectedExpenseCategory.PERCENTAGE) {
         return acc + totalProjectedIncomeCard * (expense.amount / 100);
       }
 
@@ -52,7 +53,7 @@ export default (user: IUser) => {
     projected: stream,
     // Check if it was fulfilled in the actual income transaction.
     actual: income.filter((transaction) =>
-      transaction.refs?.includes(stream.uid)
+      transaction.refs.includes(stream.uid)
     ),
   }));
 

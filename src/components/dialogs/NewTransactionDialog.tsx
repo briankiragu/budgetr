@@ -1,6 +1,5 @@
 // Import the enums...
 import {
-  ETransactionNature,
   ETransactionType,
   type IProjectedIncome,
   type ITransaction,
@@ -29,8 +28,7 @@ const NewTransactionDialog: Component<{
   // Create a signal to hold the form state.
   const [state, setState] = createStore<ITransactionForm>({
     refs: [],
-    source: '',
-    nature: ETransactionNature.Expense,
+    nature: '',
     amount: 10,
     currency: 'ZAR',
     description: '',
@@ -99,9 +97,9 @@ const NewTransactionDialog: Component<{
     const data: ITransaction = {
       uid: generateUid(),
       refs: state.refs,
-      source: state.source,
       nature: state.nature,
       amount: parseFloat(state.amount.toString()),
+      type: ETransactionType.CREDIT,
       currency: state.currency,
       description: state.description,
       // eslint-disable-next-line @typescript-eslint/naming-convention
@@ -119,8 +117,7 @@ const NewTransactionDialog: Component<{
     // Reset the state.
     setState({
       refs: [],
-      source: '',
-      nature: ETransactionNature.Expense,
+      nature: '',
       amount: 0,
       currency: 'ZAR',
       description: '',
@@ -173,7 +170,7 @@ const NewTransactionDialog: Component<{
                   type="text"
                   id="new-transaction-source"
                   name="new-transaction-source"
-                  value={state.source}
+                  value={state.nature}
                   placeholder="E.g. Salary"
                   class="w-full rounded px-4 py-2 bg-gray-100 text-sm text-gray-700 tracking-tight focus:outline-none"
                   required
@@ -194,17 +191,17 @@ const NewTransactionDialog: Component<{
                   required
                   onInput={[handleFormInput, 'nature']}
                 >
-                  <option value={ETransactionNature.Income}>
-                    {toTitle(ETransactionNature.Income)}
+                  <option value={ETransactionType.CREDIT}>
+                    {toTitle(ETransactionType.CREDIT)}
                   </option>
-                  <option value={ETransactionNature.Investment}>
-                    {toTitle(ETransactionNature.Investment)}
+                  <option value={ETransactionType.CREDIT}>
+                    {toTitle(ETransactionType.CREDIT)}
                   </option>
-                  <option value={ETransactionNature.Saving}>
-                    {toTitle(ETransactionNature.Saving)}
+                  <option value={ETransactionType.CREDIT}>
+                    {toTitle(ETransactionType.CREDIT)}
                   </option>
-                  <option value={ETransactionNature.Expense}>
-                    {toTitle(ETransactionNature.Expense)}
+                  <option value={ETransactionType.DEBIT}>
+                    {toTitle(ETransactionType.DEBIT)}
                   </option>
                 </select>
               </label>
@@ -272,11 +269,11 @@ const NewTransactionDialog: Component<{
                         checked={state.refs.includes(txn.uid)}
                         onInput={[handleFormChecked, 'refs']}
                       />
-                      {toTitle(txn.source)} (
+                      {toTitle(txn.nature)} (
                       <Show
                         when={
                           (txn as IProjectedExpense).type ===
-                          ETransactionType.Percentage
+                          ETransactionType.DEBIT
                         }
                         fallback={toPrice(txn.amount, txn.currency ?? '')}
                       >

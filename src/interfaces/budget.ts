@@ -1,52 +1,71 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 
-export enum ETransactionNature {
-  Income = 'income',
-  Investment = 'investment',
-  Saving = 'saving',
-  Expense = 'expense',
-}
-
-export enum ETransactionFrequencyUnit {
-  Day = 'day',
-  Week = 'week',
-  Month = 'month',
-  Year = 'year',
-}
-
 export enum ETransactionType {
-  Fixed = 'fixed',
-  Percentage = 'percentage',
+  CREDIT = 'credit',
+  DEBIT = 'debit',
 }
 
+export enum EProjectedExpenseCategory {
+  FIXED = 'fixed',
+  PERCENTAGE = 'percentage',
+}
+
+export enum ETransactionFrequencyPeriod {
+  DAY = 'day',
+  WEEK = 'week',
+  MONTH = 'month',
+  YEAR = 'year',
+}
+
+// A single transaction.
 export type ITransaction = {
   uid: string;
-  refs: string[] | undefined;
-  source: string;
-  amount: number;
+  refs: string[];
   currency: string | undefined;
-  nature: ETransactionNature;
-  description: string | undefined;
+  amount: number;
+  type: ETransactionType;
+  nature: string;
+  description?: string | undefined;
   created_at: string;
   updated_at: string;
 };
 
+// An "expected" income transaction
+// e.g. (salary @ 100,000.00 - paid monthly).
 export type IProjectedIncome = {
-  frequency: {
-    recurring: boolean;
-    value: number | undefined;
-    unit: ETransactionFrequencyUnit | undefined;
-    start: string;
-    end: string | undefined;
-  };
+  frequency:
+    | {
+        isRecurring: boolean;
+        period: ETransactionFrequencyPeriod | undefined;
+        value: number | undefined;
+        start: string;
+        end: string | undefined;
+      }
+    | undefined;
 } & ITransaction;
 
+// An "expected" expense transaction
+// e.g. (rent @ 10% of total income (10,000.00) - paid monthly).
 export type IProjectedExpense = {
-  type: ETransactionType;
+  category: EProjectedExpenseCategory;
 } & IProjectedIncome;
 
+// A user's budget item.
+export type IBudget = {
+  income: IProjectedIncome[];
+  expenses: IProjectedExpense[];
+  transactions: ITransaction[];
+};
+
+// A projected income item and the transactions that belong to it.
 export type IIncomeStream = {
   projected: IProjectedIncome;
+  actual: ITransaction[];
+};
+
+// A projected expense item and the transactions that belong to it.
+export type IExpenseItem = {
+  projected: IProjectedExpense;
   actual: ITransaction[];
 };
 
@@ -54,10 +73,4 @@ export type IExpensePeriod = {
   start: Date;
   end: Date;
   range: 'weekly' | 'monthly' | 'annually';
-};
-
-export type IBudget = {
-  income: IProjectedIncome[];
-  expenses: IProjectedExpense[];
-  transactions: ITransaction[];
 };

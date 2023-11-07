@@ -29,12 +29,24 @@ import ProjectedExpenseDialog from '@components/dialogs/ProjectedExpenseDialog';
 import NewTransactionDialog from '@components/dialogs/NewTransactionDialog';
 import TransactionsSheet from '@components/tables/TransactionSheet';
 
-// Define the period.
-const period: IExpensePeriod = {
-  range: 'monthly',
-  start: new Date('2023-02-01'),
-  end: new Date('2023-03-31'),
-};
+// Import the composables...
+import useFinances from '@composables/useFinances';
+
+// Import the components
+import TheNavbar from '@layouts/TheNavbar.astro';
+import ProjectedIncomeCard from '@components/cards/ProjectedIncomeCard.astro';
+import ProjectedExpensesCard from '@components/cards/ProjectedExpensesCard.astro';
+import ActualIncome from '@components/cards/ActualIncome.astro';
+import ActualExpenses from '@components/cards/ActualExpenses.astro';
+import ActualSavings from '@components/cards/ActualSavings.astro';
+import ActualInvestments from '../components/cards/ActualInvestments.astro';
+import IncomeReport from '@components/reports/IncomeReport';
+import ExpensesReport from '@components/reports/ExpensesReport';
+import IncomeStream from '@components/cards/IncomeStream.astro';
+import ProjectedIncomeDialog from '@components/dialogs/ProjectedIncomeDialog';
+import ProjectedExpenseDialog from '@components/dialogs/ProjectedExpenseDialog';
+import NewTransactionDialog from '@components/dialogs/NewTransactionDialog';
+import TransactionsSheet from '@components/tables/TransactionSheet';
 
 // Get the data
 const user: IUser = {
@@ -203,6 +215,13 @@ const user: IUser = {
       },
     ],
   },
+};
+
+// Define the period.
+const period: IExpensePeriod = {
+  range: 'monthly',
+  start: new Date('2023-02-01'),
+  end: new Date('2023-03-31'),
 };
 
 // Create a user finances object.
@@ -377,6 +396,15 @@ const handleNewTransaction = async (data: ITransaction): Promise<void> => {
                 />
               </div> -->
             </div>
+          </div>
+        </section>
+        <hr class="my-8" />
+
+        {/* Income streams */}
+        <section>
+          <h1 class="mb-6 text-4xl text-gray-800 font-bold tracking-tight">
+            Income Streams
+          </h1>
 
             <!-- List all transactions -->
             <div class="rounded bg-gray-100 p-4">

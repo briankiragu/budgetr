@@ -2,7 +2,7 @@
 import {
   type ETransactionFrequencyPeriod,
   ETransactionType,
-   type IProjectedIncome,
+  type IProjectedIncome,
   EProjectedExpenseCategory,
 } from '@interfaces/budget';
 
@@ -124,10 +124,9 @@ const ProjectedExpenseDialog: Component<{
         start: state.frequencyStart,
         end: state.frequencyEnd,
       },
-       
-      createdAt: new Date().toISOString(),
-       
-      updatedAt: new Date().toISOString(),
+
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
     };
 
     // Close the dialog.
@@ -135,8 +134,8 @@ const ProjectedExpenseDialog: Component<{
 
     // Reset the state.
     setState({
-      refs: props.streams.map((stream) => stream.uid),
-      nature: '',
+      refs: streams.map((stream) => stream.uid),
+      source: '',
       amount: 0,
       currency: 'ZAR',
       type: ETransactionType.DEBIT,

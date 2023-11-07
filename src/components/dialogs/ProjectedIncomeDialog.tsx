@@ -84,8 +84,8 @@ const ProjectedIncomeDialog: Component = () => {
         start: state.frequencyStart,
         end: state.frequencyEnd,
       },
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
     };
 
     // Close the dialog.

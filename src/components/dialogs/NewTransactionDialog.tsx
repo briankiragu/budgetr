@@ -99,8 +99,8 @@ const NewTransactionDialog: Component<{
       type: ETransactionType.CREDIT,
       currency: state.currency,
       description: state.description,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
     };
 
     // Close the dialog.

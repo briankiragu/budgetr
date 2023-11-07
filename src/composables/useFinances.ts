@@ -5,12 +5,11 @@ import {
   EProjectedExpenseCategory,
   type IBudget,
 } from '@interfaces/budget';
-import type { IUser } from '@interfaces/user';
 
 export default (budget: IBudget) => {
   // Extract the transactions.
-  const {transactions} = budget
-  
+  const { transactions } = budget;
+
   // Get the income transactions.
   const income: ITransaction[] = transactions.filter(
     (txn) => txn.nature === ETransactionType.CREDIT
@@ -34,8 +33,10 @@ export default (budget: IBudget) => {
         return acc + totalProjectedIncome * (expense.amount / 100);
       }
 
-    return acc + expense.amount;
-  }, 0);
+      return acc + expense.amount;
+    },
+    0
+  );
 
   // Get the income transactions.
   const actualIncome: ITransaction[] = transactions.filter(

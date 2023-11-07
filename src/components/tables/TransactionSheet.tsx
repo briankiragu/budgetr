@@ -50,7 +50,8 @@ const TransactionsSheet: Component<{ transactions: ITransaction[] }> = (
         switch (sortBy()) {
           case 'date-asc':
             sortingValue =
-              new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
+              new Date(b.updated_at).getTime() -
+              new Date(a.updated_at).getTime();
             break;
 
           case 'amount-desc':
@@ -63,7 +64,8 @@ const TransactionsSheet: Component<{ transactions: ITransaction[] }> = (
 
           default:
             sortingValue =
-              new Date(a.updatedAt).getTime() - new Date(b.updatedAt).getTime();
+              new Date(a.updated_at).getTime() -
+              new Date(b.updated_at).getTime();
             break;
         }
 
@@ -158,7 +160,7 @@ const TransactionsSheet: Component<{ transactions: ITransaction[] }> = (
 
               {/* Date */}
               <p class="hidden col-span-2 text-right text-sm text-gray-400 font-medium md:inline-grid">
-                {new Date(transaction.updatedAt).toUTCString()}
+                {new Date(transaction.updated_at).toUTCString()}
               </p>
 
               {/* Nature */}

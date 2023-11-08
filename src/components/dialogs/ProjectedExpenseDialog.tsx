@@ -13,7 +13,7 @@ import { createStore } from 'solid-js/store';
 // Import interfaces...
 import type { Component } from 'solid-js';
 import type { IProjectedDebit } from '@interfaces/budget';
-import type { IProjectedExpenseForm } from '@interfaces/forms';
+import type { IProjectedDebitForm } from '@interfaces/forms';
 
 // Import the composables
 import useFormatting from '@composables/useFormatting';
@@ -27,7 +27,7 @@ const ProjectedExpenseDialog: Component<{
   let dialogRef: HTMLDialogElement;
 
   // Create a signal to hold the form state.
-  const [state, setState] = createStore<IProjectedExpenseForm>({
+  const [state, setState] = createStore<IProjectedDebitForm>({
     refs: streams.map((stream) => stream.uid),
     nature: '',
     amount: 10,

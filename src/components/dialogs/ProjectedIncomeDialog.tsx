@@ -1,41 +1,48 @@
 // Import the enums...
 import {
   ETransactionType,
-  type ETransactionFrequencyPeriod,
+  ETransactionFrequencyPeriod,
+  ETransactionNature,
 } from '@interfaces/budget';
 
 // Import the SolidJS modules...
-import { Show } from 'solid-js';
+import { For, Show } from 'solid-js';
 import { createStore } from 'solid-js/store';
 
 // Import the composables...
 import useIdentity from '@composables/useIdentity';
+import useFormatting from '@composables/useFormatting';
 
 // Import interfaces...
 import type { Component } from 'solid-js';
 import type { IProjectedCredit } from '@interfaces/budget';
-import type { IProjectedIncomeForm } from '@interfaces/forms';
+import type { IProjectedCreditForm } from '@interfaces/forms';
 
 // Define the component.
-const ProjectedIncomeDialog: Component = () => {
+const ProjectedCreditDialog: Component<{ natures: string[] }> = ({
+  natures,
+}) => {
   // Create a template ref to the dialog.
   let dialogRef: HTMLDialogElement;
 
   // Create a signal to hold the form state.
-  const [state, setState] = createStore<IProjectedIncomeForm>({
+  const [state, setState] = createStore<IProjectedCreditForm>({
     nature: '',
+    description: '',
     amount: 0,
     currency: 'ZAR',
-    description: '',
     frequencyRecurring: 'true',
     frequencyValue: 1,
-    frequencyUnit: 'month',
+    frequencyUnit: ETransactionFrequencyPeriod.MONTH,
     frequencyStart: new Date().toISOString(),
     frequencyEnd: undefined,
   });
 
   // Get the identity method.
   const { generateUid } = useIdentity();
+
+  // Get the formatting methods.
+  const { toTitle } = useFormatting();
 
   // Get the display frequency.
   const showFrequency = (): boolean => state.frequencyRecurring === 'true';
@@ -78,9 +85,7 @@ const ProjectedIncomeDialog: Component = () => {
         value: showFrequency()
           ? parseInt(state.frequencyValue.toString(), 10)
           : undefined,
-        period: showFrequency()
-          ? (state.frequencyUnit as ETransactionFrequencyPeriod)
-          : undefined,
+        period: showFrequency() ? state.frequencyUnit : undefined,
         start: state.frequencyStart,
         end: state.frequencyEnd,
       },
@@ -101,7 +106,7 @@ const ProjectedIncomeDialog: Component = () => {
       description: '',
       frequencyRecurring: 'true',
       frequencyValue: 1,
-      frequencyUnit: 'month',
+      frequencyUnit: ETransactionFrequencyPeriod.MONTH,
       frequencyStart: new Date().toISOString(),
       frequencyEnd: undefined,
     });
@@ -149,18 +154,41 @@ const ProjectedIncomeDialog: Component = () => {
             <div class="col-span-1">
               <label for="projected-income-source" class="flex flex-col">
                 Source
-                <input
-                  type="text"
+                <select
                   id="projected-income-source"
                   name="projected-income-source"
                   value={state.nature}
-                  placeholder="E.g. Salary"
                   class="w-full rounded px-4 py-2 bg-gray-100 text-sm text-gray-700 tracking-tight focus:outline-none"
                   required
-                  onInput={[handleFormInput, 'source']}
+                  onInput={[handleFormInput, 'nature']}
+                >
+                  <option value={ETransactionNature.INVESTMENT}>
+                    {toTitle(ETransactionNature.INVESTMENT)}
+                  </option>
+                  <For each={natures}>
+                    {(nature) => (
+                      <option value={nature}>{toTitle(nature)}</option>
+                    )}
+                  </For>
+                </select>
+              </label>
+            </div>
+
+            {/* Description */}
+            <div class="col-span-1">
+              <label for="projected-income-description" class="flex flex-col">
+                Description
+                <input
+                  id="projected-income-description"
+                  name="projected-income-description"
+                  value={state.description}
+                  placeholder="E.g. Salary payment"
+                  class="w-full rounded-md px-4 py-2 bg-gray-100 text-sm text-gray-700 tracking-tight focus:outline-none"
+                  onInput={[handleFormInput, 'description']}
                 />
               </label>
             </div>
+            <hr />
 
             {/* Amount and currency */}
             <div class="col-span-1 grid grid-cols-6 gap-3 md:gap-6">
@@ -245,7 +273,28 @@ const ProjectedIncomeDialog: Component = () => {
                 </label>
               </div>
 
-              <Show when={showFrequency()}>
+              <Show
+                when={showFrequency()}
+                fallback={
+                  <div class="col-span-6">
+                    <label
+                      for="projected-income-expected-date"
+                      class="flex flex-col"
+                    >
+                      Expected on
+                      <input
+                        type="datetime-local"
+                        id="projected-income-expected-date"
+                        name="projected-income-expected-date"
+                        value={state.frequencyStart}
+                        class="w-full rounded-md px-4 py-2 bg-gray-100 text-sm text-gray-700 tracking-tight focus:outline-none"
+                        required
+                        onInput={[handleFormInput, 'frequencyStart']}
+                      />
+                    </label>
+                  </div>
+                }
+              >
                 {/* Value and Unit */}
                 <div class="col-span-6 grid grid-cols-3 gap-3 justify-between items-center md:gap-6">
                   {/* Value */}
@@ -272,7 +321,7 @@ const ProjectedIncomeDialog: Component = () => {
                   {/* Unit */}
                   <div class="col-span-1">
                     <label
-                      for="projected-income-frequency-value"
+                      for="projected-income-frequency-unit"
                       class="flex gap-2 items-center"
                     >
                       <select
@@ -283,72 +332,53 @@ const ProjectedIncomeDialog: Component = () => {
                         required
                         onInput={[handleFormInput, 'frequencyUnit']}
                       >
-                        <option value="day">days</option>
-                        <option value="week">weeks</option>
-                        <option value="month" selected>
-                          months
-                        </option>
-                        <option value="year">years</option>
+                        <For each={Object.values(ETransactionFrequencyPeriod)}>
+                          {(period) => (
+                            <option value={period}>{toTitle(period)}</option>
+                          )}
+                        </For>
                       </select>
                     </label>
                   </div>
                 </div>
+
+                {/* Start Date */}
+                <div class="col-span-6">
+                  <label
+                    for="projected-income-frequency-start"
+                    class="flex flex-col"
+                  >
+                    Starting from
+                    <input
+                      type="datetime-local"
+                      id="projected-income-frequency-start"
+                      name="projected-income-start"
+                      value={state.frequencyStart}
+                      class="w-full rounded-md px-4 py-2 bg-gray-100 text-sm text-gray-700 tracking-tight focus:outline-none"
+                      required
+                      onInput={[handleFormInput, 'frequencyStart']}
+                    />
+                  </label>
+                </div>
+
+                {/* End Date */}
+                <div class="col-span-6">
+                  <label
+                    for="projected-income-frequency-end"
+                    class="flex flex-col"
+                  >
+                    Ending on
+                    <input
+                      type="datetime-local"
+                      id="projected-income-frequency-end"
+                      name="projected-income-end"
+                      value={state.frequencyEnd}
+                      class="w-full rounded-md px-4 py-2 bg-gray-100 text-sm text-gray-700 tracking-tight focus:outline-none"
+                      onInput={[handleFormInput, 'frequencyEnd']}
+                    />
+                  </label>
+                </div>
               </Show>
-
-              {/* Start Date */}
-              <div class="col-span-6">
-                <label
-                  for="projected-income-frequency-start"
-                  class="flex flex-col"
-                >
-                  Starting from
-                  <input
-                    type="datetime-local"
-                    id="projected-income-frequency-start"
-                    name="projected-income-start"
-                    value={state.frequencyStart}
-                    class="w-full rounded-md px-4 py-2 bg-gray-100 text-sm text-gray-700 tracking-tight focus:outline-none"
-                    required
-                    onInput={[handleFormInput, 'frequencyStart']}
-                  />
-                </label>
-              </div>
-
-              {/* End Date */}
-              <div class="col-span-6">
-                <label
-                  for="projected-income-frequency-end"
-                  class="flex flex-col"
-                >
-                  Ending on
-                  <input
-                    type="datetime-local"
-                    id="projected-income-frequency-end"
-                    name="projected-income-end"
-                    value={state.frequencyEnd}
-                    class="w-full rounded-md px-4 py-2 bg-gray-100 text-sm text-gray-700 tracking-tight focus:outline-none"
-                    onInput={[handleFormInput, 'frequencyEnd']}
-                  />
-                </label>
-              </div>
-            </div>
-
-            <hr />
-
-            {/* Description */}
-            <div class="col-span-1">
-              <label for="projected-income-description" class="flex flex-col">
-                Description
-                <textarea
-                  id="projected-income-description"
-                  name="projected-income-description"
-                  value={state.description}
-                  rows="5"
-                  placeholder="E.g. Salary payment for the month of February 2023."
-                  class="w-full rounded-md px-4 py-2 bg-gray-100 text-sm text-gray-700 tracking-tight focus:outline-none"
-                  onInput={[handleFormInput, 'description']}
-                />
-              </label>
             </div>
           </article>
 
@@ -381,4 +411,4 @@ const ProjectedIncomeDialog: Component = () => {
 };
 
 // Export the component.
-export default ProjectedIncomeDialog;
+export default ProjectedCreditDialog;

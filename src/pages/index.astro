@@ -6,15 +6,17 @@ import type { IExpensePeriod } from '@interfaces/budget';
 import useFinances from '@composables/useFinances';
 
 // Import the components
-import TheNavbar from '@layouts/TheNavbar.astro';
-import ProjectedIncomeCard from '@components/cards/ProjectedIncomeCard.astro';
-import ProjectedExpensesCard from '@components/cards/ProjectedExpensesCard.astro';
 import ActualIncome from '@components/cards/ActualIncome.astro';
+import ActualInvestments from '../components/cards/ActualInvestments.astro';
 import ActualExpenses from '@components/cards/ActualExpenses.astro';
 import ActualSavings from '@components/cards/ActualSavings.astro';
-import ActualInvestments from '../components/cards/ActualInvestments.astro';
 import CreditStream from '@components/cards/CreditStream.astro';
+import ProjectedCreditDialog from '@components/dialogs/ProjectedIncomeDialog';
+import ProjectedExpensesCard from '@components/cards/ProjectedExpensesCard.astro';
+import ProjectedIncomeCard from '@components/cards/ProjectedIncomeCard.astro';
+import TheNavbar from '@layouts/TheNavbar.astro';
 import TransactionsSheet from '@components/tables/TransactionSheet';
+
 import user from '../../data/users';
 
 // Define the period.
@@ -147,11 +149,14 @@ const {
               </h1>
 
               <!-- Transaction actions -->
-              <!-- <div
-              class="fixed bottom-4 right-4 flex flex-col gap-1 md:static md:flex-row md:gap-2"
-            >
-              <ProjectedIncomeDialog onSubmit={newIncome} client:visible />
-              <ProjectedExpenseDialog
+              <div
+                class="fixed bottom-4 right-4 flex flex-col gap-1 md:static md:flex-row md:gap-2"
+              >
+                <ProjectedCreditDialog
+                  natures={user.config.natures.credit}
+                  client:visible
+                />
+                <!-- <ProjectedExpenseDialog
                 streams={projectedIncome}
                 onSubmit={newExpense}
                 client:visible
@@ -161,8 +166,8 @@ const {
                 expenses={projectedExpenses}
                 onSubmit={newTransaction}
                 client:visible
-              />
-            </div> -->
+              /> -->
+              </div>
             </div>
 
             <!-- List all transactions -->

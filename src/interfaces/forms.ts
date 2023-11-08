@@ -1,37 +1,31 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 
-import type { ETransactionType } from '@interfaces/budget';
+import type {
+  ETransactionFrequencyPeriod,
+  ETransactionType,
+} from '@interfaces/budget';
 
-export type IProjectedIncomeForm = {
-  nature: string;
+export type IProjectedCreditForm = {
   amount: number;
   currency: string;
+  nature: string;
   description: string;
   frequencyRecurring: 'true' | 'false';
+  frequencyUnit: ETransactionFrequencyPeriod;
   frequencyValue: number;
-  frequencyUnit: string;
   frequencyStart: string;
   frequencyEnd: string | undefined;
 };
 
-export type IProjectedExpenseForm = {
+export type IProjectedDebitForm = {
   refs: string[];
-  nature: string;
-  type: ETransactionType;
-  amount: number;
-  currency: string;
-  description: string;
-  frequencyRecurring: 'true' | 'false';
-  frequencyValue: number;
-  frequencyUnit: string;
-  frequencyStart: string;
-  frequencyEnd: string | undefined;
-};
+} & IProjectedCreditForm;
 
 export type ITransactionForm = {
   refs: string[];
-  nature: string;
+  type: ETransactionType;
   amount: number;
   currency: string;
+  nature: string;
   description: string;
 };

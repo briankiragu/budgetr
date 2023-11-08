@@ -125,7 +125,7 @@ export default () => {
       users.push({
         username,
         config: {
-          natures: [],
+          natures: { credit: [], debit: [] },
         },
         budget: {
           credits,
@@ -171,7 +171,7 @@ export default () => {
       users.push({
         username,
         config: {
-          natures: [],
+          natures: { credit: [], debit: [] },
         },
         budget: {
           credits: [],
@@ -217,7 +217,7 @@ export default () => {
       users.push({
         username,
         config: {
-          natures: [],
+          natures: { credit: [], debit: [] },
         },
         budget: {
           credits: [],
@@ -275,7 +275,7 @@ export default () => {
       users.push({
         username,
         config: {
-          natures: [],
+          natures: { credit: [], debit: [] },
         },
         budget: {
           credits: [credits],
@@ -321,7 +321,7 @@ export default () => {
       users.push({
         username,
         config: {
-          natures: [],
+          natures: { credit: [], debit: [] },
         },
         budget: {
           credits: [],
@@ -367,7 +367,7 @@ export default () => {
       users.push({
         username,
         config: {
-          natures: [],
+          natures: { credit: [], debit: [] },
         },
         budget: {
           credits: [],

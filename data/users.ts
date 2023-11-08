@@ -64,6 +64,24 @@ const user: IUser = {
         createdAt: '2023-02-28T08:30:30.000Z',
         updatedAt: '2023-02-28T08:30:30.000Z',
       },
+      {
+        uid: '2459fa52',
+        refs: [],
+        amount: 8000,
+        currency: 'ZAR',
+        type: ETransactionType.CREDIT,
+        nature: ETransactionNature.INVESTMENT,
+        description: 'Returns from AirBnB',
+        frequency: {
+          isRecurring: true,
+          period: ETransactionFrequencyPeriod.MONTH,
+          value: 1,
+          start: '2023-12-28T08:30:30.000Z',
+          end: '2023-12-28T08:30:30.000Z',
+        },
+        createdAt: '2023-02-28T08:30:30.000Z',
+        updatedAt: '2023-02-28T08:30:30.000Z',
+      },
     ],
     debits: [
       {
@@ -619,6 +637,17 @@ const user: IUser = {
       },
     ],
     transactions: [
+      {
+        uid: 'bdb2496c5ad2',
+        refs: ['2459fa52'],
+        currency: 'ZAR',
+        type: ETransactionType.CREDIT,
+        description: 'AirBnB payout',
+        nature: ETransactionNature.INVESTMENT,
+        amount: 5500,
+        createdAt: '2022-12-15T06:35:34.155Z',
+        updatedAt: '2022-12-15T06:35:34.155Z',
+      },
       {
         uid: '269ba6662de0',
         refs: ['8ddd6810'],

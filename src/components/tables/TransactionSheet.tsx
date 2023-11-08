@@ -21,7 +21,7 @@ const TransactionsSheet: Component<{ transactions: ITransaction[] }> = (
       new Set(
         props.transactions.map((transaction) => transaction.nature)
       ).values()
-    );
+    ).sort();
 
   // Create a signal to hold the filter(s).
   const [sourceFilter, setSourceFilter] = createSignal<string>('all');
@@ -85,7 +85,7 @@ const TransactionsSheet: Component<{ transactions: ITransaction[] }> = (
             for="transaction-sheet-filter-source"
             class="flex flex-col text-sm text-gray-500"
           >
-            Filter by source:
+            Filter by nature:
             <select
               id="transaction-sheet-filter-source"
               class="border border-gray-100 rounded-md px-3 py-2 bg-gray-200 text-gray-700 text-sm focus-visible:outline-none"

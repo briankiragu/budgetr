@@ -2,6 +2,7 @@
 // Import interfaces...
 import {
   ETransactionNature,
+  ETransactionType,
   type IExpensePeriod,
   type ITransaction,
 } from '@interfaces/budget';
@@ -28,7 +29,11 @@ const surplus = totalCredits - totalDebits;
 
 // Get the total amount of savings transactions.
 const savings: number = transactions
-  .filter((transaction) => transaction.nature === ETransactionNature.SAVING)
+  .filter(
+    (transaction) =>
+      transaction.type === ETransactionType.DEBIT &&
+      transaction.nature === ETransactionNature.SAVING
+  )
   .reduce((acc, transaction) => acc + transaction.amount, 0);
 
 // Get the total savings.

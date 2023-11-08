@@ -2,6 +2,7 @@
 // Import interfaces...
 import {
   ETransactionNature,
+  ETransactionType,
   type IExpensePeriod,
   type ITransaction,
 } from '@interfaces/budget';
@@ -24,7 +25,11 @@ const { toPrice, toTitle } = useFormatting();
 
 // Get the total amount of savings transactions.
 const totalInvestments: number = transactions
-  .filter((transaction) => transaction.nature === ETransactionNature.INVESTMENT)
+  .filter(
+    (transaction) =>
+      transaction.type === ETransactionType.CREDIT &&
+      transaction.nature === ETransactionNature.INVESTMENT
+  )
   .reduce((acc, transaction) => acc + transaction.amount, 0);
 
 // Calculate the percentage difference between the projected and actual income.
@@ -39,7 +44,7 @@ const percentage = (): number => (totalInvestments / totalCredits) * 100;
       class="flex justify-end gap-2 text-md text-cyan-100 font-semibold tracking-tight leading-4 md:text-lg"
     >
       {toTitle(period.range)} returns on investment
-      {totalInvestments ? <span>🎉🎉</span> : <span>🔻</span>}
+      {totalInvestments ? <span>🎉🎉</span> : <span>😐</span>}
     </h1>
     <h2
       class="text-2xl text-cyan-50 tracking-tighter font-extrabold md:text-2xl"

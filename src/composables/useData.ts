@@ -1,15 +1,15 @@
 import type {
   IBudget,
-  IProjectedExpense,
-  IProjectedIncome,
+  IProjectedDebit,
+  IProjectedCredit,
   ITransaction,
 } from '@interfaces/budget';
 import type { IUser } from '@interfaces/user';
 
 export default () => {
-  const getProjectedIncome = async (
+  const getProjectedCredits = async (
     username: string
-  ): Promise<IProjectedIncome[]> => {
+  ): Promise<IProjectedCredit[]> => {
     // Get the data from the store (local storage).
     // eslint-disable-next-line @typescript-eslint/ban-types
     const item: string | null = localStorage.getItem(`users`);
@@ -28,13 +28,13 @@ export default () => {
     // If the user is undefined, return an empty array.
     if (user === undefined) return [];
 
-    // Return the projected income for the user.
+    // Return the projected credits for the user.
     return user.budget.credits;
   };
 
-  const getProjectedExpenses = async (
+  const getProjectedDebits = async (
     username: string
-  ): Promise<IProjectedExpense[]> => {
+  ): Promise<IProjectedDebit[]> => {
     // Get the data from the store (local storage).
     // eslint-disable-next-line @typescript-eslint/ban-types
     const item: string | null = localStorage.getItem(`users`);
@@ -53,7 +53,7 @@ export default () => {
     // If the user is undefined, return an empty array.
     if (user === undefined) return [];
 
-    // Return the projected expenses for the user.
+    // Return the projected debits for the user.
     return user.budget.debits;
   };
 
@@ -82,23 +82,23 @@ export default () => {
 
   const getBudget = async (username: string): Promise<IBudget> => {
     // Create a promise to return the budget.
-    const [income, expenses, transactions] = await Promise.all([
-      getProjectedIncome(username),
-      getProjectedExpenses(username),
+    const [credits, debits, transactions] = await Promise.all([
+      getProjectedCredits(username),
+      getProjectedDebits(username),
       getTransactions(username),
     ]);
 
     // Return the budget.
     return {
-      income,
-      expenses,
+      credits,
+      debits,
       transactions,
     };
   };
 
-  const setProjectedIncome = async (
+  const setProjectedCredits = async (
     username: string,
-    income: IProjectedIncome[]
+    credits: IProjectedCredit[]
   ): Promise<void> => {
     // Create an variable to hold the users array.
     let users: IUser[] = [];
@@ -124,24 +124,27 @@ export default () => {
     if (userIndex === -1) {
       users.push({
         username,
+        config: {
+          natures: [],
+        },
         budget: {
-          income,
-          expenses: [],
+          credits,
+          debits: [],
           transactions: [],
         },
       });
     } else {
       // Update the user's budget in the users array.
-      users[userIndex].budget.credits = income;
+      users[userIndex].budget.credits = credits;
     }
 
     // Save the users array to the store (local storage).
     localStorage.setItem(`users`, JSON.stringify(users));
   };
 
-  const setProjectedExpenses = async (
+  const setProjectedDebits = async (
     username: string,
-    expenses: IProjectedExpense[]
+    debits: IProjectedDebit[]
   ): Promise<void> => {
     // Create an variable to hold the users array.
     let users: IUser[] = [];
@@ -167,15 +170,18 @@ export default () => {
     if (userIndex === -1) {
       users.push({
         username,
+        config: {
+          natures: [],
+        },
         budget: {
-          income: [],
-          expenses,
+          credits: [],
+          debits,
           transactions: [],
         },
       });
     } else {
       // Update the user's budget in the users array.
-      users[userIndex].budget.debits = expenses;
+      users[userIndex].budget.debits = debits;
     }
 
     // Save the users array to the store (local storage).
@@ -210,9 +216,12 @@ export default () => {
     if (userIndex === -1) {
       users.push({
         username,
+        config: {
+          natures: [],
+        },
         budget: {
-          income: [],
-          expenses: [],
+          credits: [],
+          debits: [],
           transactions,
         },
       });
@@ -231,15 +240,15 @@ export default () => {
   ): Promise<void> => {
     // Create a promise to return the budget.
     await Promise.all([
-      setProjectedIncome(username, budget.credits),
-      setProjectedExpenses(username, budget.debits),
+      setProjectedCredits(username, budget.credits),
+      setProjectedDebits(username, budget.debits),
       setTransactions(username, budget.transactions),
     ]);
   };
 
-  const addProjectedIncome = async (
+  const addProjectedCredit = async (
     username: string,
-    income: IProjectedIncome
+    credits: IProjectedCredit
   ): Promise<void> => {
     // Create an variable to hold the users array.
     let users: IUser[] = [];
@@ -265,24 +274,27 @@ export default () => {
     if (userIndex === -1) {
       users.push({
         username,
+        config: {
+          natures: [],
+        },
         budget: {
-          income: [income],
-          expenses: [],
+          credits: [credits],
+          debits: [],
           transactions: [],
         },
       });
     } else {
       // Update the user's budget in the users array.
-      users[userIndex].budget.credits.push(income);
+      users[userIndex].budget.credits.push(credits);
     }
 
     // Save the users array to the store (local storage).
     localStorage.setItem(`users`, JSON.stringify(users));
   };
 
-  const addProjectedExpense = async (
+  const addProjectedDebit = async (
     username: string,
-    expense: IProjectedExpense
+    debit: IProjectedDebit
   ): Promise<void> => {
     // Create an variable to hold the users array.
     let users: IUser[] = [];
@@ -308,15 +320,18 @@ export default () => {
     if (userIndex === -1) {
       users.push({
         username,
+        config: {
+          natures: [],
+        },
         budget: {
-          income: [],
-          expenses: [expense],
+          credits: [],
+          debits: [debit],
           transactions: [],
         },
       });
     } else {
       // Update the user's budget in the users array.
-      users[userIndex].budget.debits.push(expense);
+      users[userIndex].budget.debits.push(debit);
     }
 
     // Save the users array to the store (local storage).
@@ -351,9 +366,12 @@ export default () => {
     if (userIndex === -1) {
       users.push({
         username,
+        config: {
+          natures: [],
+        },
         budget: {
-          income: [],
-          expenses: [],
+          credits: [],
+          debits: [],
           transactions: [transaction],
         },
       });
@@ -367,16 +385,16 @@ export default () => {
   };
 
   return {
-    getProjectedIncome,
-    getProjectedExpenses,
+    getProjectedCredits,
+    getProjectedDebits,
     getTransactions,
     getBudget,
-    setProjectedIncome,
-    setProjectedExpenses,
+    setProjectedCredits,
+    setProjectedDebits,
     setTransactions,
     setBudget,
-    addProjectedIncome,
-    addProjectedExpense,
+    addProjectedCredit,
+    addProjectedDebit,
     addTransaction,
   };
 };

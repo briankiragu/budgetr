@@ -49,8 +49,7 @@ const TransactionsSheet: Component<{ transactions: ITransaction[] }> = (
         switch (sortBy()) {
           case 'date-asc':
             sortingValue =
-              new Date(b.updated_at).getTime() -
-              new Date(a.updated_at).getTime();
+              new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
             break;
 
           case 'amount-desc':
@@ -63,8 +62,7 @@ const TransactionsSheet: Component<{ transactions: ITransaction[] }> = (
 
           default:
             sortingValue =
-              new Date(a.updated_at).getTime() -
-              new Date(b.updated_at).getTime();
+              new Date(a.updatedAt).getTime() - new Date(b.updatedAt).getTime();
             break;
         }
 
@@ -126,7 +124,7 @@ const TransactionsSheet: Component<{ transactions: ITransaction[] }> = (
         <For each={filteredTransactions()}>
           {(transaction) => (
             <li class="transition-all ease-in rounded-md px-5 py-4 bg-gray-200 grid grid-cols-5 gap-4 items-center text-gray-700 tracking-tighter md:px-8 md:grid-cols-12 hover:shadow-lg hover:bg-gray-700 hover:text-gray-50">
-              {/* Source */}
+              {/* Nature */}
               <p class="col-span-2 text-lg font-semibold truncate">
                 {toTitle(transaction.nature)}
               </p>
@@ -138,12 +136,12 @@ const TransactionsSheet: Component<{ transactions: ITransaction[] }> = (
 
               {/* Date */}
               <p class="hidden col-span-2 text-right text-sm text-gray-400 font-medium md:inline-grid">
-                {new Date(transaction.updated_at).toUTCString()}
+                {new Date(transaction.updatedAt).toUTCString()}
               </p>
 
-              {/* Nature */}
+              {/* Type */}
               <p class="hidden col-span-1 text-right text-sm text-gray-400 font-medium md:inline-grid">
-                {toTitle(transaction.nature)}
+                {toTitle(transaction.type)}
               </p>
 
               {/* Amount and Currency */}

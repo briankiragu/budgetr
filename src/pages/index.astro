@@ -1,16 +1,6 @@
 ---
 // Import the interfaces...
-import {
-  EProjectedExpenseCategory,
-  ETransactionFrequencyPeriod,
-  ETransactionType,
-  ETransactionNature,
-  type IExpensePeriod,
-  type IProjectedExpense,
-  type IProjectedIncome,
-  type ITransaction,
-} from '@interfaces/budget';
-import type { IUser } from '@interfaces/user';
+import type { IExpensePeriod } from '@interfaces/budget';
 
 // Import the composables...
 import useFinances from '@composables/useFinances';
@@ -24,11 +14,6 @@ import ActualExpenses from '@components/cards/ActualExpenses.astro';
 import ActualSavings from '@components/cards/ActualSavings.astro';
 import ActualInvestments from '../components/cards/ActualInvestments.astro';
 import CreditStream from '@components/cards/CreditStream.astro';
-import IncomeReport from '@components/reports/IncomeReport';
-import ExpensesReport from '@components/reports/ExpensesReport';
-import ProjectedIncomeDialog from '@components/dialogs/ProjectedIncomeDialog';
-import ProjectedExpenseDialog from '@components/dialogs/ProjectedExpenseDialog';
-import NewTransactionDialog from '@components/dialogs/NewTransactionDialog';
 import TransactionsSheet from '@components/tables/TransactionSheet';
 import user from '../../data/users';
 
@@ -45,8 +30,6 @@ const {
   totalProjectedDebits,
   totalActualCredits,
   totalActualDebits,
-  creditTransactions,
-  debitTransactions,
   creditStreams,
 } = useFinances(user.budget);
 ---

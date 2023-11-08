@@ -30,13 +30,13 @@ export type ITransaction = {
   type: ETransactionType;
   nature: ETransactionNature | string;
   description?: string | undefined;
-  created_at: string;
-  updated_at: string;
+  createdAt: string;
+  updatedAt: string;
 };
 
 // An "expected" income transaction
 // e.g. (salary @ 100,000.00 - paid monthly).
-export type IProjectedIncome = {
+export type IProjectedCredit = {
   frequency:
     | {
         isRecurring: boolean;
@@ -50,26 +50,26 @@ export type IProjectedIncome = {
 
 // An "expected" expense transaction
 // e.g. (rent @ 10% of total income (10,000.00) - paid monthly).
-export type IProjectedExpense = {
+export type IProjectedDebit = {
   category: EProjectedExpenseCategory;
-} & IProjectedIncome;
+} & IProjectedCredit;
 
 // A user's budget item.
 export type IBudget = {
-  credits: IProjectedIncome[];
-  debits: IProjectedExpense[];
+  credits: IProjectedCredit[];
+  debits: IProjectedDebit[];
   transactions: ITransaction[];
 };
 
 // A projected income item and the transactions that belong to it.
 export type ICreditStream = {
-  projected: IProjectedIncome;
+  projected: IProjectedCredit;
   actual: ITransaction[];
 };
 
 // A projected expense item and the transactions that belong to it.
 export type IDebitStream = {
-  projected: IProjectedExpense;
+  projected: IProjectedDebit;
   actual: ITransaction[];
 };
 

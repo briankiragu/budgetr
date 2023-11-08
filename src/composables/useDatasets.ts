@@ -79,10 +79,10 @@ export default () => {
   ): IGroupedDataSet =>
     transactions.reduce((group: IGroupedDataSet, transaction) => {
       // Get the date to use to filter.
-      const { amount, updated_at } = transaction;
+      const { amount, updatedAt } = transaction;
 
       // Interval to use (based on active filter).
-      const interval = getTimePeriod(period, updated_at);
+      const interval = getTimePeriod(period, updatedAt);
 
       // If the group does not exist, create it.
       if (!(interval in group)) {

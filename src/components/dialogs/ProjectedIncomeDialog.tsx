@@ -13,7 +13,7 @@ import useIdentity from '@composables/useIdentity';
 
 // Import interfaces...
 import type { Component } from 'solid-js';
-import type { IProjectedIncome } from '@interfaces/budget';
+import type { IProjectedCredit } from '@interfaces/budget';
 import type { IProjectedIncomeForm } from '@interfaces/forms';
 
 // Define the component.
@@ -65,7 +65,7 @@ const ProjectedIncomeDialog: Component = () => {
     e.preventDefault();
 
     // Format the state.
-    const data: IProjectedIncome = {
+    const data: IProjectedCredit = {
       uid: generateUid(),
       refs: [],
       type: ETransactionType.CREDIT,
@@ -84,8 +84,8 @@ const ProjectedIncomeDialog: Component = () => {
         start: state.frequencyStart,
         end: state.frequencyEnd,
       },
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString(),
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
     };
 
     // Close the dialog.

@@ -1,7 +1,7 @@
 // Import the enums...
 import {
   ETransactionType,
-  type IProjectedIncome,
+  type IProjectedCredit,
   type ITransaction,
 } from '@interfaces/budget';
 
@@ -11,15 +11,15 @@ import { createStore } from 'solid-js/store';
 
 // Import interfaces...
 import type { Component } from 'solid-js';
-import type { IProjectedExpense } from '@interfaces/budget';
+import type { IProjectedDebit } from '@interfaces/budget';
 import type { ITransactionForm } from '@interfaces/forms';
 import useFormatting from '@composables/useFormatting';
 import useIdentity from '@composables/useIdentity';
 
 // Define the component.
 const NewTransactionDialog: Component<{
-  streams: IProjectedIncome[];
-  expenses: IProjectedExpense[];
+  streams: IProjectedCredit[];
+  expenses: IProjectedDebit[];
 }> = ({ streams, expenses }) => {
   // Create a template ref to the dialog.
   let dialogRef: HTMLDialogElement;
@@ -99,8 +99,8 @@ const NewTransactionDialog: Component<{
       type: ETransactionType.CREDIT,
       currency: state.currency,
       description: state.description,
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString(),
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
     };
 
     // Close the dialog.
@@ -264,7 +264,7 @@ const NewTransactionDialog: Component<{
                       {toTitle(txn.nature)} (
                       <Show
                         when={
-                          (txn as IProjectedExpense).type ===
+                          (txn as IProjectedDebit).type ===
                           ETransactionType.DEBIT
                         }
                         fallback={toPrice(txn.amount, txn.currency ?? '')}

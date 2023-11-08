@@ -2,7 +2,7 @@
 import {
   type ETransactionFrequencyPeriod,
   ETransactionType,
-  type IProjectedIncome,
+  type IProjectedCredit,
   EProjectedExpenseCategory,
 } from '@interfaces/budget';
 
@@ -12,7 +12,7 @@ import { createStore } from 'solid-js/store';
 
 // Import interfaces...
 import type { Component } from 'solid-js';
-import type { IProjectedExpense } from '@interfaces/budget';
+import type { IProjectedDebit } from '@interfaces/budget';
 import type { IProjectedExpenseForm } from '@interfaces/forms';
 
 // Import the composables
@@ -21,7 +21,7 @@ import useIdentity from '@composables/useIdentity';
 
 // Define the component.
 const ProjectedExpenseDialog: Component<{
-  streams: IProjectedIncome[];
+  streams: IProjectedCredit[];
 }> = ({ streams }) => {
   // Create a template ref to the dialog.
   let dialogRef: HTMLDialogElement;
@@ -104,7 +104,7 @@ const ProjectedExpenseDialog: Component<{
     e.preventDefault();
 
     // Format the state.
-    const data: IProjectedExpense = {
+    const data: IProjectedDebit = {
       uid: generateUid(),
       refs: showCurrency() ? [] : state.refs,
       nature: state.nature,
@@ -125,8 +125,8 @@ const ProjectedExpenseDialog: Component<{
         end: state.frequencyEnd,
       },
 
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString(),
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
     };
 
     // Close the dialog.

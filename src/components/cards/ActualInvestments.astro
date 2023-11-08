@@ -1,32 +1,34 @@
 ---
 // Import interfaces...
-import type { IExpensePeriod, ITransaction } from '@interfaces/budget';
+import {
+  ETransactionNature,
+  type IExpensePeriod,
+  type ITransaction,
+} from '@interfaces/budget';
 
 // Import necessary composables...
 import useFormatting from '@composables/useFormatting';
 
-// Define the
+// Define the props.
 type Props = {
   period: IExpensePeriod;
-  income: number;
+  totalCredits: number;
   transactions: ITransaction[];
 };
 
-// Get the
-const { period, income, transactions } = Astro.props;
+// Get the props.
+const { period, totalCredits, transactions } = Astro.props;
 
 // Get the methods from the composables.
 const { toPrice, toTitle } = useFormatting();
 
-// Determine how many transactions were actually investments.
-const investment: number = transactions.reduce(
-  (acc, transaction) =>
-    transaction.nature === 'investment' ? acc + transaction.amount : acc,
-  0
-);
+// Get the total amount of savings transactions.
+const totalInvestments: number = transactions
+  .filter((transaction) => transaction.nature === ETransactionNature.INVESTMENT)
+  .reduce((acc, transaction) => acc + transaction.amount, 0);
 
 // Calculate the percentage difference between the projected and actual income.
-const percentage = (): number => (investment / income) * 100;
+const percentage = (): number => (totalInvestments / totalCredits) * 100;
 ---
 
 <div
@@ -37,17 +39,19 @@ const percentage = (): number => (investment / income) * 100;
       class="flex justify-end gap-2 text-md text-cyan-100 font-semibold tracking-tight leading-4 md:text-lg"
     >
       {toTitle(period.range)} investment
-      {investment ? <span>🎉🎉</span> : <span>🔻</span>}
+      {totalInvestments ? <span>🎉🎉</span> : <span>🔻</span>}
     </h1>
     <h2
       class="text-2xl text-cyan-50 tracking-tighter font-extrabold md:text-2xl"
     >
-      {toPrice(investment, 'ZAR')}
+      {toPrice(totalInvestments, 'ZAR')}
     </h2>
   </div>
 
   {/* Percentage saved */}
-  <p class="text-7xl text-cyan-100 tracking-tighter font-extrabold xl:text-8xl 2xl:text-9xl">
+  <p
+    class="text-7xl text-cyan-100 tracking-tighter font-extrabold xl:text-8xl 2xl:text-9xl"
+  >
     {percentage().toFixed(1)}%
   </p>
 </div>

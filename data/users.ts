@@ -71,7 +71,7 @@ const user: IUser = {
         refs: ['all'],
         type: ETransactionType.DEBIT,
         category: EProjectedExpenseCategory.PERCENTAGE,
-        amount: 27.5,
+        amount: 26,
         currency: 'ZAR',
         frequency: {
           isRecurring: true,

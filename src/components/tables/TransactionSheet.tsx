@@ -24,7 +24,6 @@ const TransactionsSheet: Component<{ transactions: ITransaction[] }> = (
     ).sort();
 
   // Create a signal to hold the filter(s).
-  const [sourceFilter, setSourceFilter] = createSignal<string>('all');
   const [natureFilter, setNatureFilter] = createSignal<string>('all');
 
   // Create a signal to hold the sorting fields.
@@ -35,7 +34,7 @@ const TransactionsSheet: Component<{ transactions: ITransaction[] }> = (
     props.transactions
       // If the source filter is set to "all", return all transactions.
       .filter((transaction) =>
-        sourceFilter() === 'all' ? true : transaction.nature === sourceFilter()
+        natureFilter() === 'all' ? true : transaction.nature === natureFilter()
       )
       // If the nature filter is set to "all", return all transactions.
       .filter((transaction) =>
@@ -75,7 +74,7 @@ const TransactionsSheet: Component<{ transactions: ITransaction[] }> = (
 
   // Define the JSX.
   return (
-    <div class="flex flex-col gap-6">
+    <div class="min-h-[25vh] flex flex-col gap-6">
       {/* Filters */}
       <div class="flex flex-wrap gap-4 justify-between items-center">
         {/* Filters */}
@@ -90,34 +89,13 @@ const TransactionsSheet: Component<{ transactions: ITransaction[] }> = (
               id="transaction-sheet-filter-source"
               class="border border-gray-100 rounded-md px-3 py-2 bg-gray-200 text-gray-700 text-sm focus-visible:outline-none"
               onInput={(event) =>
-                setSourceFilter((event.target as HTMLSelectElement).value)
+                setNatureFilter((event.target as HTMLSelectElement).value)
               }
             >
               <option value="all">All</option>
               <For each={sources()}>
                 {(source) => <option value={source}>{toTitle(source)}</option>}
               </For>
-            </select>
-          </label>
-
-          {/* Filter by date */}
-          <label
-            for="transaction-sheet-filter-nature"
-            class="flex flex-col text-sm text-gray-500"
-          >
-            Filter by nature:
-            <select
-              id="transaction-sheet-filter-nature"
-              class="border border-gray-100 rounded-md px-3 py-2 bg-gray-200 text-gray-700 text-sm focus-visible:outline-none"
-              onInput={(event) =>
-                setNatureFilter((event.target as HTMLSelectElement).value)
-              }
-            >
-              <option value="all">All</option>
-              <option value="income">Income</option>
-              <option value="investment">Investment</option>
-              <option value="saving">Saving</option>
-              <option value="expense">Expense</option>
             </select>
           </label>
         </div>

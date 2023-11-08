@@ -1,9 +1,8 @@
 // Import the enums...
 import {
-  type ETransactionFrequencyPeriod,
-  ETransactionType,
-  type IProjectedCredit,
   EProjectedExpenseCategory,
+  ETransactionFrequencyPeriod,
+  type IProjectedCredit,
 } from '@interfaces/budget';
 
 // Import the SolidJS modules...
@@ -12,7 +11,6 @@ import { createStore } from 'solid-js/store';
 
 // Import interfaces...
 import type { Component } from 'solid-js';
-import type { IProjectedDebit } from '@interfaces/budget';
 import type { IProjectedDebitForm } from '@interfaces/forms';
 
 // Import the composables
@@ -20,31 +18,33 @@ import useFormatting from '@composables/useFormatting';
 import useIdentity from '@composables/useIdentity';
 
 // Define the component.
-const ProjectedExpenseDialog: Component<{
-  streams: IProjectedCredit[];
-}> = ({ streams }) => {
+const ProjectedDebitDialog: Component<{
+  natures: string[];
+  credits: IProjectedCredit[];
+}> = ({ natures, credits }) => {
   // Create a template ref to the dialog.
   let dialogRef: HTMLDialogElement;
 
   // Create a signal to hold the form state.
   const [state, setState] = createStore<IProjectedDebitForm>({
-    refs: streams.map((stream) => stream.uid),
+    refs: credits.map((stream) => stream.uid),
     nature: '',
+    description: '',
+    category: EProjectedExpenseCategory.FIXED,
     amount: 10,
     currency: 'ZAR',
-    type: ETransactionType.DEBIT,
-    description: '',
     frequencyRecurring: 'true',
+    frequencyUnit: ETransactionFrequencyPeriod.MONTH,
     frequencyValue: 1,
-    frequencyUnit: 'month',
     frequencyStart: new Date().toISOString(),
     frequencyEnd: undefined,
   });
 
-  const showCurrency = (): boolean => state.type === ETransactionType.DEBIT;
+  const isPercentage = (): boolean =>
+    state.category === EProjectedExpenseCategory.PERCENTAGE;
   const showFrequency = (): boolean => state.frequencyRecurring === 'true';
   const calculatedAmount = (): number =>
-    streams
+    credits
       .filter((stream) => state.refs.includes(stream.uid))
       .reduce((acc, stream) => acc + stream.amount, 0) *
     (state.amount / 100);
@@ -104,45 +104,22 @@ const ProjectedExpenseDialog: Component<{
     e.preventDefault();
 
     // Format the state.
-    const data: IProjectedDebit = {
-      uid: generateUid(),
-      refs: showCurrency() ? [] : state.refs,
-      nature: state.nature,
-      type: state.type,
-      amount: parseFloat(state.amount.toString()),
-      currency: state.currency,
-      description: state.description,
-      category: EProjectedExpenseCategory.PERCENTAGE,
-      frequency: {
-        isRecurring: showFrequency(),
-        value: showFrequency()
-          ? parseInt(state.frequencyValue.toString(), 10)
-          : undefined,
-        period: showFrequency()
-          ? (state.frequencyUnit as ETransactionFrequencyPeriod)
-          : undefined,
-        start: state.frequencyStart,
-        end: state.frequencyEnd,
-      },
-
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    };
+    console.dir(state);
 
     // Close the dialog.
     handleDialogClose('close');
 
     // Reset the state.
     setState({
-      refs: streams.map((stream) => stream.uid),
-      source: '',
+      refs: credits.map((credit) => credit.uid),
+      category: EProjectedExpenseCategory.FIXED,
       amount: 0,
       currency: 'ZAR',
-      type: ETransactionType.DEBIT,
+      nature: '',
       description: '',
       frequencyRecurring: 'true',
       frequencyValue: 1,
-      frequencyUnit: 'month',
+      frequencyUnit: ETransactionFrequencyPeriod.MONTH,
       frequencyStart: new Date().toISOString(),
       frequencyEnd: undefined,
     });
@@ -188,39 +165,58 @@ const ProjectedExpenseDialog: Component<{
           <article class="h-[60vh] overflow-y-scroll px-7 py-4 grid grid-cols-1 gap-4 text-sm text-gray-600 md:px-8 md:py-8">
             {/* Source */}
             <div class="col-span-1">
-              <label for="projected-expense-source" class="flex flex-col">
-                Source
-                <input
-                  type="text"
-                  id="projected-expense-source"
-                  name="projected-expense-source"
+              <label for="projected-credit-source" class="flex flex-col">
+                Nature
+                <select
+                  id="projected-credit-source"
+                  name="projected-credit-source"
                   value={state.nature}
-                  placeholder="E.g. Salary"
                   class="w-full rounded px-4 py-2 bg-gray-100 text-sm text-gray-700 tracking-tight focus:outline-none"
                   required
-                  onInput={[handleFormInput, 'source']}
-                />
+                  onInput={[handleFormInput, 'nature']}
+                >
+                  <For each={natures}>
+                    {(nature) => (
+                      <option value={nature}>{toTitle(nature)}</option>
+                    )}
+                  </For>
+                </select>
               </label>
             </div>
 
+            {/* Description */}
+            <div class="col-span-1">
+              <label for="projected-credit-description" class="flex flex-col">
+                Description
+                <input
+                  id="projected-credit-description"
+                  name="projected-credit-description"
+                  value={state.description}
+                  placeholder="E.g. Rent payment for the month."
+                  class="w-full rounded-md px-4 py-2 bg-gray-100 text-sm text-gray-700 tracking-tight focus:outline-none"
+                  onInput={[handleFormInput, 'description']}
+                />
+              </label>
+            </div>
+            <hr />
+
             {/* Type - Fixed or Percentage */}
             <div class="col-span-1">
-              <label for="projected-expense-type" class="flex flex-col">
+              <label for="projected-credit-category" class="flex flex-col">
                 Type
                 <select
-                  id="projected-expense-type"
-                  name="projected-expense-type"
-                  value={state.type}
+                  id="projected-credit-category"
+                  name="projected-credit-category"
+                  value={state.category}
                   class="w-full rounded px-4 py-2 bg-gray-100 text-sm text-gray-700 tracking-tight focus:outline-none"
                   required
-                  onInput={[handleFormInput, 'type']}
+                  onInput={[handleFormInput, 'category']}
                 >
-                  <option value={ETransactionType.DEBIT}>
-                    {toTitle(ETransactionType.DEBIT)}
-                  </option>
-                  <option value={EProjectedExpenseCategory.PERCENTAGE} selected>
-                    {toTitle(EProjectedExpenseCategory.PERCENTAGE)}
-                  </option>
+                  <For each={Object.values(EProjectedExpenseCategory)}>
+                    {(category) => (
+                      <option value={category}>{toTitle(category)}</option>
+                    )}
+                  </For>
                 </select>
               </label>
             </div>
@@ -229,15 +225,14 @@ const ProjectedExpenseDialog: Component<{
             <div class="col-span-1 grid grid-cols-6 gap-3 md:gap-6">
               {/* Amount */}
               <div class="col-span-4">
-                <label for="projected-expense-amount" class="flex flex-col">
+                <label for="projected-credit-amount" class="flex flex-col">
                   Amount
                   <input
                     type="number"
-                    id="projected-expense-amount"
-                    name="projected-expense-amount"
+                    id="projected-credit-amount"
+                    name="projected-credit-amount"
                     value={state.amount}
                     min="1"
-                    max={showCurrency() ? undefined : 100}
                     placeholder="E.g. 65800"
                     class="w-full rounded px-4 py-2 bg-gray-100 text-sm text-gray-700 tracking-tight focus:outline-none"
                     required
@@ -247,13 +242,13 @@ const ProjectedExpenseDialog: Component<{
               </div>
 
               {/* Currency */}
-              <Show when={showCurrency()}>
+              <Show when={!isPercentage()}>
                 <div class="col-span-2">
-                  <label for="projected-expense-currency" class="flex flex-col">
+                  <label for="projected-credit-currency" class="flex flex-col">
                     Currency
                     <select
-                      id="projected-expense-currency"
-                      name="projected-expense-currency"
+                      id="projected-credit-currency"
+                      name="projected-credit-currency"
                       value={state.currency}
                       class="w-full rounded px-4 py-2 bg-gray-100 text-right text-sm text-gray-700 tracking-tight focus:outline-none"
                       required
@@ -271,13 +266,13 @@ const ProjectedExpenseDialog: Component<{
             <hr />
 
             {/* References & Total */}
-            <Show when={state.type === ETransactionType.DEBIT}>
+            <Show when={isPercentage()}>
               <div class="col-span-1 grid grid-cols-6 gap-4">
                 <h3 class="text-2xl font-semibold">References</h3>
 
                 {/* References */}
                 <div class="col-span-6 flex flex-col gap-1">
-                  <For each={streams}>
+                  <For each={credits}>
                     {(stream) => (
                       <label
                         for={`refs-${stream.uid}`}
@@ -302,13 +297,13 @@ const ProjectedExpenseDialog: Component<{
                 <div class="col-span-6">
                   <h3 class="text-xl font-semibold">Total</h3>
                   <span class="text-sm text-gray-400 font-medium">
-                    {toPrice(calculatedAmount(), 'ZAR')}
+                    {toPrice(calculatedAmount(), state.currency)}
                   </span>
                 </div>
               </div>
-
-              <hr />
             </Show>
+
+            <hr />
 
             {/* Frequency */}
             <div class="col-span-1 grid grid-cols-6 gap-4">
@@ -317,17 +312,17 @@ const ProjectedExpenseDialog: Component<{
               {/* Recurring */}
               <div class="col-span-6">
                 <small class="w-full text-sm text-gray-600">
-                  Is this a recurring expense?
+                  Is this a recurring credit?
                 </small>
 
                 <label
-                  for="projected-expense-frequency-recurring-yes"
+                  for="projected-credit-frequency-recurring-yes"
                   class="flex gap-2 items-center"
                 >
                   <input
                     type="radio"
-                    id="projected-expense-frequency-recurring-yes"
-                    name="projected-expense-frequency-recurring"
+                    id="projected-credit-frequency-recurring-yes"
+                    name="projected-credit-frequency-recurring"
                     value="true"
                     required
                     checked
@@ -336,13 +331,13 @@ const ProjectedExpenseDialog: Component<{
                   Yes
                 </label>
                 <label
-                  for="projected-expense-frequency-recurring-no"
+                  for="projected-credit-frequency-recurring-no"
                   class="flex gap-2 items-center"
                 >
                   <input
                     type="radio"
-                    id="projected-expense-frequency-recurring-no"
-                    name="projected-expense-frequency-recurring"
+                    id="projected-credit-frequency-recurring-no"
+                    name="projected-credit-frequency-recurring"
                     value="false"
                     required
                     onInput={[handleFormInput, 'frequencyRecurring']}
@@ -351,20 +346,41 @@ const ProjectedExpenseDialog: Component<{
                 </label>
               </div>
 
-              <Show when={showFrequency()}>
+              <Show
+                when={showFrequency()}
+                fallback={
+                  <div class="col-span-6">
+                    <label
+                      for="projected-income-expected-date"
+                      class="flex flex-col"
+                    >
+                      Expected on
+                      <input
+                        type="datetime-local"
+                        id="projected-income-expected-date"
+                        name="projected-income-expected-date"
+                        value={state.frequencyStart}
+                        class="w-full rounded-md px-4 py-2 bg-gray-100 text-sm text-gray-700 tracking-tight focus:outline-none"
+                        required
+                        onInput={[handleFormInput, 'frequencyStart']}
+                      />
+                    </label>
+                  </div>
+                }
+              >
                 {/* Value and Unit */}
                 <div class="col-span-6 grid grid-cols-3 gap-3 justify-between items-center md:gap-6">
                   {/* Value */}
                   <div class="col-span-2">
                     <label
-                      for="projected-expense-frequency-value"
+                      for="projected-credit-frequency-value"
                       class="flex gap-6 items-center"
                     >
                       Every
                       <input
                         type="number"
-                        id="projected-expense-frequency-value"
-                        name="projected-expense-value"
+                        id="projected-credit-frequency-value"
+                        name="projected-credit-value"
                         value={state.frequencyValue}
                         min="1"
                         step="1"
@@ -378,12 +394,12 @@ const ProjectedExpenseDialog: Component<{
                   {/* Unit */}
                   <div class="col-span-1">
                     <label
-                      for="projected-expense-frequency-value"
+                      for="projected-credit-frequency-value"
                       class="flex gap-2 items-center"
                     >
                       <select
-                        id="projected-expense-frequency-unit"
-                        name="projected-expense-unit"
+                        id="projected-credit-frequency-unit"
+                        name="projected-credit-unit"
                         value={state.frequencyUnit}
                         class="w-full rounded px-4 py-2 bg-gray-100 text-right text-sm text-gray-700 tracking-tight focus:outline-none"
                         required
@@ -399,62 +415,44 @@ const ProjectedExpenseDialog: Component<{
                     </label>
                   </div>
                 </div>
+
+                {/* Start Date */}
+                <div class="col-span-6">
+                  <label
+                    for="projected-credit-frequency-start"
+                    class="flex flex-col"
+                  >
+                    Starting from
+                    <input
+                      type="datetime-local"
+                      id="projected-credit-frequency-start"
+                      name="projected-credit-start"
+                      value={state.frequencyStart}
+                      class="w-full rounded-md px-4 py-2 bg-gray-100 text-sm text-gray-700 tracking-tight focus:outline-none"
+                      required
+                      onInput={[handleFormInput, 'frequencyStart']}
+                    />
+                  </label>
+                </div>
+
+                {/* End Date */}
+                <div class="col-span-6">
+                  <label
+                    for="projected-credit-frequency-end"
+                    class="flex flex-col"
+                  >
+                    Ending on
+                    <input
+                      type="datetime-local"
+                      id="projected-credit-frequency-end"
+                      name="projected-credit-end"
+                      value={state.frequencyEnd}
+                      class="w-full rounded-md px-4 py-2 bg-gray-100 text-sm text-gray-700 tracking-tight focus:outline-none"
+                      onInput={[handleFormInput, 'frequencyEnd']}
+                    />
+                  </label>
+                </div>
               </Show>
-
-              {/* Start Date */}
-              <div class="col-span-6">
-                <label
-                  for="projected-expense-frequency-start"
-                  class="flex flex-col"
-                >
-                  Starting from
-                  <input
-                    type="datetime-local"
-                    id="projected-expense-frequency-start"
-                    name="projected-expense-start"
-                    value={state.frequencyStart}
-                    class="w-full rounded-md px-4 py-2 bg-gray-100 text-sm text-gray-700 tracking-tight focus:outline-none"
-                    required
-                    onInput={[handleFormInput, 'frequencyStart']}
-                  />
-                </label>
-              </div>
-
-              {/* End Date */}
-              <div class="col-span-6">
-                <label
-                  for="projected-expense-frequency-end"
-                  class="flex flex-col"
-                >
-                  Ending on
-                  <input
-                    type="datetime-local"
-                    id="projected-expense-frequency-end"
-                    name="projected-expense-end"
-                    value={state.frequencyEnd}
-                    class="w-full rounded-md px-4 py-2 bg-gray-100 text-sm text-gray-700 tracking-tight focus:outline-none"
-                    onInput={[handleFormInput, 'frequencyEnd']}
-                  />
-                </label>
-              </div>
-            </div>
-
-            <hr />
-
-            {/* Description */}
-            <div class="col-span-1">
-              <label for="projected-expense-description" class="flex flex-col">
-                Description
-                <textarea
-                  id="projected-expense-description"
-                  name="projected-expense-description"
-                  value={state.description}
-                  rows="5"
-                  placeholder="E.g. Salary payment for the month of February 2023."
-                  class="w-full rounded-md px-4 py-2 bg-gray-100 text-sm text-gray-700 tracking-tight focus:outline-none"
-                  onInput={[handleFormInput, 'description']}
-                />
-              </label>
             </div>
           </article>
 
@@ -487,4 +485,4 @@ const ProjectedExpenseDialog: Component<{
 };
 
 // Export the component.
-export default ProjectedExpenseDialog;
+export default ProjectedDebitDialog;

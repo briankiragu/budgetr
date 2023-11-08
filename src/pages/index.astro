@@ -11,7 +11,8 @@ import ActualInvestments from '../components/cards/ActualInvestments.astro';
 import ActualExpenses from '@components/cards/ActualExpenses.astro';
 import ActualSavings from '@components/cards/ActualSavings.astro';
 import CreditStream from '@components/cards/CreditStream.astro';
-import ProjectedCreditDialog from '@components/dialogs/ProjectedIncomeDialog';
+import ProjectedCreditDialog from '@components/dialogs/ProjectedCreditDialog';
+import ProjectedDebitDialog from '@components/dialogs/ProjectedDebitDialog';
 import ProjectedExpensesCard from '@components/cards/ProjectedExpensesCard.astro';
 import ProjectedIncomeCard from '@components/cards/ProjectedIncomeCard.astro';
 import TheNavbar from '@layouts/TheNavbar.astro';
@@ -156,12 +157,12 @@ const {
                   natures={user.config.natures.credit}
                   client:visible
                 />
-                <!-- <ProjectedExpenseDialog
-                streams={projectedIncome}
-                onSubmit={newExpense}
-                client:visible
-              />
-              <NewTransactionDialog
+                <ProjectedDebitDialog
+                  natures={user.config.natures.debit}
+                  credits={user.budget.credits}
+                  client:visible
+                />
+                <!-- <NewTransactionDialog
                 streams={projectedIncome}
                 expenses={projectedExpenses}
                 onSubmit={newTransaction}

@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 
 import type {
+  EProjectedExpenseCategory,
   ETransactionFrequencyPeriod,
   ETransactionType,
 } from '@interfaces/budget';
@@ -19,6 +20,7 @@ export type IProjectedCreditForm = {
 
 export type IProjectedDebitForm = {
   refs: string[];
+  category: EProjectedExpenseCategory;
 } & IProjectedCreditForm;
 
 export type ITransactionForm = {

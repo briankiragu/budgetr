@@ -29,7 +29,7 @@ const overdrawn: boolean = expenses >= income;
     class="flex justify-between text-sm text-teal-50 font-semibold tracking-tight leading-4 md:text-lg"
   >
     Projected {period.range} expenses
-    {overdrawn ? <span>🔻</span> : <span>👌</span>}
+    {overdrawn ? <span>❗</span> : <span>👌</span>}
   </h1>
   <p class="text-4xl text-teal-50 tracking-tighter font-extrabold">
     {toPrice(expenses, 'ZAR')}

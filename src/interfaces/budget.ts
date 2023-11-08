@@ -4,6 +4,10 @@ export enum ETransactionType {
   CREDIT = 'credit',
   DEBIT = 'debit',
 }
+export enum ETransactionNature {
+  SAVING = 'saving',
+  INVESTMENT = 'investment',
+}
 
 export enum EProjectedExpenseCategory {
   FIXED = 'fixed',
@@ -24,7 +28,7 @@ export type ITransaction = {
   currency: string | undefined;
   amount: number;
   type: ETransactionType;
-  nature: string;
+  nature: ETransactionNature | string;
   description?: string | undefined;
   created_at: string;
   updated_at: string;
@@ -52,19 +56,19 @@ export type IProjectedExpense = {
 
 // A user's budget item.
 export type IBudget = {
-  income: IProjectedIncome[];
-  expenses: IProjectedExpense[];
+  credits: IProjectedIncome[];
+  debits: IProjectedExpense[];
   transactions: ITransaction[];
 };
 
 // A projected income item and the transactions that belong to it.
-export type IIncomeStream = {
+export type ICreditStream = {
   projected: IProjectedIncome;
   actual: ITransaction[];
 };
 
 // A projected expense item and the transactions that belong to it.
-export type IExpenseItem = {
+export type IDebitStream = {
   projected: IProjectedExpense;
   actual: ITransaction[];
 };

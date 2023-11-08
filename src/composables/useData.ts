@@ -29,7 +29,7 @@ export default () => {
     if (user === undefined) return [];
 
     // Return the projected income for the user.
-    return user.budget.income;
+    return user.budget.credits;
   };
 
   const getProjectedExpenses = async (
@@ -54,7 +54,7 @@ export default () => {
     if (user === undefined) return [];
 
     // Return the projected expenses for the user.
-    return user.budget.expenses;
+    return user.budget.debits;
   };
 
   const getTransactions = async (username: string): Promise<ITransaction[]> => {
@@ -132,7 +132,7 @@ export default () => {
       });
     } else {
       // Update the user's budget in the users array.
-      users[userIndex].budget.income = income;
+      users[userIndex].budget.credits = income;
     }
 
     // Save the users array to the store (local storage).
@@ -175,7 +175,7 @@ export default () => {
       });
     } else {
       // Update the user's budget in the users array.
-      users[userIndex].budget.expenses = expenses;
+      users[userIndex].budget.debits = expenses;
     }
 
     // Save the users array to the store (local storage).
@@ -231,8 +231,8 @@ export default () => {
   ): Promise<void> => {
     // Create a promise to return the budget.
     await Promise.all([
-      setProjectedIncome(username, budget.income),
-      setProjectedExpenses(username, budget.expenses),
+      setProjectedIncome(username, budget.credits),
+      setProjectedExpenses(username, budget.debits),
       setTransactions(username, budget.transactions),
     ]);
   };
@@ -273,7 +273,7 @@ export default () => {
       });
     } else {
       // Update the user's budget in the users array.
-      users[userIndex].budget.income.push(income);
+      users[userIndex].budget.credits.push(income);
     }
 
     // Save the users array to the store (local storage).
@@ -316,7 +316,7 @@ export default () => {
       });
     } else {
       // Update the user's budget in the users array.
-      users[userIndex].budget.expenses.push(expense);
+      users[userIndex].budget.debits.push(expense);
     }
 
     // Save the users array to the store (local storage).

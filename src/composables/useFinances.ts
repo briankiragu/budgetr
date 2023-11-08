@@ -1,84 +1,91 @@
 import {
   ETransactionType,
-  type IIncomeStream,
-  type ITransaction,
   EProjectedExpenseCategory,
+  type ICreditStream,
+  type ITransaction,
   type IBudget,
+  type IDebitStream,
 } from '@interfaces/budget';
 
 export default (budget: IBudget) => {
   // Extract the transactions.
-  const { transactions } = budget;
+  const { credits, debits, transactions } = budget;
 
-  // Get the income transactions.
-  const income: ITransaction[] = transactions.filter(
-    (txn) => txn.nature === ETransactionType.CREDIT
-  );
-
-  // Get the expense transactions.
-  const expenses: ITransaction[] = transactions.filter(
-    (txn) => txn.nature === ETransactionType.DEBIT
-  );
-
-  // Calculate the total projected income.
-  const totalProjectedIncome: number = income.reduce(
+  // Calculate the total projected credit.
+  const totalProjectedCredits: number = credits.reduce(
     (acc, stream) => acc + stream.amount,
     0
   );
 
-  // Calculate the total projected expenses.
-  const totalProjectedExpenses: number = budget.expenses.reduce(
-    (acc, expense) => {
-      if (expense.category === EProjectedExpenseCategory.PERCENTAGE) {
-        return acc + totalProjectedIncome * (expense.amount / 100);
+  // Calculate the total projected debits.
+  const totalProjectedDebits: number = debits.reduce((acc, debit) => {
+    if (debit.category === EProjectedExpenseCategory.PERCENTAGE) {
+      let totalReferencedIncome = totalProjectedCredits;
+
+      // In a case where the debit references the total credits.
+      if (!debit.refs.length || !debit.refs.includes('all')) {
+        // In a case where the debit references specific credits.
+        totalReferencedIncome = credits
+          .filter((credit) => debit.refs.includes(credit.uid))
+          .reduce((acc, credit) => acc + credit.amount, 0);
       }
 
-      return acc + expense.amount;
-    },
-    0
+      return acc + totalReferencedIncome * (debit.amount / 100);
+    }
+
+    return acc + debit.amount;
+  }, 0);
+
+  // Get the credit transactions.
+  const creditTransactions: ITransaction[] = transactions.filter(
+    (txn) => txn.type === ETransactionType.CREDIT
   );
 
-  // Get the income transactions.
-  const actualIncome: ITransaction[] = transactions.filter(
-    (txn) => txn.nature === ETransactionType.CREDIT
+  // Get the debit transactions.
+  const debitTransactions: ITransaction[] = transactions.filter(
+    (txn) => txn.type === ETransactionType.DEBIT
   );
 
-  // Get the expense transactions.
-  const actualExpenses: ITransaction[] = transactions.filter(
-    (txn) => txn.nature === ETransactionType.DEBIT
-  );
-
-  // Calculate the total actual income.
-  const totalActualIncome: number = actualIncome.reduce(
+  // Calculate the total actual credit.
+  const totalActualCredits: number = creditTransactions.reduce(
     (acc, stream) => acc + stream.amount,
     0
   );
 
-  // Calculate the total actual expenses.
-  const totalActualExpenses: number = actualExpenses.reduce(
-    (acc, expense) => acc + expense.amount,
+  // Calculate the total actual debits.
+  const totalActualDebits: number = debitTransactions.reduce(
+    (acc, debit) => acc + debit.amount,
     0
   );
 
-  // Get the list of projected income streams and their fulfillments
+  // Get the list of projected credit streams and their fulfillments
   // (whether they were received or not).
-  const incomeStreams: IIncomeStream[] = budget.income.map((stream) => ({
-    projected: stream,
-    // Check if it was fulfilled in the actual income transaction.
-    actual: income.filter((transaction) =>
-      transaction.refs.includes(stream.uid)
+  const creditStreams: ICreditStream[] = credits.map((credit) => ({
+    projected: credit,
+    // Check if it was fulfilled in the actual credit transaction.
+    actual: creditTransactions.filter((transaction) =>
+      transaction.refs.includes(credit.uid)
+    ),
+  }));
+
+  // Get the list of projected debit streams and their fulfillments
+  // (whether they were received or not).
+  const debitStreams: IDebitStream[] = debits.map((debit) => ({
+    projected: debit,
+    // Check if it was fulfilled in the actual debit transaction.
+    actual: debitTransactions.filter((transaction) =>
+      transaction.refs.includes(debit.uid)
     ),
   }));
 
   return {
-    projectedIncome: income,
-    projectedExpenses: expenses,
-    totalProjectedIncome,
-    totalProjectedExpenses,
-    transactions,
-    actualIncome,
-    actualExpenses,
-    totalActualIncome,
-    totalActualExpenses,
+    totalProjectedCredits,
+    totalProjectedDebits,
+    totalActualCredits,
+    totalActualDebits,
+    creditTransactions,
+    debitTransactions,
+    creditStreams,
+    debitStreams,
   };
 };

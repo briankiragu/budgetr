@@ -1,9 +1,10 @@
 ---
 // Import the interfaces...
 import {
-EProjectedExpenseCategory,
-ETransactionFrequencyPeriod,
+  EProjectedExpenseCategory,
+  ETransactionFrequencyPeriod,
   ETransactionType,
+  ETransactionNature,
   type IExpensePeriod,
   type IProjectedExpense,
   type IProjectedIncome,
@@ -22,27 +23,9 @@ import ActualIncome from '@components/cards/ActualIncome.astro';
 import ActualExpenses from '@components/cards/ActualExpenses.astro';
 import ActualSavings from '@components/cards/ActualSavings.astro';
 import ActualInvestments from '../components/cards/ActualInvestments.astro';
+import CreditStream from '@components/cards/CreditStream.astro';
 import IncomeReport from '@components/reports/IncomeReport';
 import ExpensesReport from '@components/reports/ExpensesReport';
-import ProjectedIncomeDialog from '@components/dialogs/ProjectedIncomeDialog';
-import ProjectedExpenseDialog from '@components/dialogs/ProjectedExpenseDialog';
-import NewTransactionDialog from '@components/dialogs/NewTransactionDialog';
-import TransactionsSheet from '@components/tables/TransactionSheet';
-
-// Import the composables...
-import useFinances from '@composables/useFinances';
-
-// Import the components
-import TheNavbar from '@layouts/TheNavbar.astro';
-import ProjectedIncomeCard from '@components/cards/ProjectedIncomeCard.astro';
-import ProjectedExpensesCard from '@components/cards/ProjectedExpensesCard.astro';
-import ActualIncome from '@components/cards/ActualIncome.astro';
-import ActualExpenses from '@components/cards/ActualExpenses.astro';
-import ActualSavings from '@components/cards/ActualSavings.astro';
-import ActualInvestments from '../components/cards/ActualInvestments.astro';
-import IncomeReport from '@components/reports/IncomeReport';
-import ExpensesReport from '@components/reports/ExpensesReport';
-import IncomeStream from '@components/cards/IncomeStream.astro';
 import ProjectedIncomeDialog from '@components/dialogs/ProjectedIncomeDialog';
 import ProjectedExpenseDialog from '@components/dialogs/ProjectedExpenseDialog';
 import NewTransactionDialog from '@components/dialogs/NewTransactionDialog';
@@ -52,7 +35,7 @@ import TransactionsSheet from '@components/tables/TransactionSheet';
 const user: IUser = {
   username: 'chariskiragu',
   budget: {
-    income: [
+    credits: [
       {
         uid: '8ddd6810',
         refs: [],
@@ -90,7 +73,7 @@ const user: IUser = {
         updated_at: '2023-02-28T08:30:30.000Z',
       },
     ],
-    expenses: [
+    debits: [
       {
         uid: '2784baf1',
         refs: ['all'],
@@ -185,7 +168,8 @@ const user: IUser = {
         refs: ['f22400fc'],
         currency: 'ZAR',
         type: ETransactionType.DEBIT,
-        description: "First month's rent, deposit, service charge and application fee for the new apartment",
+        description:
+          "First month's rent, deposit, service charge and application fee for the new apartment",
         nature: 'rent',
         amount: 15700,
         updated_at: '2023-02-01T06:35:34.155Z',
@@ -213,6 +197,17 @@ const user: IUser = {
         created_at: '2023-02-15T10:35:34.155Z',
         updated_at: '2023-02-15T10:35:34.155Z',
       },
+      {
+        uid: 'd41be660',
+        refs: [],
+        amount: 4000,
+        currency: 'ZAR',
+        type: ETransactionType.DEBIT,
+        nature: ETransactionNature.SAVING,
+        description: '',
+        created_at: '2023-02-15T10:35:34.155Z',
+        updated_at: '2023-02-15T10:35:34.155Z',
+      },
     ],
   },
 };
@@ -226,36 +221,14 @@ const period: IExpensePeriod = {
 
 // Create a user finances object.
 const {
-  projectedIncome,
-  projectedExpenses,
-  totalProjectedIncome,
-  totalProjectedExpenses,
-  transactions,
-  actualIncome,
-  actualExpenses,
-  totalActualIncome,
-  totalActualExpenses,
+  totalProjectedCredits,
+  totalProjectedDebits,
+  totalActualCredits,
+  totalActualDebits,
+  creditTransactions,
+  debitTransactions,
+  creditStreams,
 } = useFinances(user.budget);
-
-// Get the list of projected income streams and their fulfillment
-// (whether they were received or not).
-
-const handleNewProjectedIncome = async (
-  data: IProjectedIncome
-): Promise<void> => {
-  console.dir(data);
-};
-
-const handleNewProjectedExpense = async (
-  data: IProjectedExpense
-): Promise<void> => {
-  console.dir(data);
-};
-
-const handleNewTransaction = async (data: ITransaction): Promise<void> => {
-  console.dir(data);
-};
-
 ---
 
 <html lang="en">
@@ -274,7 +247,7 @@ const handleNewTransaction = async (data: ITransaction): Promise<void> => {
     </header>
 
     <!-- Content -->
-    <section class="relative h-screen">
+    <div class="relative h-screen">
       <!-- Main content -->
       <main class="h-full pl-6 p-6 md:px-12 md:py-12 2xl:px-20">
         <!-- At a glance -->
@@ -292,29 +265,29 @@ const handleNewTransaction = async (data: ITransaction): Promise<void> => {
               <!-- Projected Income -->
               <ProjectedIncomeCard
                 period={period}
-                income={totalProjectedIncome}
+                income={totalProjectedCredits}
               />
 
               <!-- Projected Expenses -->
               <ProjectedExpensesCard
                 period={period}
-                income={totalProjectedIncome}
-                expenses={totalProjectedExpenses}
+                income={totalProjectedCredits}
+                expenses={totalProjectedDebits}
               />
 
               <!-- Actual Income -->
               <ActualIncome
                 period={period}
-                projected={totalProjectedIncome}
-                actual={totalActualIncome}
+                projected={totalProjectedCredits}
+                actual={totalActualCredits}
               />
 
               <!-- Actual Expenses -->
               <ActualExpenses
                 period={period}
-                projected={totalProjectedIncome}
-                income={totalActualIncome}
-                actual={totalActualExpenses}
+                projected={totalProjectedCredits}
+                income={totalActualCredits}
+                actual={totalActualDebits}
               />
               <hr class="block md:hidden my-2" />
             </div>
@@ -323,8 +296,9 @@ const handleNewTransaction = async (data: ITransaction): Promise<void> => {
             <div class="col-span-1">
               <ActualSavings
                 period={period}
-                income={totalActualIncome}
-                transactions={transactions}
+                totalCredits={totalActualCredits}
+                totalDebits={totalActualDebits}
+                transactions={user.budget.transactions}
               />
             </div>
 
@@ -332,8 +306,8 @@ const handleNewTransaction = async (data: ITransaction): Promise<void> => {
             <div class="col-span-1">
               <ActualInvestments
                 period={period}
-                income={totalActualIncome}
-                transactions={transactions}
+                income={totalActualCredits}
+                transactions={user.budget.transactions}
               />
             </div>
           </div>
@@ -349,9 +323,12 @@ const handleNewTransaction = async (data: ITransaction): Promise<void> => {
           >
             <!-- Income summary graph -->
             <div class="h-64 col-span-1 md:h-96 md:col-span-2">
-              <IncomeReport client:only="solid-js" income={actualIncome} />
+              <IncomeReport
+                client:only="solid-js"
+                income={creditTransactions}
+              />
             </div>
-          </section>
+          </div>
           <hr class="my-8" />
 
           <!-- Income streams -->
@@ -364,60 +341,67 @@ const handleNewTransaction = async (data: ITransaction): Promise<void> => {
             <div class="h-64 col-span-1 md:h-96 md:col-span-2">
               <ExpensesReport
                 client:only="solid-js"
-                expenses={actualExpenses}
+                expenses={debitTransactions}
               />
             </div>
-          </div>
-        </section>
-        <hr class="my-8" />
-
-          <!-- Transactions -->
-          <section class="pb-6">
-            <div class="mb-8 flex justify-between items-center">
-              <h1 class="text-3xl text-gray-800 font-bold tracking-tight">
-                Transactions
-              </h1>
-
-              <!-- Transaction actions -->
-              <!-- <div
-                class="fixed bottom-4 right-4 flex flex-col gap-1 md:static md:flex-row md:gap-2"
-              >
-                <ProjectedIncomeDialog onSubmit={newIncome} client:visible />
-                <ProjectedExpenseDialog
-                  streams={projectedIncome}
-                  onSubmit={newExpense}
-                  client:visible
-                />
-                <NewTransactionDialog
-                  streams={projectedIncome}
-                  expenses={projectedExpenses}
-                  onSubmit={newTransaction}
-                  client:visible
-                />
-              </div> -->
-            </div>
-          </div>
+          </section>
         </section>
         <hr class="my-8" />
 
         {/* Income streams */}
+        <!-- Income streams -->
         <section>
           <h1 class="mb-6 text-4xl text-gray-800 font-bold tracking-tight">
             Income Streams
           </h1>
 
-            <!-- List all transactions -->
-            <div class="rounded bg-gray-100 p-4">
-              <TransactionsSheet client:visible transactions={transactions} />
-            </div>
+          <div class="grid grid-cols-1 gap-5 md:grid-cols-5">
+            {
+              creditStreams.map((stream) => (
+                <div class="col-span-1">
+                  <CreditStream stream={stream} />
+                </div>
+              ))
+            }
+          </div>
+        </section>
+        <hr class="my-8" />
+
+        <!-- Transactions -->
+        <section class="pb-6">
+          <div class="mb-8 flex justify-between items-center">
+            <h1 class="text-3xl text-gray-800 font-bold tracking-tight">
+              Transactions
+            </h1>
+
+            <!-- Transaction actions -->
+            <!-- <div
+              class="fixed bottom-4 right-4 flex flex-col gap-1 md:static md:flex-row md:gap-2"
+            >
+              <ProjectedIncomeDialog onSubmit={newIncome} client:visible />
+              <ProjectedExpenseDialog
+                streams={projectedIncome}
+                onSubmit={newExpense}
+                client:visible
+              />
+              <NewTransactionDialog
+                streams={projectedIncome}
+                expenses={projectedExpenses}
+                onSubmit={newTransaction}
+                client:visible
+              />
+            </div> -->
           </div>
 
-          {/* List all transactions */}
+          <!-- List all transactions -->
           <div class="rounded bg-gray-100 p-4">
-            <TransactionsSheet client:visible transactions={transactions} />
+            <TransactionsSheet
+              client:visible
+              transactions={user.budget.transactions}
+            />
           </div>
         </section>
       </main>
-    </section>
+    </div>
   </body>
 </html>

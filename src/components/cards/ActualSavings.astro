@@ -1,7 +1,7 @@
 ---
 // Import interfaces...
 import {
-  ETransactionType,
+  ETransactionNature,
   type IExpensePeriod,
   type ITransaction,
 } from '@interfaces/budget';
@@ -9,41 +9,36 @@ import {
 // Import necessary composables...
 import useFormatting from '@composables/useFormatting';
 
-// Define the
+// Define the props.
 type Props = {
   period: IExpensePeriod;
-  income: number;
+  totalCredits: number;
+  totalDebits: number;
   transactions: ITransaction[];
 };
 
-// Get the
-const { period, income, transactions } = Astro.props;
+// Get the props.
+const { period, totalCredits, totalDebits, transactions } = Astro.props;
 
 // Get the methods from the composables.
 const { toPrice, toTitle } = useFormatting();
 
-// Get the total amount of expenses.
-const expenses: number = transactions
-  .filter((transaction) => transaction.nature === ETransactionType.DEBIT)
+// Get the difference between the total credits against total debits.
+const surplus = totalCredits - totalDebits;
+
+// Get the total amount of savings transactions.
+const savings: number = transactions
+  .filter((transaction) => transaction.nature === ETransactionNature.SAVING)
   .reduce((acc, transaction) => acc + transaction.amount, 0);
 
-// Determine how many transactions were actually savings.
-const savings: number = transactions
-  .filter((transaction) => transaction.nature === ETransactionType.CREDIT)
-  .reduce(
-    (acc, transaction) =>
-      transaction.nature === 'saving' ? acc + transaction.amount : acc,
-    0
-  );
-
-// Determine the total amount of money saved, as well as the total amount not expended.
-const surplus: number = income - expenses + savings;
+// Get the total savings.
+const totalSavings = surplus + savings;
 
 // Calculate the percentage of the income that was saved and/or not expended.
-const percentage: number = (surplus / income) * 100;
+const percentage: number = (totalSavings / totalCredits) * 100;
 
 // Check if the total amount saved is greater than 0.
-const improvement: boolean = surplus > 0;
+const improvement: boolean = totalSavings > 0;
 ---
 
 <div
@@ -59,7 +54,7 @@ const improvement: boolean = surplus > 0;
     <h2
       class="text-2xl text-green-50 tracking-tighter font-extrabold md:text-2xl"
     >
-      {toPrice(surplus, 'ZAR')}
+      {toPrice(totalSavings, 'ZAR')}
     </h2>
   </div>
 

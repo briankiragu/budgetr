@@ -73,7 +73,7 @@ const user: IUser = {
         amount: 8000,
         currency: 'ZAR',
         type: ETransactionType.CREDIT,
-        nature: ETransactionNature.INVESTMENT,
+        nature: ETransactionNature.PASSIVE,
         description: 'Returns from AirBnB',
         frequency: {
           isRecurring: true,
@@ -646,7 +646,7 @@ const user: IUser = {
         currency: 'ZAR',
         type: ETransactionType.CREDIT,
         description: 'AirBnB payout',
-        nature: ETransactionNature.INVESTMENT,
+        nature: ETransactionNature.PASSIVE,
         amount: 5500,
         createdAt: '2022-12-15T06:35:34.155',
         updatedAt: '2022-12-15T06:35:34.155',

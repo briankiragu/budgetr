@@ -162,8 +162,8 @@ const ProjectedCreditDialog: Component<{ natures: string[] }> = ({
                   required
                   onInput={[handleFormInput, 'nature']}
                 >
-                  <option value={ETransactionNature.INVESTMENT}>
-                    {toTitle(ETransactionNature.INVESTMENT)}
+                  <option value={ETransactionNature.PASSIVE}>
+                    {toTitle(ETransactionNature.PASSIVE)}
                   </option>
                   <For each={natures}>
                     {(nature) => (

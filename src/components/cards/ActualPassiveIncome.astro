@@ -24,16 +24,16 @@ const { period, totalCredits, transactions } = Astro.props;
 const { toPrice, toTitle } = useFormatting();
 
 // Get the total amount of savings transactions.
-const totalInvestments: number = transactions
+const totalPassiveIncome: number = transactions
   .filter(
     (transaction) =>
       transaction.type === ETransactionType.CREDIT &&
-      transaction.nature === ETransactionNature.INVESTMENT
+      transaction.nature === ETransactionNature.PASSIVE
   )
   .reduce((acc, transaction) => acc + transaction.amount, 0);
 
 // Calculate the percentage difference between the projected and actual income.
-const percentage = (): number => (totalInvestments / totalCredits) * 100;
+const percentage = (): number => (totalPassiveIncome / totalCredits) * 100;
 ---
 
 <div
@@ -43,13 +43,13 @@ const percentage = (): number => (totalInvestments / totalCredits) * 100;
     <h1
       class="flex justify-end gap-2 text-md text-cyan-100 font-semibold tracking-tight leading-4 md:text-lg"
     >
-      {toTitle(period.range)} returns on investment
-      {totalInvestments ? <span>🎉🎉</span> : <span>😐</span>}
+      {toTitle(period.range)} passive income
+      {totalPassiveIncome ? <span>🎉🎉</span> : <span>😐</span>}
     </h1>
     <h2
       class="text-2xl text-cyan-50 tracking-tighter font-extrabold md:text-2xl"
     >
-      {toPrice(totalInvestments, 'ZAR')}
+      {toPrice(totalPassiveIncome, 'ZAR')}
     </h2>
   </div>
 

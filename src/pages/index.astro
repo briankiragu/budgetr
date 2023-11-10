@@ -7,7 +7,7 @@ import useFinances from '@composables/useFinances';
 
 // Import the components
 import ActualIncome from '@components/cards/ActualIncome.astro';
-import ActualInvestments from '../components/cards/ActualInvestments.astro';
+import ActualPassiveIncome from '../components/cards/ActualPassiveIncome.astro';
 import ActualExpenses from '@components/cards/ActualExpenses.astro';
 import ActualSavings from '@components/cards/ActualSavings.astro';
 import CreditStream from '@components/cards/CreditStream.astro';
@@ -110,7 +110,7 @@ const {
 
             <!-- Actual Investments -->
             <div class="col-span-1">
-              <ActualInvestments
+              <ActualPassiveIncome
                 period={period}
                 totalCredits={totalActualCredits}
                 transactions={user.budget.transactions}

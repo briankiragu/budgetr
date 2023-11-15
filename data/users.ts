@@ -107,7 +107,7 @@ const user: IUser = {
     debits: [
       {
         uid: 'dd93b80a',
-        refs: ['all'],
+        refs: ['8ddd6810', '75a700fe', '2459fa52', '9459fa32'],
         type: ETransactionType.DEBIT,
         category: EProjectedExpenseCategory.PERCENTAGE,
         amount: 26,
@@ -183,7 +183,7 @@ const user: IUser = {
       },
       {
         uid: '2784baf1',
-        refs: ['all'],
+        refs: ['8ddd6810', '75a700fe', '2459fa52', '9459fa32'],
         type: ETransactionType.DEBIT,
         category: EProjectedExpenseCategory.PERCENTAGE,
         amount: 10,
@@ -202,7 +202,7 @@ const user: IUser = {
       },
       {
         uid: 'b83a38d6',
-        refs: ['all'],
+        refs: ['8ddd6810', '75a700fe', '2459fa52', '9459fa32'],
         type: ETransactionType.DEBIT,
         category: EProjectedExpenseCategory.PERCENTAGE,
         amount: 10,
@@ -240,7 +240,7 @@ const user: IUser = {
       },
       {
         uid: '10a3c49a',
-        refs: ['all'],
+        refs: ['8ddd6810', '75a700fe', '2459fa52', '9459fa32'],
         type: ETransactionType.DEBIT,
         category: EProjectedExpenseCategory.PERCENTAGE,
         amount: 5,

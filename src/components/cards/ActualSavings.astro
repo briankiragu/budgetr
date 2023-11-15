@@ -3,7 +3,7 @@
 import {
   ETransactionNature,
   ETransactionType,
-  type IExpensePeriod,
+  type IPeriod,
   type ITransaction,
 } from '@interfaces/budget';
 
@@ -12,14 +12,14 @@ import useFormatting from '@composables/useFormatting';
 
 // Define the props.
 type Props = {
-  period: IExpensePeriod;
+  period: IPeriod;
   totalCredits: number;
   totalDebits: number;
-  transactions: ITransaction[];
+  debitTransactions: ITransaction[];
 };
 
 // Get the props.
-const { period, totalCredits, totalDebits, transactions } = Astro.props;
+const { period, totalCredits, totalDebits, debitTransactions } = Astro.props;
 
 // Get the methods from the composables.
 const { toPrice, toTitle } = useFormatting();
@@ -28,19 +28,15 @@ const { toPrice, toTitle } = useFormatting();
 const surplus = totalCredits - totalDebits;
 
 // Get the total amount of savings transactions.
-const savings: number = transactions
-  .filter(
-    (transaction) =>
-      transaction.type === ETransactionType.DEBIT &&
-      transaction.nature === ETransactionNature.SAVING
-  )
+const savings: number = debitTransactions
+  .filter((transaction) => transaction.nature === ETransactionNature.SAVING)
   .reduce((acc, transaction) => acc + transaction.amount, 0);
 
 // Get the total savings.
 const totalSavings = surplus + savings;
 
 // Calculate the percentage of the income that was saved and/or not expended.
-const percentage: number = (totalSavings / totalCredits) * 100;
+const percentage: number = (totalSavings / totalCredits) * 100 || 0;
 
 // Check if the total amount saved is greater than 0.
 const improvement: boolean = totalSavings > 0;
@@ -54,7 +50,7 @@ const improvement: boolean = totalSavings > 0;
       class="flex justify-end gap-2 text-md text-green-100 font-semibold tracking-tight leading-4 md:text-lg"
     >
       {toTitle(period.range)} savings
-      {improvement ? <span>🎉</span> : <span>🔻</span>}
+      {improvement ? <span>🎉</span> : <span>😐</span>}
     </h1>
     <h2
       class="text-2xl text-green-50 tracking-tighter font-extrabold md:text-2xl"

@@ -5,9 +5,11 @@ import {
   type ITransaction,
   type IBudget,
   type IDebitStream,
+  type IPeriod,
 } from '@interfaces/budget';
+import { isAfter, isBefore } from 'date-fns';
 
-export default (budget: IBudget) => {
+export default (budget: IBudget, period: IPeriod) => {
   // Extract the transactions.
   const { credits, debits, transactions } = budget;
 
@@ -37,14 +39,22 @@ export default (budget: IBudget) => {
   }, 0);
 
   // Get the credit transactions.
-  const creditTransactions: ITransaction[] = transactions.filter(
-    (txn) => txn.type === ETransactionType.CREDIT
-  );
+  const creditTransactions: ITransaction[] = transactions
+    .filter(
+      (txn) =>
+        isAfter(new Date(txn.createdAt), period.start) &&
+        isBefore(new Date(txn.createdAt), period.end)
+    )
+    .filter((txn) => txn.type === ETransactionType.CREDIT);
 
   // Get the debit transactions.
-  const debitTransactions: ITransaction[] = transactions.filter(
-    (txn) => txn.type === ETransactionType.DEBIT
-  );
+  const debitTransactions: ITransaction[] = transactions
+    .filter(
+      (txn) =>
+        isAfter(new Date(txn.createdAt), period.start) &&
+        isBefore(new Date(txn.createdAt), period.end)
+    )
+    .filter((txn) => txn.type === ETransactionType.DEBIT);
 
   // Calculate the total actual credit.
   const totalActualCredits: number = creditTransactions.reduce(

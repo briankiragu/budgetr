@@ -37,15 +37,13 @@ export type ITransaction = {
 // An "expected" income transaction
 // e.g. (salary @ 100,000.00 - paid monthly).
 export type IProjectedCredit = {
-  frequency:
-    | {
-        isRecurring: boolean;
-        period: ETransactionFrequencyPeriod | undefined;
-        value: number | undefined;
-        start: string;
-        end: string | undefined;
-      }
-    | undefined;
+  frequency: {
+    isRecurring: boolean;
+    period: ETransactionFrequencyPeriod | undefined;
+    value: number | undefined;
+    start: string;
+    end: string | undefined;
+  };
 } & ITransaction;
 
 // An "expected" expense transaction
@@ -73,7 +71,7 @@ export type IDebitStream = {
   actual: ITransaction[];
 };
 
-export type IExpensePeriod = {
+export type IPeriod = {
   start: Date;
   end: Date;
   range: 'weekly' | 'monthly' | 'annually';

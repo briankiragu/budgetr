@@ -1,6 +1,6 @@
 ---
 // Import the interfaces...
-import type { IExpensePeriod } from '@interfaces/budget';
+import type { IPeriod } from '@interfaces/budget';
 
 // Import the composables...
 import useFinances from '@composables/useFinances';
@@ -21,10 +21,10 @@ import TransactionsSheet from '@components/tables/TransactionSheet';
 import user from '../../data/users';
 
 // Define the period.
-const period: IExpensePeriod = {
+const period: IPeriod = {
   range: 'monthly',
-  start: new Date('2023-02-01'),
-  end: new Date('2023-03-31'),
+  start: new Date('2022-01-01'),
+  end: new Date('2023-12-31'),
 };
 
 // Create a user finances object.
@@ -34,7 +34,9 @@ const {
   totalActualCredits,
   totalActualDebits,
   creditStreams,
-} = useFinances(user.budget);
+  creditTransactions,
+  debitTransactions,
+} = useFinances(user.budget, period);
 ---
 
 <html lang="en">
@@ -104,7 +106,7 @@ const {
                 period={period}
                 totalCredits={totalActualCredits}
                 totalDebits={totalActualDebits}
-                transactions={user.budget.transactions}
+                debitTransactions={debitTransactions}
               />
             </div>
 
@@ -113,7 +115,7 @@ const {
               <ActualPassiveIncome
                 period={period}
                 totalCredits={totalActualCredits}
-                transactions={user.budget.transactions}
+                creditTransactions={creditTransactions}
               />
             </div>
           </div>
@@ -175,7 +177,7 @@ const {
             <div class="rounded bg-gray-100 p-4">
               <TransactionsSheet
                 client:visible
-                transactions={user.budget.transactions}
+                transactions={[...creditTransactions, ...debitTransactions]}
               />
             </div>
           </section>

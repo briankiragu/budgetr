@@ -3,7 +3,7 @@
 import {
   ETransactionNature,
   ETransactionType,
-  type IExpensePeriod,
+  type IPeriod,
   type ITransaction,
 } from '@interfaces/budget';
 
@@ -12,28 +12,24 @@ import useFormatting from '@composables/useFormatting';
 
 // Define the props.
 type Props = {
-  period: IExpensePeriod;
+  period: IPeriod;
   totalCredits: number;
-  transactions: ITransaction[];
+  creditTransactions: ITransaction[];
 };
 
 // Get the props.
-const { period, totalCredits, transactions } = Astro.props;
+const { period, totalCredits, creditTransactions } = Astro.props;
 
 // Get the methods from the composables.
 const { toPrice, toTitle } = useFormatting();
 
-// Get the total amount of savings transactions.
-const totalPassiveIncome: number = transactions
-  .filter(
-    (transaction) =>
-      transaction.type === ETransactionType.CREDIT &&
-      transaction.nature === ETransactionNature.PASSIVE
-  )
+// Get the total amount of passive credit transactions.
+const totalPassiveIncome: number = creditTransactions
+  .filter((transaction) => transaction.nature === ETransactionNature.PASSIVE)
   .reduce((acc, transaction) => acc + transaction.amount, 0);
 
 // Calculate the percentage difference between the projected and actual income.
-const percentage = (): number => (totalPassiveIncome / totalCredits) * 100;
+const percentage = (): number => (totalPassiveIncome / totalCredits) * 100 || 0;
 ---
 
 <div

@@ -1,6 +1,6 @@
 ---
 // Import the interfaces...
-import type { IPeriod } from '@interfaces/budget';
+import { ETransactionFrequencyPeriod, type IPeriod } from '@interfaces/budget';
 
 // Import the composables...
 import useFinances from '@composables/useFinances';
@@ -22,7 +22,7 @@ import user from '../../data/users';
 
 // Define the period.
 const period: IPeriod = {
-  range: 'monthly',
+  range: ETransactionFrequencyPeriod.MONTH,
   start: new Date('2022-01-01'),
   end: new Date('2023-12-31'),
 };

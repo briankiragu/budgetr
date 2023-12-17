@@ -74,5 +74,5 @@ export type IDebitStream = {
 export type IPeriod = {
   start: Date;
   end: Date;
-  range: 'weekly' | 'monthly' | 'annually';
+  range: ETransactionFrequencyPeriod;
 };

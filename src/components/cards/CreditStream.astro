@@ -48,12 +48,11 @@ const progress: number = (fulfilled / stream.projected.amount) * 100;
   </p>
 
   {/* Income stream fulfillment progress */}
-  <progress
-    id={`income-stream-${stream.projected.uid}`}
-    class="w-full h-1 rounded-xl"
-    value={fulfilled}
-    max={stream.projected.amount}
-  >
-    {progress}
-  </progress>
+  <div class="overflow-hidden rounded-full bg-gray-200">
+    <div
+      class="h-1 rounded-full bg-gradient-to-r from-green-600 to-blue-900"
+      style={`width: ${progress}%`}
+    >
+    </div>
+  </div>
 </div>

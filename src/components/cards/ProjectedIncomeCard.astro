@@ -2,6 +2,9 @@
 // Import interfaces...
 import type { IPeriod } from '@interfaces/budget';
 
+// Import the constants...
+import { CURRENCY } from 'src/constants';
+
 // Import necessary composables...
 import useFormatting from '@composables/useFormatting';
 
@@ -24,9 +27,9 @@ const { toPrice } = useFormatting();
   <h1
     class="flex justify-between text-sm text-indigo-100 font-semibold tracking-tight leading-4 md:text-lg"
   >
-    Projected {period.range} income
+    Projected income
   </h1>
-  <p class="text-4xl text-indigo-50 tracking-tighter font-extrabold">
-    {toPrice(income, 'ZAR')}
+  <p class="text-4xl text-indigo-50 tracking-tighter font-mono font-black">
+    {toPrice(income, CURRENCY)}
   </p>
 </div>

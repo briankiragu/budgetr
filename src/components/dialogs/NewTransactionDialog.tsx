@@ -29,7 +29,7 @@ const NewTransactionDialog: Component<{
     refs: [],
     nature: '',
     amount: 10,
-    currency: 'ZAR',
+    currency: CURRENCY,
     description: '',
   });
 
@@ -111,7 +111,7 @@ const NewTransactionDialog: Component<{
       refs: [],
       nature: '',
       amount: 0,
-      currency: 'ZAR',
+      currency: CURRENCY,
       description: '',
     });
   };
@@ -120,7 +120,7 @@ const NewTransactionDialog: Component<{
     <>
       {/* Trigger */}
       <button
-        class="transition-all ease-in w-14 h-14 rounded-full bg-rose-700 text-rose-50 text-sm md:w-auto md:h-auto md:px-6 md:py-2 md:rounded-md md:text-base hover:shadow-lg"
+        class="h-14 w-14 rounded-full bg-rose-700 text-sm text-rose-50 transition-all ease-in hover:shadow-lg md:h-auto md:w-auto md:rounded-md md:px-6 md:py-2 md:text-base"
         onClick={handleDialogTrigger}
       >
         New
@@ -134,10 +134,10 @@ const NewTransactionDialog: Component<{
         class="w-full rounded-md p-0 md:w-[50vw]"
       >
         <form method="dialog">
-          <header class="shadow px-5 py-3 flex gap-4 justify-between items-center">
+          <header class="flex items-center justify-between gap-4 px-5 py-3 shadow">
             <h3 class="text-2xl font-bold">Transaction</h3>
             <button
-              class="transition-colors w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center text-gray-700 font-semibold hover:bg-gray-200"
+              class="flex h-9 w-9 items-center justify-center rounded-full bg-gray-100 font-semibold text-gray-700 transition-colors hover:bg-gray-200"
               onClick={[handleDialogClose, 'close']}
             >
               <svg
@@ -153,7 +153,7 @@ const NewTransactionDialog: Component<{
             </button>
           </header>
 
-          <article class="h-[60vh] overflow-y-scroll px-7 py-4 grid grid-cols-1 gap-4 text-sm text-gray-600 md:px-8 md:py-8">
+          <article class="grid h-[60vh] grid-cols-1 gap-4 overflow-y-scroll px-7 py-4 text-sm text-gray-600 md:px-8 md:py-8">
             {/* Source */}
             <div class="col-span-1">
               <label for="new-transaction-source" class="flex flex-col">
@@ -164,7 +164,7 @@ const NewTransactionDialog: Component<{
                   name="new-transaction-source"
                   value={state.nature}
                   placeholder="E.g. Salary"
-                  class="w-full rounded px-4 py-2 bg-gray-100 text-sm text-gray-700 tracking-tight focus:outline-none"
+                  class="w-full rounded bg-gray-100 px-4 py-2 text-sm tracking-tight text-gray-700 focus:outline-none"
                   required
                   onInput={[handleFormInput, 'source']}
                 />
@@ -179,7 +179,7 @@ const NewTransactionDialog: Component<{
                   id="new-transaction-nature"
                   name="new-transaction-nature"
                   value={state.nature}
-                  class="w-full rounded px-4 py-2 bg-gray-100 text-sm text-gray-700 tracking-tight focus:outline-none"
+                  class="w-full rounded bg-gray-100 px-4 py-2 text-sm tracking-tight text-gray-700 focus:outline-none"
                   required
                   onInput={[handleFormInput, 'nature']}
                 >
@@ -212,7 +212,7 @@ const NewTransactionDialog: Component<{
                     value={state.amount}
                     min="1"
                     placeholder="E.g. 65800"
-                    class="w-full rounded px-4 py-2 bg-gray-100 text-sm text-gray-700 tracking-tight focus:outline-none"
+                    class="w-full rounded bg-gray-100 px-4 py-2 text-sm tracking-tight text-gray-700 focus:outline-none"
                     required
                     onInput={[handleFormInput, 'amount']}
                   />
@@ -227,7 +227,7 @@ const NewTransactionDialog: Component<{
                     id="new-transaction-currency"
                     name="new-transaction-currency"
                     value={state.currency}
-                    class="w-full rounded px-4 py-2 bg-gray-100 text-right text-sm text-gray-700 tracking-tight focus:outline-none"
+                    class="w-full rounded bg-gray-100 px-4 py-2 text-right text-sm tracking-tight text-gray-700 focus:outline-none"
                     required
                     onInput={[handleFormInput, 'currency']}
                   >
@@ -290,7 +290,7 @@ const NewTransactionDialog: Component<{
                   value={state.description}
                   rows="5"
                   placeholder="E.g. Salary payment for the month of February 2023."
-                  class="w-full rounded-md px-4 py-2 bg-gray-100 text-sm text-gray-700 tracking-tight focus:outline-none"
+                  class="w-full rounded-md bg-gray-100 px-4 py-2 text-sm tracking-tight text-gray-700 focus:outline-none"
                   onInput={[handleFormInput, 'description']}
                 />
               </label>
@@ -298,19 +298,19 @@ const NewTransactionDialog: Component<{
           </article>
 
           <footer>
-            <menu class="border-t px-5 py-3 flex justify-between">
+            <menu class="flex justify-between border-t px-5 py-3">
               <button
                 autofocus
                 type="reset"
                 onClick={[handleDialogClose, 'cancel']}
-                class="rounded-md px-5 py-2 bg-gray-100 text-sm text-gray-700 font-medium tracking-tight"
+                class="rounded-md bg-gray-100 px-5 py-2 text-sm font-medium tracking-tight text-gray-700"
               >
                 Cancel
               </button>
               <button
                 type="submit"
                 value="confirm"
-                class="rounded-md px-5 py-2 bg-rose-500 text-sm text-rose-50 font-medium tracking-tight"
+                class="rounded-md bg-rose-500 px-5 py-2 text-sm font-medium tracking-tight text-rose-50"
                 onClick={(e) => {
                   handleSubmission(e);
                 }}

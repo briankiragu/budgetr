@@ -7,6 +7,9 @@ import {
   type ITransaction,
 } from '@interfaces/budget';
 
+// Import the constants...
+import { CURRENCY } from 'src/constants';
+
 // Import necessary composables...
 import useFormatting from '@composables/useFormatting';
 
@@ -49,19 +52,19 @@ const improvement: boolean = totalSavings > 0;
     <h1
       class="flex justify-end gap-2 text-md text-green-100 font-semibold tracking-tight leading-4 md:text-lg"
     >
-      {toTitle(period.range)} savings
+      Savings
       {improvement ? <span>🎉</span> : <span>😐</span>}
     </h1>
     <h2
-      class="text-2xl text-green-50 tracking-tighter font-extrabold md:text-2xl"
+      class="text-2xl text-green-50 tracking-tighter font-mono font-extrabold md:text-2xl"
     >
-      {toPrice(totalSavings, 'ZAR')}
+      {toPrice(totalSavings, CURRENCY)}
     </h2>
   </div>
 
   {/* Percentage saved */}
   <p
-    class="text-7xl text-green-100 tracking-tighter font-extrabold xl:text-8xl 2xl:text-9xl"
+    class="text-7xl text-green-100 tracking-tighter font-mono font-black xl:text-8xl 2xl:text-9xl"
   >
     {percentage.toFixed(1)}%
   </p>

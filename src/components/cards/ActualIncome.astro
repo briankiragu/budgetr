@@ -2,6 +2,9 @@
 // Import interfaces...
 import type { IPeriod } from '@interfaces/budget';
 
+// Import the constants...
+import { CURRENCY } from 'src/constants';
+
 // Import necessary composables...
 import useFormatting from '@composables/useFormatting';
 
@@ -12,7 +15,7 @@ type Props = {
   actual: number;
 };
 
-// Get the
+// Get the props.
 const { period, projected, actual } = Astro.props;
 
 // Get the methods from the composables.
@@ -28,10 +31,10 @@ const improvement: boolean = actual >= projected;
   <h1
     class="flex justify-between text-sm text-indigo-100 font-semibold tracking-tight leading-4 md:text-lg"
   >
-    Actual {period.range} income
+    Actual income
     {improvement ? <span>🎉</span> : <span>😐</span>}
   </h1>
-  <p class="text-4xl text-indigo-50 tracking-tighter font-extrabold">
-    {toPrice(actual, 'ZAR')}
+  <p class="text-4xl text-indigo-50 tracking-tighter font-mono font-extrabold">
+    {toPrice(actual, CURRENCY)}
   </p>
 </div>

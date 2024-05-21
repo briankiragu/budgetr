@@ -1,3 +1,7 @@
+// Import interfaces...
+import type { Component } from 'solid-js';
+import type { IProjectedDebitForm } from '@interfaces/forms';
+
 // Import the enums...
 import {
   EProjectedExpenseCategory,
@@ -5,13 +9,12 @@ import {
   type IProjectedCredit,
 } from '@interfaces/budget';
 
+// Import the constants...
+import { CURRENCY } from 'src/constants';
+
 // Import the SolidJS modules...
 import { For, Show } from 'solid-js';
 import { createStore } from 'solid-js/store';
-
-// Import interfaces...
-import type { Component } from 'solid-js';
-import type { IProjectedDebitForm } from '@interfaces/forms';
 
 // Import the composables
 import useFormatting from '@composables/useFormatting';
@@ -32,7 +35,7 @@ const ProjectedDebitDialog: Component<{
     description: '',
     category: EProjectedExpenseCategory.FIXED,
     amount: 10,
-    currency: 'ZAR',
+    currency: CURRENCY,
     frequencyRecurring: 'true',
     frequencyUnit: ETransactionFrequencyPeriod.MONTH,
     frequencyValue: 1,
@@ -114,7 +117,7 @@ const ProjectedDebitDialog: Component<{
       refs: credits.map((credit) => credit.uid),
       category: EProjectedExpenseCategory.FIXED,
       amount: 0,
-      currency: 'ZAR',
+      currency: CURRENCY,
       nature: '',
       description: '',
       frequencyRecurring: 'true',
@@ -129,7 +132,7 @@ const ProjectedDebitDialog: Component<{
     <>
       {/* Trigger */}
       <button
-        class="transition-all ease-in w-14 h-14 rounded-full bg-teal-700 text-teal-50 text-sm md:w-auto md:h-auto md:px-6 md:py-2 md:rounded-md md:text-base hover:shadow-lg"
+        class="h-14 w-14 rounded-full bg-teal-700 text-sm text-teal-50 transition-all ease-in hover:shadow-lg md:h-auto md:w-auto md:rounded-md md:px-6 md:py-2 md:text-base"
         onClick={handleDialogTrigger}
       >
         New
@@ -143,10 +146,10 @@ const ProjectedDebitDialog: Component<{
         class="w-full rounded-md p-0 md:w-[50vw]"
       >
         <form method="dialog">
-          <header class="shadow px-5 py-3 flex gap-4 justify-between items-center">
+          <header class="flex items-center justify-between gap-4 px-5 py-3 shadow">
             <h3 class="text-2xl font-bold">Projected Expense</h3>
             <button
-              class="transition-colors w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center text-gray-700 font-semibold hover:bg-gray-200"
+              class="flex h-9 w-9 items-center justify-center rounded-full bg-gray-100 font-semibold text-gray-700 transition-colors hover:bg-gray-200"
               onClick={[handleDialogClose, 'close']}
             >
               <svg
@@ -162,7 +165,7 @@ const ProjectedDebitDialog: Component<{
             </button>
           </header>
 
-          <article class="h-[60vh] overflow-y-scroll px-7 py-4 grid grid-cols-1 gap-4 text-sm text-gray-600 md:px-8 md:py-8">
+          <article class="grid h-[60vh] grid-cols-1 gap-4 overflow-y-scroll px-7 py-4 text-sm text-gray-600 md:px-8 md:py-8">
             {/* Source */}
             <div class="col-span-1">
               <label for="projected-credit-source" class="flex flex-col">
@@ -171,7 +174,7 @@ const ProjectedDebitDialog: Component<{
                   id="projected-credit-source"
                   name="projected-credit-source"
                   value={state.nature}
-                  class="w-full rounded px-4 py-2 bg-gray-100 text-sm text-gray-700 tracking-tight focus:outline-none"
+                  class="w-full rounded bg-gray-100 px-4 py-2 text-sm tracking-tight text-gray-700 focus:outline-none"
                   required
                   onInput={[handleFormInput, 'nature']}
                 >
@@ -193,7 +196,7 @@ const ProjectedDebitDialog: Component<{
                   name="projected-credit-description"
                   value={state.description}
                   placeholder="E.g. Rent payment for the month."
-                  class="w-full rounded-md px-4 py-2 bg-gray-100 text-sm text-gray-700 tracking-tight focus:outline-none"
+                  class="w-full rounded-md bg-gray-100 px-4 py-2 text-sm tracking-tight text-gray-700 focus:outline-none"
                   onInput={[handleFormInput, 'description']}
                 />
               </label>
@@ -208,7 +211,7 @@ const ProjectedDebitDialog: Component<{
                   id="projected-credit-category"
                   name="projected-credit-category"
                   value={state.category}
-                  class="w-full rounded px-4 py-2 bg-gray-100 text-sm text-gray-700 tracking-tight focus:outline-none"
+                  class="w-full rounded bg-gray-100 px-4 py-2 text-sm tracking-tight text-gray-700 focus:outline-none"
                   required
                   onInput={[handleFormInput, 'category']}
                 >
@@ -234,7 +237,7 @@ const ProjectedDebitDialog: Component<{
                     value={state.amount}
                     min="1"
                     placeholder="E.g. 65800"
-                    class="w-full rounded px-4 py-2 bg-gray-100 text-sm text-gray-700 tracking-tight focus:outline-none"
+                    class="w-full rounded bg-gray-100 px-4 py-2 text-sm tracking-tight text-gray-700 focus:outline-none"
                     required
                     onInput={[handleFormInput, 'amount']}
                   />
@@ -250,7 +253,7 @@ const ProjectedDebitDialog: Component<{
                       id="projected-credit-currency"
                       name="projected-credit-currency"
                       value={state.currency}
-                      class="w-full rounded px-4 py-2 bg-gray-100 text-right text-sm text-gray-700 tracking-tight focus:outline-none"
+                      class="w-full rounded bg-gray-100 px-4 py-2 text-right text-sm tracking-tight text-gray-700 focus:outline-none"
                       required
                       onInput={[handleFormInput, 'currency']}
                     >
@@ -296,7 +299,7 @@ const ProjectedDebitDialog: Component<{
                 {/* Show total */}
                 <div class="col-span-6">
                   <h3 class="text-xl font-semibold">Total</h3>
-                  <span class="text-sm text-gray-400 font-medium">
+                  <span class="text-sm font-medium text-gray-400">
                     {toPrice(calculatedAmount(), state.currency)}
                   </span>
                 </div>
@@ -317,7 +320,7 @@ const ProjectedDebitDialog: Component<{
 
                 <label
                   for="projected-credit-frequency-recurring-yes"
-                  class="flex gap-2 items-center"
+                  class="flex items-center gap-2"
                 >
                   <input
                     type="radio"
@@ -332,7 +335,7 @@ const ProjectedDebitDialog: Component<{
                 </label>
                 <label
                   for="projected-credit-frequency-recurring-no"
-                  class="flex gap-2 items-center"
+                  class="flex items-center gap-2"
                 >
                   <input
                     type="radio"
@@ -360,7 +363,7 @@ const ProjectedDebitDialog: Component<{
                         id="projected-income-expected-date"
                         name="projected-income-expected-date"
                         value={state.frequencyStart}
-                        class="w-full rounded-md px-4 py-2 bg-gray-100 text-sm text-gray-700 tracking-tight focus:outline-none"
+                        class="w-full rounded-md bg-gray-100 px-4 py-2 text-sm tracking-tight text-gray-700 focus:outline-none"
                         required
                         onInput={[handleFormInput, 'frequencyStart']}
                       />
@@ -369,12 +372,12 @@ const ProjectedDebitDialog: Component<{
                 }
               >
                 {/* Value and Unit */}
-                <div class="col-span-6 grid grid-cols-3 gap-3 justify-between items-center md:gap-6">
+                <div class="col-span-6 grid grid-cols-3 items-center justify-between gap-3 md:gap-6">
                   {/* Value */}
                   <div class="col-span-2">
                     <label
                       for="projected-credit-frequency-value"
-                      class="flex gap-6 items-center"
+                      class="flex items-center gap-6"
                     >
                       Every
                       <input
@@ -384,7 +387,7 @@ const ProjectedDebitDialog: Component<{
                         value={state.frequencyValue}
                         min="1"
                         step="1"
-                        class="w-full rounded-md px-4 py-2 bg-gray-100 text-sm text-gray-700 tracking-tight focus:outline-none"
+                        class="w-full rounded-md bg-gray-100 px-4 py-2 text-sm tracking-tight text-gray-700 focus:outline-none"
                         required
                         onInput={[handleFormInput, 'frequencyValue']}
                       />
@@ -395,13 +398,13 @@ const ProjectedDebitDialog: Component<{
                   <div class="col-span-1">
                     <label
                       for="projected-credit-frequency-value"
-                      class="flex gap-2 items-center"
+                      class="flex items-center gap-2"
                     >
                       <select
                         id="projected-credit-frequency-unit"
                         name="projected-credit-unit"
                         value={state.frequencyUnit}
-                        class="w-full rounded px-4 py-2 bg-gray-100 text-right text-sm text-gray-700 tracking-tight focus:outline-none"
+                        class="w-full rounded bg-gray-100 px-4 py-2 text-right text-sm tracking-tight text-gray-700 focus:outline-none"
                         required
                         onInput={[handleFormInput, 'frequencyUnit']}
                       >
@@ -428,7 +431,7 @@ const ProjectedDebitDialog: Component<{
                       id="projected-credit-frequency-start"
                       name="projected-credit-start"
                       value={state.frequencyStart}
-                      class="w-full rounded-md px-4 py-2 bg-gray-100 text-sm text-gray-700 tracking-tight focus:outline-none"
+                      class="w-full rounded-md bg-gray-100 px-4 py-2 text-sm tracking-tight text-gray-700 focus:outline-none"
                       required
                       onInput={[handleFormInput, 'frequencyStart']}
                     />
@@ -447,7 +450,7 @@ const ProjectedDebitDialog: Component<{
                       id="projected-credit-frequency-end"
                       name="projected-credit-end"
                       value={state.frequencyEnd}
-                      class="w-full rounded-md px-4 py-2 bg-gray-100 text-sm text-gray-700 tracking-tight focus:outline-none"
+                      class="w-full rounded-md bg-gray-100 px-4 py-2 text-sm tracking-tight text-gray-700 focus:outline-none"
                       onInput={[handleFormInput, 'frequencyEnd']}
                     />
                   </label>
@@ -457,19 +460,19 @@ const ProjectedDebitDialog: Component<{
           </article>
 
           <footer>
-            <menu class="border-t px-5 py-3 flex justify-between">
+            <menu class="flex justify-between border-t px-5 py-3">
               <button
                 autofocus
                 type="reset"
                 onClick={[handleDialogClose, 'cancel']}
-                class="rounded-md px-5 py-2 bg-gray-100 text-sm text-gray-700 font-medium tracking-tight"
+                class="rounded-md bg-gray-100 px-5 py-2 text-sm font-medium tracking-tight text-gray-700"
               >
                 Cancel
               </button>
               <button
                 type="submit"
                 value="confirm"
-                class="rounded-md px-5 py-2 bg-teal-500 text-sm text-teal-50 font-medium tracking-tight"
+                class="rounded-md bg-teal-500 px-5 py-2 text-sm font-medium tracking-tight text-teal-50"
                 onClick={(e) => {
                   handleSubmission(e);
                 }}

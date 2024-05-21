@@ -28,7 +28,7 @@ const { toPrice, toTitle } = useFormatting();
       {toTitle(item.description?.toLowerCase() ?? '')}
     </small>
   </h1>
-  <p class="text-3xl text-teal-50 tracking-tighter font-extrabold md:text-2xl">
+  <p class="text-3xl text-teal-50 tracking-tighter font-mono font-extrabold md:text-2xl">
     {toPrice(item.amount, item.currency)}
   </p>
 </div>

@@ -4,11 +4,10 @@ module.exports = {
     es2021: true,
     node: true,
   },
-  extends: 'xo',
   plugins: ['jsx-a11y'],
   overrides: [
     {
-      extends: ['xo-typescript', 'plugin:jsx-a11y/recommended', 'prettier'],
+      extends: ['plugin:jsx-a11y/recommended', 'prettier'],
       files: ['*.ts', '*.tsx'],
     },
   ],

@@ -2,6 +2,9 @@
 // Import interfaces...
 import type { IPeriod } from '@interfaces/budget';
 
+// Import the constants...
+import { CURRENCY } from 'src/constants';
+
 // Import necessary composables...
 import useFormatting from '@composables/useFormatting';
 
@@ -28,10 +31,10 @@ const overdrawn: boolean = expenses >= income;
   <h1
     class="flex justify-between text-sm text-teal-50 font-semibold tracking-tight leading-4 md:text-lg"
   >
-    Projected {period.range} expenses
+    Projected expenses
     {overdrawn ? <span>❗</span> : <span>👌</span>}
   </h1>
-  <p class="text-4xl text-teal-50 tracking-tighter font-extrabold">
-    {toPrice(expenses, 'ZAR')}
+  <p class="text-4xl text-teal-50 tracking-tighter font-mono font-black">
+    {toPrice(expenses, CURRENCY)}
   </p>
 </div>

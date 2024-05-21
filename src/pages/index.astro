@@ -24,7 +24,7 @@ import user from '../../data/users';
 const period: IPeriod = {
   range: ETransactionFrequencyPeriod.MONTH,
   start: new Date('2022-01-01'),
-  end: new Date('2023-12-31'),
+  end: new Date('2024-12-31'),
 };
 
 // Create a user finances object.
@@ -70,6 +70,7 @@ const {
             <div
               class="col-span-1 grid grid-cols-1 gap-4 md:col-span-2 md:grid-cols-2 md:gap-6"
             >
+              <hr class="my-2 md:hidden" />
               <!-- Projected Income -->
               <ProjectedIncomeCard
                 period={period}
@@ -82,6 +83,7 @@ const {
                 income={totalProjectedCredits}
                 expenses={totalProjectedDebits}
               />
+              <hr class="my-2 md:hidden" />
 
               <!-- Actual Income -->
               <ActualIncome

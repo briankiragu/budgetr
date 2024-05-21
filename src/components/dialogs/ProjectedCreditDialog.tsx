@@ -1,3 +1,12 @@
+// Import the SolidJS modules...
+import { For, Show } from 'solid-js';
+import { createStore } from 'solid-js/store';
+
+// Import interfaces...
+import type { Component } from 'solid-js';
+import type { IProjectedCredit } from '@interfaces/budget';
+import type { IProjectedCreditForm } from '@interfaces/forms';
+
 // Import the enums...
 import {
   ETransactionType,
@@ -5,18 +14,12 @@ import {
   ETransactionNature,
 } from '@interfaces/budget';
 
-// Import the SolidJS modules...
-import { For, Show } from 'solid-js';
-import { createStore } from 'solid-js/store';
+// Import the constants.
+import { CURRENCY } from 'src/constants';
 
 // Import the composables...
 import useIdentity from '@composables/useIdentity';
 import useFormatting from '@composables/useFormatting';
-
-// Import interfaces...
-import type { Component } from 'solid-js';
-import type { IProjectedCredit } from '@interfaces/budget';
-import type { IProjectedCreditForm } from '@interfaces/forms';
 
 // Define the component.
 const ProjectedCreditDialog: Component<{ natures: string[] }> = ({
@@ -30,7 +33,7 @@ const ProjectedCreditDialog: Component<{ natures: string[] }> = ({
     nature: '',
     description: '',
     amount: 0,
-    currency: 'ZAR',
+    currency: CURRENCY,
     frequencyRecurring: 'true',
     frequencyValue: 1,
     frequencyUnit: ETransactionFrequencyPeriod.MONTH,
@@ -102,7 +105,7 @@ const ProjectedCreditDialog: Component<{ natures: string[] }> = ({
     setState({
       nature: '',
       amount: 0,
-      currency: 'ZAR',
+      currency: CURRENCY,
       description: '',
       frequencyRecurring: 'true',
       frequencyValue: 1,
@@ -116,7 +119,7 @@ const ProjectedCreditDialog: Component<{ natures: string[] }> = ({
     <>
       {/* Trigger */}
       <button
-        class="transition-all ease-in w-14 h-14 rounded-full bg-indigo-700 text-indigo-50 text-sm md:w-auto md:h-auto md:px-6 md:py-2 md:rounded-md md:text-base hover:shadow-lg"
+        class="h-14 w-14 rounded-full bg-indigo-700 text-sm text-indigo-50 transition-all ease-in hover:shadow-lg md:h-auto md:w-auto md:rounded-md md:px-6 md:py-2 md:text-base"
         onClick={handleDialogTrigger}
       >
         New
@@ -130,10 +133,10 @@ const ProjectedCreditDialog: Component<{ natures: string[] }> = ({
         class="w-full rounded-md p-0 md:w-[50vw]"
       >
         <form method="dialog">
-          <header class="shadow px-5 py-3 flex gap-4 justify-between items-center">
+          <header class="flex items-center justify-between gap-4 px-5 py-3 shadow">
             <h3 class="text-2xl font-bold">Projected Income</h3>
             <button
-              class="transition-colors w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center text-gray-700 font-semibold hover:bg-gray-200"
+              class="flex h-9 w-9 items-center justify-center rounded-full bg-gray-100 font-semibold text-gray-700 transition-colors hover:bg-gray-200"
               onClick={[handleDialogClose, 'close']}
             >
               <svg
@@ -149,7 +152,7 @@ const ProjectedCreditDialog: Component<{ natures: string[] }> = ({
             </button>
           </header>
 
-          <article class="h-[60vh] overflow-y-scroll px-7 py-4 grid grid-cols-1 gap-4 text-sm text-gray-600 md:px-8 md:py-8">
+          <article class="grid h-[60vh] grid-cols-1 gap-4 overflow-y-scroll px-7 py-4 text-sm text-gray-600 md:px-8 md:py-8">
             {/* Source */}
             <div class="col-span-1">
               <label for="projected-income-source" class="flex flex-col">
@@ -158,7 +161,7 @@ const ProjectedCreditDialog: Component<{ natures: string[] }> = ({
                   id="projected-income-source"
                   name="projected-income-source"
                   value={state.nature}
-                  class="w-full rounded px-4 py-2 bg-gray-100 text-sm text-gray-700 tracking-tight focus:outline-none"
+                  class="w-full rounded bg-gray-100 px-4 py-2 text-sm tracking-tight text-gray-700 focus:outline-none"
                   required
                   onInput={[handleFormInput, 'nature']}
                 >
@@ -183,7 +186,7 @@ const ProjectedCreditDialog: Component<{ natures: string[] }> = ({
                   name="projected-income-description"
                   value={state.description}
                   placeholder="E.g. Salary payment"
-                  class="w-full rounded-md px-4 py-2 bg-gray-100 text-sm text-gray-700 tracking-tight focus:outline-none"
+                  class="w-full rounded-md bg-gray-100 px-4 py-2 text-sm tracking-tight text-gray-700 focus:outline-none"
                   onInput={[handleFormInput, 'description']}
                 />
               </label>
@@ -203,7 +206,7 @@ const ProjectedCreditDialog: Component<{ natures: string[] }> = ({
                     value={state.amount}
                     min="1"
                     placeholder="E.g. 65800"
-                    class="w-full rounded px-4 py-2 bg-gray-100 text-sm text-gray-700 tracking-tight focus:outline-none"
+                    class="w-full rounded bg-gray-100 px-4 py-2 text-sm tracking-tight text-gray-700 focus:outline-none"
                     required
                     onInput={[handleFormInput, 'amount']}
                   />
@@ -218,7 +221,7 @@ const ProjectedCreditDialog: Component<{ natures: string[] }> = ({
                     id="projected-income-currency"
                     name="projected-income-currency"
                     value={state.currency}
-                    class="w-full rounded px-4 py-2 bg-gray-100 text-right text-sm text-gray-700 tracking-tight focus:outline-none"
+                    class="w-full rounded bg-gray-100 px-4 py-2 text-right text-sm tracking-tight text-gray-700 focus:outline-none"
                     required
                     onInput={[handleFormInput, 'currency']}
                   >
@@ -244,7 +247,7 @@ const ProjectedCreditDialog: Component<{ natures: string[] }> = ({
 
                 <label
                   for="projected-income-frequency-recurring-yes"
-                  class="flex gap-2 items-center"
+                  class="flex items-center gap-2"
                 >
                   <input
                     type="radio"
@@ -259,7 +262,7 @@ const ProjectedCreditDialog: Component<{ natures: string[] }> = ({
                 </label>
                 <label
                   for="projected-income-frequency-recurring-no"
-                  class="flex gap-2 items-center"
+                  class="flex items-center gap-2"
                 >
                   <input
                     type="radio"
@@ -287,7 +290,7 @@ const ProjectedCreditDialog: Component<{ natures: string[] }> = ({
                         id="projected-income-expected-date"
                         name="projected-income-expected-date"
                         value={state.frequencyStart}
-                        class="w-full rounded-md px-4 py-2 bg-gray-100 text-sm text-gray-700 tracking-tight focus:outline-none"
+                        class="w-full rounded-md bg-gray-100 px-4 py-2 text-sm tracking-tight text-gray-700 focus:outline-none"
                         required
                         onInput={[handleFormInput, 'frequencyStart']}
                       />
@@ -296,12 +299,12 @@ const ProjectedCreditDialog: Component<{ natures: string[] }> = ({
                 }
               >
                 {/* Value and Unit */}
-                <div class="col-span-6 grid grid-cols-3 gap-3 justify-between items-center md:gap-6">
+                <div class="col-span-6 grid grid-cols-3 items-center justify-between gap-3 md:gap-6">
                   {/* Value */}
                   <div class="col-span-2">
                     <label
                       for="projected-income-frequency-value"
-                      class="flex gap-6 items-center"
+                      class="flex items-center gap-6"
                     >
                       Every
                       <input
@@ -311,7 +314,7 @@ const ProjectedCreditDialog: Component<{ natures: string[] }> = ({
                         value={state.frequencyValue}
                         min="1"
                         step="1"
-                        class="w-full rounded-md px-4 py-2 bg-gray-100 text-sm text-gray-700 tracking-tight focus:outline-none"
+                        class="w-full rounded-md bg-gray-100 px-4 py-2 text-sm tracking-tight text-gray-700 focus:outline-none"
                         required
                         onInput={[handleFormInput, 'frequencyValue']}
                       />
@@ -322,13 +325,13 @@ const ProjectedCreditDialog: Component<{ natures: string[] }> = ({
                   <div class="col-span-1">
                     <label
                       for="projected-income-frequency-unit"
-                      class="flex gap-2 items-center"
+                      class="flex items-center gap-2"
                     >
                       <select
                         id="projected-income-frequency-unit"
                         name="projected-income-unit"
                         value={state.frequencyUnit}
-                        class="w-full rounded px-4 py-2 bg-gray-100 text-right text-sm text-gray-700 tracking-tight focus:outline-none"
+                        class="w-full rounded bg-gray-100 px-4 py-2 text-right text-sm tracking-tight text-gray-700 focus:outline-none"
                         required
                         onInput={[handleFormInput, 'frequencyUnit']}
                       >
@@ -354,7 +357,7 @@ const ProjectedCreditDialog: Component<{ natures: string[] }> = ({
                       id="projected-income-frequency-start"
                       name="projected-income-start"
                       value={state.frequencyStart}
-                      class="w-full rounded-md px-4 py-2 bg-gray-100 text-sm text-gray-700 tracking-tight focus:outline-none"
+                      class="w-full rounded-md bg-gray-100 px-4 py-2 text-sm tracking-tight text-gray-700 focus:outline-none"
                       required
                       onInput={[handleFormInput, 'frequencyStart']}
                     />
@@ -373,7 +376,7 @@ const ProjectedCreditDialog: Component<{ natures: string[] }> = ({
                       id="projected-income-frequency-end"
                       name="projected-income-end"
                       value={state.frequencyEnd}
-                      class="w-full rounded-md px-4 py-2 bg-gray-100 text-sm text-gray-700 tracking-tight focus:outline-none"
+                      class="w-full rounded-md bg-gray-100 px-4 py-2 text-sm tracking-tight text-gray-700 focus:outline-none"
                       onInput={[handleFormInput, 'frequencyEnd']}
                     />
                   </label>
@@ -383,19 +386,19 @@ const ProjectedCreditDialog: Component<{ natures: string[] }> = ({
           </article>
 
           <footer>
-            <menu class="border-t px-5 py-3 flex justify-between">
+            <menu class="flex justify-between border-t px-5 py-3">
               <button
                 autofocus
                 type="reset"
                 onClick={[handleDialogClose, 'cancel']}
-                class="rounded-md px-5 py-2 bg-gray-100 text-sm text-gray-700 font-medium tracking-tight"
+                class="rounded-md bg-gray-100 px-5 py-2 text-sm font-medium tracking-tight text-gray-700"
               >
                 Cancel
               </button>
               <button
                 type="submit"
                 value="confirm"
-                class="rounded-md px-5 py-2 bg-indigo-500 text-sm text-indigo-50 font-medium tracking-tight"
+                class="rounded-md bg-indigo-500 px-5 py-2 text-sm font-medium tracking-tight text-indigo-50"
                 onClick={(e) => {
                   handleSubmission(e);
                 }}

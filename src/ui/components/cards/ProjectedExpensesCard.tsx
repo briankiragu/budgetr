@@ -13,7 +13,7 @@ const ProjectedExpensesCard: Component<{
   const overdrawn = (): boolean => props.expenses >= props.income;
 
   return (
-    <div class="transition-shadow ease-in duration-300 h-full rounded-lg px-6 py-6 bg-teal-700 flex flex-col gap-2 justify-between md:px-8 md:py-6 xl:px-6 hover:shadow-lg">
+    <div class="transition-shadow ease-in duration-300 h-full rounded-lg px-6 py-6 bg-teal-700 dark:bg-teal-900 flex flex-col gap-2 justify-between md:px-8 md:py-6 xl:px-6 hover:shadow-lg">
       <h1 class="flex justify-between text-sm text-white font-semibold tracking-tight leading-4 md:text-lg">
         Projected expenses
         {overdrawn() ? <span>❗</span> : <span>👌</span>}

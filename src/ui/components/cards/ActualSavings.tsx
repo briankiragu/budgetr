@@ -31,7 +31,7 @@ const ActualSavings: Component<{
   const improvement = (): boolean => totalSavings() > 0;
 
   return (
-    <div class="transition-shadow ease-in duration-300 h-full rounded-lg px-6 py-6 bg-green-700 flex flex-col justify-between items-end text-right md:px-5 md:py-6 2xl:px-6 hover:shadow-lg">
+    <div class="transition-shadow ease-in duration-300 h-full rounded-lg px-6 py-6 bg-green-700 dark:bg-green-900 flex flex-col justify-between items-end text-right md:px-5 md:py-6 2xl:px-6 hover:shadow-lg">
       <div class="mb-2 flex flex-col">
         <h1 class="flex justify-end gap-2 text-md text-white font-semibold tracking-tight leading-4 md:text-lg">
           Savings

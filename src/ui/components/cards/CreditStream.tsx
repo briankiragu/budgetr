@@ -18,7 +18,7 @@ const CreditStream: Component<{ stream: ICreditStream }> = (props) => {
     (fulfilled() / props.stream.projected.amount) * 100;
 
   return (
-    <div class="transition-shadow ease-in rounded-lg px-6 py-4 bg-indigo-600 flex flex-col gap-2 justify-between md:px-8 md:py-6 xl:px-5 hover:shadow-lg">
+    <div class="transition-shadow ease-in rounded-lg px-6 py-4 bg-indigo-600 dark:bg-indigo-800 flex flex-col gap-2 justify-between md:px-8 md:py-6 xl:px-5 hover:shadow-lg">
       <div class="flex flex-col">
         <h1 class="mb-1 text-md text-white font-bold tracking-tight leading-3 md:mb-0 md:text-lg">
           {toTitle(props.stream.projected.nature)}

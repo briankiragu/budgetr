@@ -54,7 +54,7 @@ const App: Component = () => {
 
           <div class="grid grid-cols-1 gap-4 items-stretch md:grid-cols-4 md:gap-6">
             <div class="col-span-1 grid grid-cols-1 gap-4 md:col-span-2 md:grid-cols-2 md:gap-6">
-              <hr class="my-2 md:hidden" />
+              <hr class="my-2 md:hidden dark:border-rose-500" />
               {/* Projected Income */}
               <ProjectedIncomeCard income={totalProjectedCredits} />
 
@@ -63,7 +63,7 @@ const App: Component = () => {
                 income={totalProjectedCredits}
                 expenses={totalProjectedDebits}
               />
-              <hr class="md:hidden" />
+              <hr class="md:hidden dark:border-rose-500" />
 
               {/* Actual Income */}
               <ActualIncome
@@ -77,7 +77,7 @@ const App: Component = () => {
                 income={totalActualCredits}
                 actual={totalActualDebits}
               />
-              <hr class="md:hidden" />
+              <hr class="md:hidden dark:border-rose-500" />
             </div>
 
             {/* Actual Savings */}
@@ -113,7 +113,7 @@ const App: Component = () => {
             </div>
           </section>
         </section>
-        <hr />
+        <hr class="dark:border-rose-500" />
 
         {/* Reports */}
         <section class="flex flex-col gap-8">
@@ -140,7 +140,7 @@ const App: Component = () => {
             </div>
 
             {/* List all transactions */}
-            <div class="rounded bg-gray-100 p-4">
+            <div class="rounded-xl bg-gray-100 dark:bg-gray-700 p-4">
               <TransactionsSheet
                 transactions={[...creditTransactions, ...debitTransactions]}
               />

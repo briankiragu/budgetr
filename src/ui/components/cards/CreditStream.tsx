@@ -20,10 +20,10 @@ const CreditStream: Component<{ stream: ICreditStream }> = (props) => {
   return (
     <div class="transition-shadow ease-in rounded-lg px-6 py-4 bg-indigo-600 flex flex-col gap-2 justify-between md:px-8 md:py-6 xl:px-5 hover:shadow-lg">
       <div class="flex flex-col">
-        <h1 class="mb-1 text-md text-white font-medium tracking-tight leading-3 md:mb-0 md:text-lg">
+        <h1 class="mb-1 text-md text-white font-bold tracking-tight leading-3 md:mb-0 md:text-lg">
           {toTitle(props.stream.projected.nature)}
         </h1>
-        <small class="text-sm text-indigo-100">
+        <small class="text-sm italic text-indigo-100">
           {props.stream.projected.description}
         </small>
       </div>
@@ -37,7 +37,7 @@ const CreditStream: Component<{ stream: ICreditStream }> = (props) => {
       <div class="overflow-hidden rounded-full bg-gray-200">
         <div
           class="h-1 rounded-full bg-gradient-to-r from-green-600 to-blue-900"
-          style={`width: ${progress}%`}
+          style={`width: ${progress()}%`}
         ></div>
       </div>
     </div>

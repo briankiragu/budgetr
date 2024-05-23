@@ -4,8 +4,8 @@ const TheNavbar: Component = () => {
   return (
     <nav class="px-4 py-4 bg-emerald-600 flex justify-between items-center text-emerald-50 md:pl-12 md:pr-20">
       {/* Branding */}
-      <h1 class="text-2xl font-semibold">
-        <a href="/">BudgetR</a>
+      <h1 class="text-3xl font-black">
+        <a href="/">Budgetr</a>
       </h1>
 
       {/* Links */}

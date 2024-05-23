@@ -37,7 +37,7 @@ const ActualSavings: Component<{
           Savings
           {improvement() ? <span>🎉</span> : <span>😐</span>}
         </h1>
-        <h2 class="text-2xl text-green-200 tracking-tighter font-mono font-extrabold md:text-2xl">
+        <h2 class="text-2xl text-green-300 tracking-tighter font-mono font-black md:text-2xl">
           {toPrice(totalSavings(), DEFAULT_CURRENCY)}
         </h2>
       </div>

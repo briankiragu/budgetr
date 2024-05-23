@@ -48,7 +48,7 @@ const App: Component = () => {
       <main class="flex flex-col gap-8 py-6 px-8 lg:gap-6">
         {/* At a glance */}
         <section class="flex flex-col gap-6 lg:gap-8">
-          <h1 class="text-gray-800 text-6xl font-black dark:text-gray-100">
+          <h1 class="text-gray-800 text-6xl font-black dark:text-white">
             This month
           </h1>
 
@@ -100,7 +100,7 @@ const App: Component = () => {
 
           {/* Income streams */}
           <section class="flex flex-col gap-2">
-            <h1 class="text-4xl dark:text-gray-100 text-gray-800 font-extrabold tracking-tight">
+            <h1 class="text-4xl dark:text-white text-gray-800 font-extrabold tracking-tight">
               Income Streams
             </h1>
 
@@ -120,7 +120,7 @@ const App: Component = () => {
           {/* Transactions */}
           <section class="flex flex-col gap-4">
             <div class="flex justify-between items-center">
-              <h2 class="text-5xl dark:text-gray-100 text-gray-800 font-extrabold tracking-tight">
+              <h2 class="text-5xl dark:text-white text-gray-800 font-extrabold tracking-tight">
                 Transactions
               </h2>
 

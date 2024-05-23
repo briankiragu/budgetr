@@ -26,7 +26,7 @@ const ActualExpenses: Component<{
         {!lessThanIncome() && !lessThanBudget() && <span>😐</span>}
       </h1>
 
-      <p class="truncate text-4xl text-teal-50 tracking-tighter font-mono font-extrabold">
+      <p class="truncate text-4xl text-teal-50 tracking-tighter font-mono font-black">
         {toPrice(props.actual, DEFAULT_CURRENCY)}
       </p>
     </div>

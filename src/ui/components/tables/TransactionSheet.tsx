@@ -80,12 +80,12 @@ const TransactionsSheet: Component<{ transactions: ITransaction[] }> = (
           {/* Filter by source */}
           <label
             for="transaction-sheet-filter-source"
-            class="flex flex-col text-sm text-gray-500"
+            class="flex flex-col text-sm text-gray-900"
           >
             Filter by nature:
             <select
               id="transaction-sheet-filter-source"
-              class="rounded-md border border-gray-100 bg-gray-200 px-3 py-2 text-sm text-gray-700 focus-visible:outline-none"
+              class="rounded-md border border-gray-100 bg-gray-200 px-3 py-2 text-sm focus-visible:outline-none"
               onInput={(event) =>
                 setNatureFilter((event.target as HTMLSelectElement).value)
               }
@@ -101,12 +101,12 @@ const TransactionsSheet: Component<{ transactions: ITransaction[] }> = (
         {/* Sort By */}
         <label
           for="transaction-sheet-sort-by"
-          class="flex flex-col text-sm text-gray-500"
+          class="flex flex-col text-sm text-gray-900"
         >
           Sort by:
           <select
             id="transaction-sheet-sort-by"
-            class="rounded-md border border-gray-100 bg-gray-200 px-3 py-2 text-sm text-gray-700 focus-visible:outline-none"
+            class="rounded-md border border-gray-100 bg-gray-200 px-3 py-2 text-sm focus-visible:outline-none"
             onInput={(event) =>
               setSortBy((event.target as HTMLSelectElement).value)
             }

@@ -18,7 +18,7 @@ const ActualIncome: Component<{
         Actual income
         {improvement() ? <span>🎉</span> : <span>💔</span>}
       </h1>
-      <p class="truncate text-4xl text-indigo-50 tracking-tighter font-mono font-extrabold">
+      <p class="truncate text-4xl text-indigo-50 tracking-tighter font-mono font-black">
         {toPrice(props.actual, DEFAULT_CURRENCY)}
       </p>
     </div>

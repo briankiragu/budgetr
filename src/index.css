@@ -1,0 +1,83 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@font-face {
+  font-family: "Inter";
+  src: url("/fonts/inter/Inter-VariableFont_slnt,wght.ttf")
+    format("truetype-variations");
+  font-weight: 1 999;
+}
+
+@font-face {
+  font-family: "Inter-fallback";
+  size-adjust: 107%;
+  ascent-override: 91%;
+  src: local(system-ui);
+}
+
+@font-face {
+  font-family: "Zed Mono";
+  src: url("/fonts/zed-mono/zed-mono-extended.ttf")
+    format("truetype-variations");
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Zed Mono";
+  src: url("/fonts/zed-mono/zed-mono-extendedmedium.ttf")
+    format("truetype-variations");
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Zed Mono";
+  src: url("/fonts/zed-mono/zed-mono-extendedsemibold.ttf")
+    format("truetype-variations");
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Zed Mono";
+  src: url("/fonts/zed-mono/zed-mono-extendedbold.ttf")
+    format("truetype-variations");
+  font-weight: 800;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Zed Mono";
+  src: url("/fonts/zed-mono/zed-mono-extendedextrabold.ttf")
+    format("truetype-variations");
+  font-weight: 900;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Zed Mono-fallback";
+  size-adjust: 107%;
+  ascent-override: 91%;
+  src: local(system-ui);
+}
+
+* {
+  user-select: none;
+}

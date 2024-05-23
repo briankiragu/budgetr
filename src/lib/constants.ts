@@ -1,0 +1,3 @@
+export const DEFAULT_CURRENCY = "KES";
+
+export const DEFAULT_USER_ID = "TGW4zGPAVNVKRTSNJ3sD";

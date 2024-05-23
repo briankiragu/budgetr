@@ -48,7 +48,7 @@ const App: Component = () => {
       <main class="flex flex-col gap-8 py-6 px-8 lg:gap-6">
         {/* At a glance */}
         <section class="flex flex-col gap-6 lg:gap-8">
-          <h1 class="text-gray-800 text-6xl font-black">This month</h1>
+          <h1 class="text-gray-800 text-6xl font-black dark:">This month</h1>
 
           <div class="grid grid-cols-1 gap-4 items-stretch md:grid-cols-4 md:gap-6">
             <div class="col-span-1 grid grid-cols-1 gap-4 md:col-span-2 md:grid-cols-2 md:gap-6">

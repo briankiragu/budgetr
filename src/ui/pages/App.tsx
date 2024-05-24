@@ -6,6 +6,7 @@ import ActualSavingsCard from "@components/cards/ActualSavingsCard";
 import CreditStreamCard from "@components/cards/CreditStreamCard";
 import ProjectedExpensesCard from "@components/cards/ProjectedExpensesCard";
 import ProjectedIncomeCard from "@components/cards/ProjectedIncomeCard";
+import ProjectedCreditDialog from "@components/dialogs/ProjectedCreditDialog";
 import TransactionsSheet from "@components/tables/TransactionSheet";
 import useFirestore from "@composables/firebase/useFirestore";
 import useFinances from "@composables/useFinances";
@@ -23,7 +24,6 @@ import {
   type Component,
 } from "solid-js";
 import { createStore } from "solid-js/store";
-// import ProjectedCreditDialog from "@components/dialogs/ProjectedCreditDialog";
 // import ProjectedDebitDialog from "@components/dialogs/ProjectedDebitDialog";
 // import NewTransactionDialog from "@components/dialogs/NewTransactionDialog";
 
@@ -133,6 +133,9 @@ const App: Component = () => {
                   <CreditStreamCard stream={stream} />
                 </div>
               ))}
+
+              {/* New Projected Income Trigger & Dialog*/}
+              <ProjectedCreditDialog natures={user()?.config.natures.credit} />
             </div>
           </div>
         </section>
@@ -149,10 +152,7 @@ const App: Component = () => {
 
               {/* Transaction actions */}
               <div class="fixed bottom-4 right-4 flex flex-col gap-1 md:static md:flex-row md:gap-2">
-                {/* <ProjectedCreditDialog
-                  natures={user()?.config.natures.credit}
-                />
-                <ProjectedDebitDialog
+                {/* <ProjectedDebitDialog
                   natures={user()?.config.natures.debit}
                   credits={user()?.budget.credits}
                 />

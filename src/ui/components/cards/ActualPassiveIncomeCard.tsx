@@ -25,7 +25,7 @@ const ActualPassiveIncomeCard: Component<{
       <div class="mb-2 flex flex-col">
         <h1 class="flex justify-end gap-2 text-md text-white font-semibold tracking-tight leading-4 md:text-lg">
           Passive income
-          {totalPassiveIncome() ? <span>🎉🎉</span> : <span>💔</span>}
+          {totalPassiveIncome() && <span>🎉🎉</span>}
         </h1>
         <h2 class="text-2xl text-cyan-300 tracking-tighter font-mono font-black md:text-2xl">
           {toPrice(totalPassiveIncome(), DEFAULT_CURRENCY)}

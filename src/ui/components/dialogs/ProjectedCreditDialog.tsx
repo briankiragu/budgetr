@@ -13,24 +13,9 @@ import { For, Show } from "solid-js";
 import { createStore } from "solid-js/store";
 
 // Define the component.
-const ProjectedCreditDialog: Component<{ natures: string[] }> = ({
-  natures,
-}) => {
-  // Create a template ref to the dialog.
-  let dialogRef: HTMLDialogElement;
-
-  // Create a signal to hold the form state.
-  const [state, setState] = createStore<IProjectedCreditForm>({
-    nature: "",
-    description: "",
-    amount: 0,
-    currency: DEFAULT_CURRENCY,
-    frequencyRecurring: "true",
-    frequencyValue: 1,
-    frequencyUnit: ETransactionFrequencyPeriod.MONTH,
-    frequencyStart: new Date().toISOString(),
-    frequencyEnd: null,
-  });
+const ProjectedCreditDialog: Component<{ natures?: string[] }> = (props) => {
+  // Create a ref.
+  let dialogRef: HTMLDialogElement | undefined;
 
   // Get the identity method.
   const { generateUid } = useIdentity();
@@ -38,19 +23,31 @@ const ProjectedCreditDialog: Component<{ natures: string[] }> = ({
   // Get the formatting methods.
   const { toTitle } = useFormatting();
 
+  // Create a signal to hold the form state.
+  const [state, setState] = createStore<IProjectedCreditForm>({
+    nature: ETransactionNature.PASSIVE,
+    description: "",
+    amount: 0,
+    currency: DEFAULT_CURRENCY,
+    frequencyRecurring: "true",
+    frequencyValue: 1,
+    frequencyUnit: ETransactionFrequencyPeriod.MONTH,
+    frequencyStart: new Date().toISOString(),
+    frequencyEnd: undefined,
+  });
+
   // Get the display frequency.
   const showFrequency = (): boolean => state.frequencyRecurring === "true";
 
-  // Create a function to handle the dialog trigger.
-  const handleDialogTrigger = (): void => {
-    // Open the dialog.
-    dialogRef.showModal();
+  // Create a function to open the dialog.
+  const handleDialogShow = (): void => {
+    dialogRef?.showModal();
   };
 
-  // Create a function to handle the dialog close/cancel.
+  // Create a function to close/cancel the dialog.
   const handleDialogClose = (reason: "close" | "cancel"): void => {
     // Close the dialog.
-    dialogRef.close(reason);
+    dialogRef?.close(reason);
   };
 
   const handleFormInput = (field: string, event: Event): void => {
@@ -76,26 +73,22 @@ const ProjectedCreditDialog: Component<{ natures: string[] }> = ({
       description: state.description,
       frequency: {
         isRecurring: showFrequency(),
-        value: showFrequency()
-          ? parseInt(state.frequencyValue.toString(), 10)
-          : null,
-        period: showFrequency() ? state.frequencyUnit : null,
+        value:
+          showFrequency() && state.frequencyValue ? state.frequencyValue : null,
+        period:
+          showFrequency() && state.frequencyUnit ? state.frequencyUnit : null,
         start: state.frequencyStart,
-        end: state.frequencyEnd,
+        end: state.frequencyEnd ?? null,
       },
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
       publishedAt: new Date().toISOString(),
     };
-
-    // Close the dialog.
-    handleDialogClose("close");
-
     console.dir(data);
 
     // Reset the state.
     setState({
-      nature: "",
+      nature: ETransactionNature.PASSIVE,
       amount: 0,
       currency: DEFAULT_CURRENCY,
       description: "",
@@ -103,18 +96,24 @@ const ProjectedCreditDialog: Component<{ natures: string[] }> = ({
       frequencyValue: 1,
       frequencyUnit: ETransactionFrequencyPeriod.MONTH,
       frequencyStart: new Date().toISOString(),
-      frequencyEnd: null,
+      frequencyEnd: undefined,
     });
+
+    // Close the dialog.
+    handleDialogClose("close");
   };
 
   return (
     <>
       {/* Trigger */}
       <button
-        class="h-14 w-14 rounded-full bg-indigo-700 text-sm text-indigo-50 transition-all ease-in hover:shadow-lg md:h-auto md:w-auto md:rounded-md md:px-6 md:py-2 md:text-base"
-        onClick={handleDialogTrigger}
+        type="button"
+        class="group min-h-36 border-2 border-dashed hover:border-solid transition border-gray-400 hover:border-gray-100 rounded-lg flex items-center justify-center focus:outline-none"
+        onClick={() => handleDialogShow()}
       >
-        New
+        <span class="material-symbols-outlined text-3xl text-gray-500 font-bold group-hover:text-gray-100 transition">
+          add
+        </span>
       </button>
 
       {/* Dialog */}
@@ -122,29 +121,22 @@ const ProjectedCreditDialog: Component<{ natures: string[] }> = ({
         ref={dialogRef!}
         id="ProjectedIncomeMegaDialog"
         modal-mode="mega"
-        class="w-full rounded-md p-0 md:w-[50vw]"
+        class="w-full rounded-md p-0 md:w-[50vw] dark:bg-gray-800"
       >
         <form method="dialog">
           <header class="flex items-center justify-between gap-4 px-5 py-3 shadow">
-            <h3 class="text-2xl font-bold">Projected Income</h3>
+            <h3 class="text-2xl font-extrabold tracking-tight">
+              Projected Income
+            </h3>
             <button
-              class="flex h-9 w-9 items-center justify-center rounded-full bg-gray-100 font-semibold text-gray-700 transition-colors hover:bg-gray-200"
-              onClick={[handleDialogClose, "close"]}
+              class="flex h-9 w-9 items-center justify-center rounded-full bg-gray-100 font-semibold text-gray-700 transition-colors hover:bg-gray-200 dark:bg-gray-600 dark:text-gray-300 dark:hover:bg-gray-700"
+              onClick={() => handleDialogClose("close")}
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                height="24px"
-                viewBox="0 0 24 24"
-                width="24px"
-                fill="#000000"
-              >
-                <path d="M0 0h24v24H0V0z" fill="none" />
-                <path d="M18.3 5.71c-.39-.39-1.02-.39-1.41 0L12 10.59 7.11 5.7c-.39-.39-1.02-.39-1.41 0-.39.39-.39 1.02 0 1.41L10.59 12 5.7 16.89c-.39.39-.39 1.02 0 1.41.39.39 1.02.39 1.41 0L12 13.41l4.89 4.89c.39.39 1.02.39 1.41 0 .39-.39.39-1.02 0-1.41L13.41 12l4.89-4.89c.38-.38.38-1.02 0-1.4z" />
-              </svg>
+              <span class="material-symbols-outlined">close</span>{" "}
             </button>
           </header>
 
-          <article class="grid h-[60vh] grid-cols-1 gap-4 overflow-y-scroll px-7 py-4 text-sm text-gray-600 md:px-8 md:py-8">
+          <article class="grid h-[70vh] grid-cols-1 gap-4 overflow-y-scroll px-6 py-3 text-sm text-gray-600 dark:text-gray-100">
             {/* Source */}
             <div class="col-span-1">
               <label for="projected-income-source" class="flex flex-col">
@@ -160,7 +152,7 @@ const ProjectedCreditDialog: Component<{ natures: string[] }> = ({
                   <option value={ETransactionNature.PASSIVE}>
                     {toTitle(ETransactionNature.PASSIVE)}
                   </option>
-                  <For each={natures}>
+                  <For each={props.natures}>
                     {(nature) => (
                       <option value={nature}>{toTitle(nature)}</option>
                     )}
@@ -217,8 +209,8 @@ const ProjectedCreditDialog: Component<{ natures: string[] }> = ({
                     required
                     onInput={[handleFormInput, "currency"]}
                   >
-                    <option value="ZAR">ZAR</option>
                     <option value="KES">KES</option>
+                    <option value="ZAR">ZAR</option>
                     <option value="USD">USD</option>
                   </select>
                 </label>

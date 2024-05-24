@@ -17,7 +17,7 @@ const ActualIncomeCard: Component<{
     <div class="transition-shadow ease-in duration-300 h-full rounded-lg px-6 py-6 bg-indigo-600 dark:bg-indigo-900 flex flex-col gap-2 justify-between md:px-8 md:py-6 xl:px-6 hover:shadow-lg">
       <h1 class="flex justify-between text-sm text-white font-semibold tracking-tight leading-4 md:text-lg">
         Actual income
-        {improvement() ? <span>🎉</span> : <span>💔</span>}
+        {improvement() && <span>🎉</span>}
       </h1>
       <p class="truncate text-4xl text-indigo-50 tracking-tighter font-mono font-black">
         {toPrice(props.actual, DEFAULT_CURRENCY)}

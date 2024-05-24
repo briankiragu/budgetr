@@ -33,9 +33,6 @@ const ActualExpensesCard: Component<{
         {hasExpenses() && !lessThanIncome() && lessThanBudget() && (
           <span>🎉</span>
         )}
-        {hasExpenses() && !lessThanIncome() && !lessThanBudget() && (
-          <span>💔</span>
-        )}
       </h1>
 
       <p class="truncate text-4xl text-teal-50 tracking-tighter font-mono font-black">

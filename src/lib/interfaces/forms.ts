@@ -12,10 +12,10 @@ export type IProjectedCreditForm = {
   nature: string;
   description: string;
   frequencyRecurring: "true" | "false";
-  frequencyUnit: ETransactionFrequencyPeriod;
-  frequencyValue: number;
   frequencyStart: string;
-  frequencyEnd: string | null;
+  frequencyEnd?: string;
+  frequencyUnit?: ETransactionFrequencyPeriod;
+  frequencyValue?: number;
 };
 
 export type IProjectedDebitForm = {

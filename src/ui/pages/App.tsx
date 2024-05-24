@@ -14,6 +14,7 @@ import {
   ETransactionFrequencyPeriod,
   type IFinances,
   type IPeriod,
+  type IProjectedCredit,
 } from "@interfaces/budget";
 import { DEFAULT_USER_ID } from "@lib/constants";
 import { endOfMonth, startOfMonth } from "date-fns";
@@ -29,7 +30,7 @@ import { createStore } from "solid-js/store";
 
 const App: Component = () => {
   // Extract the firestore functions.
-  const { getUser } = useFirestore();
+  const { addProjectedCredit, getUser } = useFirestore();
 
   // Define the period.
   const [period] = createStore<IPeriod>({
@@ -40,7 +41,7 @@ const App: Component = () => {
 
   // Define the user.
   const [userId] = createSignal<string | undefined>(DEFAULT_USER_ID);
-  const [user] = createResource(userId, getUser);
+  const [user, { refetch }] = createResource(userId, getUser);
 
   // Define the user finances.
   const [finances, setFinances] = createStore<IFinances>({
@@ -53,6 +54,17 @@ const App: Component = () => {
     creditStreams: [],
     debitStreams: [],
   });
+
+  const updateOrCreateProjectedCredit = async (
+    credit: IProjectedCredit,
+  ): Promise<void> => {
+    if (userId()) {
+      addProjectedCredit(userId()!, credit);
+
+      // Refetch the user data.
+      refetch();
+    }
+  };
 
   createEffect(() => {
     if (!user.loading) {
@@ -135,7 +147,10 @@ const App: Component = () => {
               ))}
 
               {/* New Projected Income Trigger & Dialog*/}
-              <ProjectedCreditDialog natures={user()?.config.natures.credit} />
+              <ProjectedCreditDialog
+                natures={user()?.config.natures.credit}
+                handler={updateOrCreateProjectedCredit}
+              />
             </div>
           </div>
         </section>

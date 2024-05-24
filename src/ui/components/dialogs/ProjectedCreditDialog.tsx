@@ -13,7 +13,10 @@ import { For, Show } from "solid-js";
 import { createStore } from "solid-js/store";
 
 // Define the component.
-const ProjectedCreditDialog: Component<{ natures?: string[] }> = (props) => {
+const ProjectedCreditDialog: Component<{
+  natures?: string[];
+  handler: (credit: IProjectedCredit) => Promise<void>;
+}> = (props) => {
   // Create a ref.
   let dialogRef: HTMLDialogElement | undefined;
 
@@ -58,7 +61,7 @@ const ProjectedCreditDialog: Component<{ natures?: string[] }> = (props) => {
     setState({ [field]: value });
   };
 
-  const handleSubmission = (e: Event): void => {
+  const handleSubmission = async (e: Event): Promise<void> => {
     // Prevent the default form submission.
     e.preventDefault();
 
@@ -84,7 +87,9 @@ const ProjectedCreditDialog: Component<{ natures?: string[] }> = (props) => {
       updatedAt: new Date().toISOString(),
       publishedAt: new Date().toISOString(),
     };
-    console.dir(data);
+
+    // Call the handler.
+    await props.handler(data);
 
     // Reset the state.
     setState({

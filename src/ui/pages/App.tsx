@@ -6,7 +6,7 @@ import ActualSavingsCard from "@components/cards/ActualSavingsCard";
 import CreditStreamCard from "@components/cards/CreditStreamCard";
 import ProjectedExpensesCard from "@components/cards/ProjectedExpensesCard";
 import ProjectedIncomeCard from "@components/cards/ProjectedIncomeCard";
-import ProjectedCreditDialog from "@components/dialogs/ProjectedCreditDialog";
+import NewProjectedCreditDialog from "@components/dialogs/NewProjectedCreditDialog";
 import TransactionsSheet from "@components/tables/TransactionSheet";
 import useFirestore from "@composables/firebase/useFirestore";
 import useFinances from "@composables/useFinances";
@@ -16,6 +16,7 @@ import {
   type IPeriod,
   type IProjectedCredit,
 } from "@interfaces/budget";
+import type { IUser } from "@interfaces/user";
 import { DEFAULT_USER_ID } from "@lib/constants";
 import { endOfMonth, startOfMonth } from "date-fns";
 import {
@@ -30,7 +31,7 @@ import { createStore } from "solid-js/store";
 
 const App: Component = () => {
   // Extract the firestore functions.
-  const { addProjectedCredit, getUser } = useFirestore();
+  const { addProjectedCredit, getUser, updateOrCreateUser } = useFirestore();
 
   // Define the period.
   const [period] = createStore<IPeriod>({
@@ -55,11 +56,37 @@ const App: Component = () => {
     debitStreams: [],
   });
 
-  const updateOrCreateProjectedCredit = async (
+  const createProjectedCredit = async (
     credit: IProjectedCredit,
   ): Promise<void> => {
     if (userId()) {
       addProjectedCredit(userId()!, credit);
+
+      // Refetch the user data.
+      refetch();
+    }
+  };
+
+  const updateProjectedCredit = async (
+    credit: IProjectedCredit,
+  ): Promise<void> => {
+    if (user()) {
+      // From the user object, replace the edited credit.
+      const credits: IProjectedCredit[] = [
+        ...(user()!.budget.credits.filter((crdt) => crdt.uid !== credit.uid) ||
+          []),
+        credit,
+      ];
+
+      // Add it back to the user.
+      const updatedUser: IUser = {
+        username: user()!.username,
+        config: user()!.config,
+        budget: { ...user()!.budget, credits },
+      };
+
+      // Make the request to Firebase.
+      updateOrCreateUser(updatedUser, userId());
 
       // Refetch the user data.
       refetch();
@@ -142,14 +169,18 @@ const App: Component = () => {
             <div class="grid grid-cols-1 gap-5 md:grid-cols-5">
               {finances.creditStreams.map((stream) => (
                 <div class="col-span-1">
-                  <CreditStreamCard stream={stream} />
+                  <CreditStreamCard
+                    stream={stream}
+                    natures={user()?.config.natures.credit}
+                    submitHandler={updateProjectedCredit}
+                  />
                 </div>
               ))}
 
               {/* New Projected Income Trigger & Dialog*/}
-              <ProjectedCreditDialog
+              <NewProjectedCreditDialog
                 natures={user()?.config.natures.credit}
-                handler={updateOrCreateProjectedCredit}
+                submitHandler={createProjectedCredit}
               />
             </div>
           </div>

@@ -1,8 +1,13 @@
+import EditProjectedCreditDialog from "@components/dialogs/EditProjectedCreditDialog";
 import useFormatting from "@composables/useFormatting";
-import type { ICreditStream } from "@interfaces/budget";
+import type { ICreditStream, IProjectedCredit } from "@interfaces/budget";
 import type { Component } from "solid-js";
 
-const CreditStreamCard: Component<{ stream: ICreditStream }> = (props) => {
+const CreditStreamCard: Component<{
+  stream: ICreditStream;
+  natures?: string[];
+  submitHandler: (credit: IProjectedCredit) => Promise<void>;
+}> = (props) => {
   // Get the methods from the composables.
   const { toPrice, toTitle } = useFormatting();
 
@@ -18,7 +23,13 @@ const CreditStreamCard: Component<{ stream: ICreditStream }> = (props) => {
     (fulfilled() / props.stream.projected.amount) * 100;
 
   return (
-    <div class="transition-shadow ease-in rounded-lg px-6 py-4 bg-indigo-600 dark:bg-indigo-800 flex flex-col gap-2 justify-between md:px-8 md:py-6 xl:px-5 hover:shadow-lg">
+    <div class="relative transition-shadow ease-in rounded-lg px-6 py-4 bg-indigo-600 dark:bg-indigo-800 flex flex-col gap-2 justify-between md:px-8 md:py-6 xl:px-5 hover:shadow-lg">
+      <EditProjectedCreditDialog
+        natures={props.natures}
+        credit={props.stream.projected}
+        submitHandler={props.submitHandler}
+      />
+
       <div class="flex flex-col">
         <h1 class="mb-1 text-md text-white font-bold tracking-tight leading-3 md:mb-0 md:text-lg">
           {toTitle(props.stream.projected.nature)}

@@ -10,9 +10,9 @@ export default () => {
   const { generateUid } = useIdentity();
 
   return {
-    updateOrCreateUser: async (data: IUser, id?: string): Promise<void> => {
+    updateOrCreateUser: async (user: IUser, id?: string): Promise<void> => {
       const docRef = doc(db, COLLECTION_NAME, id ?? generateUid());
-      setDoc(docRef, data, { merge: true });
+      setDoc(docRef, user, { merge: true });
     },
 
     getUser: async (id: string): Promise<IUser> => {

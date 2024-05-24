@@ -26,7 +26,7 @@ export enum ETransactionFrequencyPeriod {
 export type ITransaction = {
   uid: string;
   refs: string[];
-  currency: string | null;
+  currency: string;
   amount: number;
   type: ETransactionType;
   nature: ETransactionNature | string;

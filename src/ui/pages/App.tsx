@@ -23,7 +23,6 @@ import {
   type Component,
 } from "solid-js";
 import { createStore } from "solid-js/store";
-// import type { IUser } from "@interfaces/user";
 // import ProjectedCreditDialog from "@components/dialogs/ProjectedCreditDialog";
 // import ProjectedDebitDialog from "@components/dialogs/ProjectedDebitDialog";
 // import NewTransactionDialog from "@components/dialogs/NewTransactionDialog";
@@ -123,7 +122,7 @@ const App: Component = () => {
           </div>
 
           {/* Income streams */}
-          <section class="flex flex-col gap-2">
+          <div class="lg:min-h-52 flex flex-col gap-2">
             <h1 class="text-4xl dark:text-white text-gray-800 font-extrabold tracking-tight">
               Income Streams
             </h1>
@@ -135,7 +134,7 @@ const App: Component = () => {
                 </div>
               ))}
             </div>
-          </section>
+          </div>
         </section>
         <hr class="dark:border-rose-500" />
 

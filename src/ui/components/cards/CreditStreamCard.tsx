@@ -2,7 +2,7 @@ import useFormatting from "@composables/useFormatting";
 import type { ICreditStream } from "@interfaces/budget";
 import type { Component } from "solid-js";
 
-const CreditStream: Component<{ stream: ICreditStream }> = (props) => {
+const CreditStreamCard: Component<{ stream: ICreditStream }> = (props) => {
   // Get the methods from the composables.
   const { toPrice, toTitle } = useFormatting();
 
@@ -44,4 +44,4 @@ const CreditStream: Component<{ stream: ICreditStream }> = (props) => {
   );
 };
 
-export default CreditStream;
+export default CreditStreamCard;

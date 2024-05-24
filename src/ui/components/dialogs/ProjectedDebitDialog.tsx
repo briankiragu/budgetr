@@ -31,7 +31,7 @@ const ProjectedDebitDialog: Component<{
     frequencyUnit: ETransactionFrequencyPeriod.MONTH,
     frequencyValue: 1,
     frequencyStart: new Date().toISOString(),
-    frequencyEnd: undefined,
+    frequencyEnd: null,
   });
 
   const isPercentage = (): boolean =>
@@ -115,7 +115,7 @@ const ProjectedDebitDialog: Component<{
       frequencyValue: 1,
       frequencyUnit: ETransactionFrequencyPeriod.MONTH,
       frequencyStart: new Date().toISOString(),
-      frequencyEnd: undefined,
+      frequencyEnd: null,
     });
   };
 

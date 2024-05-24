@@ -2,7 +2,7 @@ import useFormatting from "@composables/useFormatting";
 import type { Component } from "solid-js";
 import { DEFAULT_CURRENCY } from "@lib/constants";
 
-const ActualIncome: Component<{
+const ActualIncomeCard: Component<{
   projected: number;
   actual: number;
 }> = (props) => {
@@ -10,7 +10,8 @@ const ActualIncome: Component<{
   const { toPrice } = useFormatting();
 
   // Calculate the difference between the projected and actual income.
-  const improvement = (): boolean => props.actual >= props.projected;
+  const improvement = (): boolean =>
+    props.actual > 0 && props.actual > props.projected;
 
   return (
     <div class="transition-shadow ease-in duration-300 h-full rounded-lg px-6 py-6 bg-indigo-600 dark:bg-indigo-900 flex flex-col gap-2 justify-between md:px-8 md:py-6 xl:px-6 hover:shadow-lg">
@@ -25,4 +26,4 @@ const ActualIncome: Component<{
   );
 };
 
-export default ActualIncome;
+export default ActualIncomeCard;

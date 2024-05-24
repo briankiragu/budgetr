@@ -1,24 +1,29 @@
-import { isAfter, isBefore } from "date-fns";
-
-// Import the interfaces...
+import useDate from "@composables/useDate";
 import {
-  ETransactionType,
   EProjectedExpenseCategory,
+  ETransactionType,
   type ICreditStream,
-  type ITransaction,
-  type IBudget,
   type IDebitStream,
+  type IFinances,
   type IPeriod,
   type IProjectedCredit,
   type IProjectedDebit,
+  type ITransaction,
 } from "@interfaces/budget";
+import type { IUser } from "@interfaces/user";
+import { isAfter, isBefore } from "date-fns";
 
-// Import the composables...
-import useDate from "@composables/useDate";
-
-export default (budget: IBudget, period: IPeriod) => {
-  // Extract the transactions.
-  const { credits, debits, transactions } = budget;
+export default ({
+  period,
+  user,
+}: {
+  period: IPeriod;
+  user?: IUser;
+}): IFinances => {
+  // Extract the budget.
+  const { credits, debits, transactions } = user
+    ? user.budget
+    : { credits: [], debits: [], transactions: [] };
 
   const isBetweenRange = (date: string, period: IPeriod) =>
     isAfter(new Date(date), period.start) &&
@@ -30,19 +35,18 @@ export default (budget: IBudget, period: IPeriod) => {
     const frequencyValue = txn.frequency.value;
 
     const startDate: Date = new Date(txn.frequency.start);
-    const endDate: Date | undefined = txn.frequency.end
+    const endDate: Date | null = txn.frequency.end
       ? new Date(txn.frequency.end)
-      : undefined;
+      : null;
 
     if (
       txn.frequency.isRecurring === true &&
-      frequencyValue !== undefined &&
-      frequencyPeriod !== undefined
+      frequencyValue !== null &&
+      frequencyPeriod !== null
     ) {
       // If ongoing, that is, doesn't have an end specified or
       // it's end is not before the period start.
-      const isOngoing =
-        endDate === undefined || isAfter(startDate, period.start);
+      const isOngoing = endDate === null || isAfter(startDate, period.start);
 
       // If the recurrence falls within the period.
       const recurrsWithinPeriod =

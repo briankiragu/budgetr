@@ -29,7 +29,7 @@ const ProjectedCreditDialog: Component<{ natures: string[] }> = ({
     frequencyValue: 1,
     frequencyUnit: ETransactionFrequencyPeriod.MONTH,
     frequencyStart: new Date().toISOString(),
-    frequencyEnd: undefined,
+    frequencyEnd: null,
   });
 
   // Get the identity method.
@@ -78,8 +78,8 @@ const ProjectedCreditDialog: Component<{ natures: string[] }> = ({
         isRecurring: showFrequency(),
         value: showFrequency()
           ? parseInt(state.frequencyValue.toString(), 10)
-          : undefined,
-        period: showFrequency() ? state.frequencyUnit : undefined,
+          : null,
+        period: showFrequency() ? state.frequencyUnit : null,
         start: state.frequencyStart,
         end: state.frequencyEnd,
       },
@@ -103,7 +103,7 @@ const ProjectedCreditDialog: Component<{ natures: string[] }> = ({
       frequencyValue: 1,
       frequencyUnit: ETransactionFrequencyPeriod.MONTH,
       frequencyStart: new Date().toISOString(),
-      frequencyEnd: undefined,
+      frequencyEnd: null,
     });
   };
 

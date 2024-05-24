@@ -3,7 +3,7 @@ import { ETransactionNature, type ITransaction } from "@interfaces/budget";
 import type { Component } from "solid-js";
 import { DEFAULT_CURRENCY } from "@lib/constants";
 
-const ActualSavings: Component<{
+const ActualSavingsCard: Component<{
   totalCredits: number;
   totalDebits: number;
   debitTransactions: ITransaction[];
@@ -35,7 +35,7 @@ const ActualSavings: Component<{
       <div class="mb-2 flex flex-col">
         <h1 class="flex justify-end gap-2 text-md text-white font-semibold tracking-tight leading-4 md:text-lg">
           Savings
-          {improvement() ? <span>🎉</span> : <span>😐</span>}
+          {improvement() ? <span>🎉</span> : <span>💔</span>}
         </h1>
         <h2 class="text-2xl text-green-300 tracking-tighter font-mono font-black md:text-2xl">
           {toPrice(totalSavings(), DEFAULT_CURRENCY)}
@@ -50,4 +50,4 @@ const ActualSavings: Component<{
   );
 };
 
-export default ActualSavings;
+export default ActualSavingsCard;

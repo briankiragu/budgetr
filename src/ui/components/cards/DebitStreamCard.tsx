@@ -2,7 +2,7 @@ import useFormatting from "@composables/useFormatting";
 import type { ITransaction } from "@interfaces/budget";
 import type { Component } from "solid-js";
 
-const DebitStream: Component<{ item: ITransaction }> = (props) => {
+const DebitStreamCard: Component<{ item: ITransaction }> = (props) => {
   // Get the methods from the composables.
   const { toPrice, toTitle } = useFormatting();
 
@@ -21,4 +21,4 @@ const DebitStream: Component<{ item: ITransaction }> = (props) => {
   );
 };
 
-export default DebitStream;
+export default DebitStreamCard;

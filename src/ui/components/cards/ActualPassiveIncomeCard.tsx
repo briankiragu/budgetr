@@ -3,7 +3,7 @@ import { ETransactionNature, type ITransaction } from "@interfaces/budget";
 import useFormatting from "@composables/useFormatting";
 import { DEFAULT_CURRENCY } from "@lib/constants";
 
-const ActualPassiveIncome: Component<{
+const ActualPassiveIncomeCard: Component<{
   totalCredits: number;
   creditTransactions: ITransaction[];
 }> = (props) => {
@@ -25,7 +25,7 @@ const ActualPassiveIncome: Component<{
       <div class="mb-2 flex flex-col">
         <h1 class="flex justify-end gap-2 text-md text-white font-semibold tracking-tight leading-4 md:text-lg">
           Passive income
-          {totalPassiveIncome() ? <span>🎉🎉</span> : <span>😐</span>}
+          {totalPassiveIncome() ? <span>🎉🎉</span> : <span>💔</span>}
         </h1>
         <h2 class="text-2xl text-cyan-300 tracking-tighter font-mono font-black md:text-2xl">
           {toPrice(totalPassiveIncome(), DEFAULT_CURRENCY)}
@@ -40,4 +40,4 @@ const ActualPassiveIncome: Component<{
   );
 };
 
-export default ActualPassiveIncome;
+export default ActualPassiveIncomeCard;

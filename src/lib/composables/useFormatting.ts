@@ -1,15 +1,17 @@
 export default () => {
-  const toPrice = (price: number, currency = 'KES', locale = 'en-GB'): string =>
+  const toPrice = (price: number, currency = "KES", locale = "en-GB"): string =>
     price.toLocaleString(locale, {
-      style: 'currency',
+      style: "currency",
       currency,
+      // maximumFractionDigits: 0,
+      // minimumFractionDigits: 0,
     });
 
   const toTitle = (title: string): string =>
     title
-      .split('-')
+      .split("-")
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(' ');
+      .join(" ");
 
   return { toPrice, toTitle };
 };

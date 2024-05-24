@@ -4,18 +4,18 @@ import type {
   EProjectedExpenseCategory,
   ETransactionFrequencyPeriod,
   ETransactionType,
-} from '@interfaces/budget';
+} from "@interfaces/budget";
 
 export type IProjectedCreditForm = {
   amount: number;
   currency: string;
   nature: string;
   description: string;
-  frequencyRecurring: 'true' | 'false';
+  frequencyRecurring: "true" | "false";
   frequencyUnit: ETransactionFrequencyPeriod;
   frequencyValue: number;
   frequencyStart: string;
-  frequencyEnd: string | undefined;
+  frequencyEnd: string | null;
 };
 
 export type IProjectedDebitForm = {

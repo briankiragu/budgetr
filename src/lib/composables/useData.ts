@@ -21,7 +21,7 @@ export default () => {
     const users: IUser[] = JSON.parse(item) as unknown as IUser[];
 
     // Find the user with the matching username.
-    const user: IUser | undefined = users.find(
+    const user?: IUser = users.find(
       (user: IUser) => user.username === username
     );
 
@@ -46,7 +46,7 @@ export default () => {
     const users: IUser[] = JSON.parse(item) as unknown as IUser[];
 
     // Find the user with the matching username.
-    const user: IUser | undefined = users.find(
+    const user?: IUser  = users.find(
       (user: IUser) => user.username === username
     );
 

@@ -26,11 +26,11 @@ export enum ETransactionFrequencyPeriod {
 export type ITransaction = {
   uid: string;
   refs: string[];
-  currency: string | undefined;
+  currency: string | null;
   amount: number;
   type: ETransactionType;
   nature: ETransactionNature | string;
-  description?: string | undefined;
+  description?: string | null;
   createdAt: string;
   updatedAt: string;
   publishedAt: string;
@@ -41,10 +41,10 @@ export type ITransaction = {
 export type IProjectedCredit = {
   frequency: {
     isRecurring: boolean;
-    period: ETransactionFrequencyPeriod | undefined;
-    value: number | undefined;
+    period: ETransactionFrequencyPeriod | null;
+    value: number | null;
     start: string;
-    end: string | undefined;
+    end: string | null;
   };
 } & ITransaction;
 
@@ -77,4 +77,15 @@ export type IPeriod = {
   start: Date;
   end: Date;
   range: ETransactionFrequencyPeriod;
+};
+
+export type IFinances = {
+  totalProjectedCredits: number;
+  totalProjectedDebits: number;
+  totalActualCredits: number;
+  totalActualDebits: number;
+  creditTransactions: ITransaction[];
+  debitTransactions: ITransaction[];
+  creditStreams: ICreditStream[];
+  debitStreams: IDebitStream[];
 };

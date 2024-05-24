@@ -1,42 +1,66 @@
 import TheNavbar from "@components/TheNavbar";
-import ActualExpenses from "@components/cards/ActualExpenses";
-import ActualIncome from "@components/cards/ActualIncome";
-import ActualSavings from "@components/cards/ActualSavings";
-import CreditStream from "@components/cards/CreditStream";
+import ActualExpensesCard from "@components/cards/ActualExpensesCard";
+import ActualIncomeCard from "@components/cards/ActualIncomeCard";
+import ActualPassiveIncomeCard from "@components/cards/ActualPassiveIncomeCard";
+import ActualSavingsCard from "@components/cards/ActualSavingsCard";
+import CreditStreamCard from "@components/cards/CreditStreamCard";
 import ProjectedExpensesCard from "@components/cards/ProjectedExpensesCard";
 import ProjectedIncomeCard from "@components/cards/ProjectedIncomeCard";
-// import NewTransactionDialog from "@components/dialogs/NewTransactionDialog";
-import ProjectedCreditDialog from "@components/dialogs/ProjectedCreditDialog";
-import ProjectedDebitDialog from "@components/dialogs/ProjectedDebitDialog";
 import TransactionsSheet from "@components/tables/TransactionSheet";
+import useFirestore from "@composables/firebase/useFirestore";
 import useFinances from "@composables/useFinances";
-import { ETransactionFrequencyPeriod, type IPeriod } from "@interfaces/budget";
+import {
+  ETransactionFrequencyPeriod,
+  type IFinances,
+  type IPeriod,
+} from "@interfaces/budget";
+import { DEFAULT_USER_ID } from "@lib/constants";
 import { endOfMonth, startOfMonth } from "date-fns";
-import { type Component } from "solid-js";
-import ActualPassiveIncome from "../components/cards/ActualPassiveIncome";
-
-// Import the data.
-import user from "../../data/users";
-
-// Define the period.
-const period: IPeriod = {
-  range: ETransactionFrequencyPeriod.MONTH,
-  start: startOfMonth(new Date()),
-  end: endOfMonth(new Date()),
-};
-
-// Create a user finances object.
-const {
-  totalProjectedCredits,
-  totalProjectedDebits,
-  totalActualCredits,
-  totalActualDebits,
-  creditStreams,
-  creditTransactions,
-  debitTransactions,
-} = useFinances(user.budget, period);
+import {
+  createEffect,
+  createResource,
+  createSignal,
+  type Component,
+} from "solid-js";
+import { createStore } from "solid-js/store";
+// import type { IUser } from "@interfaces/user";
+// import ProjectedCreditDialog from "@components/dialogs/ProjectedCreditDialog";
+// import ProjectedDebitDialog from "@components/dialogs/ProjectedDebitDialog";
+// import NewTransactionDialog from "@components/dialogs/NewTransactionDialog";
 
 const App: Component = () => {
+  // Extract the firestore functions.
+  const { getUser } = useFirestore();
+
+  // Define the period.
+  const [period] = createStore<IPeriod>({
+    range: ETransactionFrequencyPeriod.MONTH,
+    start: startOfMonth(new Date()),
+    end: endOfMonth(new Date()),
+  });
+
+  // Define the user.
+  const [userId] = createSignal<string | undefined>(DEFAULT_USER_ID);
+  const [user] = createResource(userId, getUser);
+
+  // Define the user finances.
+  const [finances, setFinances] = createStore<IFinances>({
+    totalProjectedCredits: 0,
+    totalProjectedDebits: 0,
+    totalActualCredits: 0,
+    totalActualDebits: 0,
+    creditTransactions: [],
+    debitTransactions: [],
+    creditStreams: [],
+    debitStreams: [],
+  });
+
+  createEffect(() => {
+    if (!user.loading) {
+      setFinances(useFinances({ period, user: user() }));
+    }
+  });
+
   return (
     <>
       {/* Navigation bar */}
@@ -56,44 +80,44 @@ const App: Component = () => {
             <div class="col-span-1 grid grid-cols-1 gap-4 md:col-span-2 md:grid-cols-2 md:gap-6">
               <hr class="my-2 md:hidden dark:border-rose-500" />
               {/* Projected Income */}
-              <ProjectedIncomeCard income={totalProjectedCredits} />
+              <ProjectedIncomeCard income={finances.totalProjectedCredits} />
 
               {/* Projected Expenses */}
               <ProjectedExpensesCard
-                income={totalProjectedCredits}
-                expenses={totalProjectedDebits}
+                income={finances.totalProjectedCredits}
+                expenses={finances.totalProjectedDebits}
               />
               <hr class="md:hidden dark:border-rose-500" />
 
               {/* Actual Income */}
-              <ActualIncome
-                projected={totalProjectedCredits}
-                actual={totalActualCredits}
+              <ActualIncomeCard
+                projected={finances.totalProjectedCredits}
+                actual={finances.totalActualCredits}
               />
 
               {/* Actual Expenses */}
-              <ActualExpenses
-                projected={totalProjectedCredits}
-                income={totalActualCredits}
-                actual={totalActualDebits}
+              <ActualExpensesCard
+                projected={finances.totalProjectedCredits}
+                income={finances.totalActualCredits}
+                actual={finances.totalActualDebits}
               />
               <hr class="md:hidden dark:border-rose-500" />
             </div>
 
             {/* Actual Savings */}
             <div class="col-span-1">
-              <ActualSavings
-                totalCredits={totalActualCredits}
-                totalDebits={totalActualDebits}
-                debitTransactions={debitTransactions}
+              <ActualSavingsCard
+                totalCredits={finances.totalActualCredits}
+                totalDebits={finances.totalActualDebits}
+                debitTransactions={finances.debitTransactions}
               />
             </div>
 
             {/* Actual Investments */}
             <div class="col-span-1">
-              <ActualPassiveIncome
-                totalCredits={totalActualCredits}
-                creditTransactions={creditTransactions}
+              <ActualPassiveIncomeCard
+                totalCredits={finances.totalActualCredits}
+                creditTransactions={finances.creditTransactions}
               />
             </div>
           </div>
@@ -105,9 +129,9 @@ const App: Component = () => {
             </h1>
 
             <div class="grid grid-cols-1 gap-5 md:grid-cols-5">
-              {creditStreams.map((stream) => (
+              {finances.creditStreams.map((stream) => (
                 <div class="col-span-1">
-                  <CreditStream stream={stream} />
+                  <CreditStreamCard stream={stream} />
                 </div>
               ))}
             </div>
@@ -126,23 +150,28 @@ const App: Component = () => {
 
               {/* Transaction actions */}
               <div class="fixed bottom-4 right-4 flex flex-col gap-1 md:static md:flex-row md:gap-2">
-                <ProjectedCreditDialog natures={user.config.natures.credit} />
-                <ProjectedDebitDialog
-                  natures={user.config.natures.debit}
-                  credits={user.budget.credits}
+                {/* <ProjectedCreditDialog
+                  natures={user()?.config.natures.credit}
                 />
-                {/* <NewTransactionDialog
-              streams={projectedIncome}
-              expenses={projectedExpenses}
-              client:visible
-            /> */}
+                <ProjectedDebitDialog
+                  natures={user()?.config.natures.debit}
+                  credits={user()?.budget.credits}
+                />
+                <NewTransactionDialog
+                  streams={projectedIncome}
+                  expenses={projectedExpenses}
+                  client:visible
+                /> */}
               </div>
             </div>
 
             {/* List all transactions */}
             <div class="rounded-xl bg-gray-100 dark:bg-gray-700 p-4">
               <TransactionsSheet
-                transactions={[...creditTransactions, ...debitTransactions]}
+                transactions={[
+                  ...(finances.creditTransactions ?? []),
+                  ...(finances.debitTransactions ?? []),
+                ]}
               />
             </div>
           </section>

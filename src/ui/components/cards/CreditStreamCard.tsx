@@ -23,15 +23,15 @@ const CreditStreamCard: Component<{
     (fulfilled() / props.stream.projected.amount) * 100;
 
   return (
-    <div class="relative transition-shadow ease-in rounded-lg px-6 py-4 bg-indigo-600 dark:bg-indigo-800 flex flex-col gap-2 justify-between md:px-8 md:py-6 xl:px-5 hover:shadow-lg">
+    <div class="relative transition-shadow ease-in p-6 rounded-lg bg-indigo-600 dark:bg-indigo-800 flex flex-col gap-2 lg:pb-6 lg:pt-4 justify-between hover:shadow-lg">
       <EditProjectedCreditDialog
         natures={props.natures}
         credit={props.stream.projected}
         submitHandler={props.submitHandler}
       />
 
-      <div class="flex flex-col">
-        <h1 class="mb-1 text-md text-white font-bold tracking-tight leading-3 md:mb-0 md:text-lg">
+      <div class="flex flex-col gap-2">
+        <h1 class="text-md text-white font-bold tracking-tight leading-3 md:text-lg">
           {toTitle(props.stream.projected.nature)}
         </h1>
         <small class="text-sm italic text-indigo-100">

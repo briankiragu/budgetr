@@ -26,7 +26,7 @@ const NewProjectedCreditDialog: Component<{
       {/* Trigger */}
       <button
         type="button"
-        class="group min-h-36 border-2 dark:bg-gray-800/60 border-dashed hover:border-solid transition border-gray-400 hover:border-gray-100 rounded-lg flex items-center justify-center focus:outline-none"
+        class="group min-h-36 border-2 bg-gray-300 hover:shadow-lg dark:bg-gray-800/60 border-dashed hover:border-solid transition border-gray-400 hover:border-gray-100 rounded-lg flex items-center justify-center focus:outline-none"
         onClick={() => handleDialogShow()}
       >
         <span class="material-symbols-outlined text-3xl text-gray-500 font-bold group-hover:text-gray-100 transition">

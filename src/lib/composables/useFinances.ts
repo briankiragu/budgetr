@@ -144,12 +144,17 @@ export default ({
   }));
 
   return {
+    projectedCredits,
+    projectedDebits,
+
     totalProjectedCredits,
     totalProjectedDebits,
     totalActualCredits,
     totalActualDebits,
+
     creditTransactions,
     debitTransactions,
+
     creditStreams,
     debitStreams,
   };

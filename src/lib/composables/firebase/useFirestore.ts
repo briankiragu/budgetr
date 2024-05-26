@@ -1,5 +1,5 @@
 import useIdentity from "@composables/useIdentity";
-import type { IProjectedCredit } from "@interfaces/budget";
+import type { IProjectedCredit, ITransaction } from "@interfaces/budget";
 import type { IUser } from "@interfaces/user";
 import { db } from "@lib/firebase";
 import { arrayUnion, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
@@ -25,9 +25,16 @@ export default () => {
     addProjectedCredit: async (id: string, credit: IProjectedCredit) => {
       const docRef = doc(db, COLLECTION_NAME, id);
 
-      // Atomically add a new region to the "regions" array field.
       await updateDoc(docRef, {
         "budget.credits": arrayUnion(credit),
+      });
+    },
+
+    addTransaction: async (id: string, txn: ITransaction) => {
+      const docRef = doc(db, COLLECTION_NAME, id);
+
+      await updateDoc(docRef, {
+        "budget.transactions": arrayUnion(txn),
       });
     },
   };

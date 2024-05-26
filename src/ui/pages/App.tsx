@@ -7,6 +7,7 @@ import CreditStreamCard from "@components/cards/CreditStreamCard";
 import ProjectedExpensesCard from "@components/cards/ProjectedExpensesCard";
 import ProjectedIncomeCard from "@components/cards/ProjectedIncomeCard";
 import NewProjectedCreditDialog from "@components/dialogs/NewProjectedCreditDialog";
+import NewTransactionDialog from "@components/dialogs/NewTransactionDialog";
 import TransactionsSheet from "@components/tables/TransactionSheet";
 import useFirestore from "@composables/firebase/useFirestore";
 import useFinances from "@composables/useFinances";
@@ -15,11 +16,13 @@ import {
   type IFinances,
   type IPeriod,
   type IProjectedCredit,
+  type ITransaction,
 } from "@interfaces/budget";
 import type { IUser } from "@interfaces/user";
 import { DEFAULT_USER_ID } from "@lib/constants";
 import { endOfMonth, startOfMonth } from "date-fns";
 import {
+  Show,
   createEffect,
   createResource,
   createSignal,
@@ -27,11 +30,11 @@ import {
 } from "solid-js";
 import { createStore } from "solid-js/store";
 // import ProjectedDebitDialog from "@components/dialogs/ProjectedDebitDialog";
-// import NewTransactionDialog from "@components/dialogs/NewTransactionDialog";
 
 const App: Component = () => {
   // Extract the firestore functions.
-  const { addProjectedCredit, getUser, updateOrCreateUser } = useFirestore();
+  const { addProjectedCredit, addTransaction, getUser, updateOrCreateUser } =
+    useFirestore();
 
   // Define the period.
   const [period] = createStore<IPeriod>({
@@ -46,6 +49,8 @@ const App: Component = () => {
 
   // Define the user finances.
   const [finances, setFinances] = createStore<IFinances>({
+    projectedCredits: [],
+    projectedDebits: [],
     totalProjectedCredits: 0,
     totalProjectedDebits: 0,
     totalActualCredits: 0,
@@ -87,6 +92,15 @@ const App: Component = () => {
 
       // Make the request to Firebase.
       updateOrCreateUser(updatedUser, userId());
+
+      // Refetch the user data.
+      refetch();
+    }
+  };
+
+  const createNewTransaction = async (txn: ITransaction): Promise<void> => {
+    if (userId()) {
+      addTransaction(userId()!, txn);
 
       // Refetch the user data.
       refetch();
@@ -201,12 +215,15 @@ const App: Component = () => {
                 {/* <ProjectedDebitDialog
                   natures={user()?.config.natures.debit}
                   credits={user()?.budget.credits}
-                />
-                <NewTransactionDialog
-                  streams={projectedIncome}
-                  expenses={projectedExpenses}
-                  client:visible
                 /> */}
+                <Show when={user()}>
+                  <NewTransactionDialog
+                    natures={user()!.config.natures}
+                    credits={finances.projectedCredits}
+                    debits={finances.projectedDebits}
+                    submitHandler={createNewTransaction}
+                  />
+                </Show>
               </div>
             </div>
 

@@ -27,7 +27,7 @@ const EditProjectedCreditDialog: Component<{
       {/* Trigger */}
       <button
         type="button"
-        class="group absolute top-3 right-3 bg-indigo-500 hover:bg-indigo-700 dark:hover:bg-indigo-900 rounded-full size-9 lg:size-10 flex items-center justify-center transition focus:outline-none"
+        class="group absolute top-2 right-2 hover:bg-indigo-700 dark:hover:bg-indigo-900 rounded-full size-9 lg:size-10 flex items-center justify-center transition focus:outline-none"
         onClick={() => handleDialogShow()}
       >
         <span class="material-symbols-outlined transition text-indigo-600 group-hover:text-indigo-50">

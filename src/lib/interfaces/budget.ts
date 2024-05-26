@@ -80,6 +80,8 @@ export type IPeriod = {
 };
 
 export type IFinances = {
+  projectedCredits: IProjectedCredit[];
+  projectedDebits: IProjectedDebit[];
   totalProjectedCredits: number;
   totalProjectedDebits: number;
   totalActualCredits: number;

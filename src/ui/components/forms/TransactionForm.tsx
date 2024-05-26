@@ -9,13 +9,14 @@ import {
 } from "@interfaces/budget";
 import type { ITransactionForm } from "@interfaces/forms";
 import { DEFAULT_CURRENCY } from "@lib/constants";
-import { For, Show, type Component } from "solid-js";
+import { For, type Component } from "solid-js";
 import { createStore } from "solid-js/store";
 
 const TransactionForm: Component<{
   natures: { credit: string[]; debit: string[] };
   credits: IProjectedCredit[];
   debits: IProjectedDebit[];
+  transaction?: ITransaction;
   closeHandler: (reason: "close" | "cancel") => void;
   submitHandler: (txn: ITransaction) => Promise<void>;
 }> = (props) => {
@@ -25,12 +26,12 @@ const TransactionForm: Component<{
 
   // Create a signal to hold the form state.
   const [state, setState] = createStore<ITransactionForm>({
-    refs: [],
-    type: ETransactionType.DEBIT,
-    nature: "",
-    amount: 10,
-    currency: DEFAULT_CURRENCY,
-    description: "",
+    refs: props.transaction?.refs || [],
+    type: props.transaction?.type || ETransactionType.DEBIT,
+    nature: props.transaction?.nature || "",
+    amount: props.transaction?.amount || 10,
+    currency: props.transaction?.currency || DEFAULT_CURRENCY,
+    description: props.transaction?.description || "",
   });
 
   // Get the natures.
@@ -79,16 +80,16 @@ const TransactionForm: Component<{
 
     // Format the state.
     const data: ITransaction = {
-      uid: generateUid(),
+      uid: props.transaction?.uid ?? generateUid(),
       refs: state.refs,
       nature: state.nature,
       amount: parseFloat(state.amount.toString()),
       type: state.type,
       currency: state.currency,
       description: state.description,
-      createdAt: new Date().toISOString(),
+      createdAt: props.transaction?.createdAt ?? new Date().toISOString(),
       updatedAt: new Date().toISOString(),
-      publishedAt: new Date().toISOString(),
+      publishedAt: props.transaction?.publishedAt ?? new Date().toISOString(),
     };
 
     // Submit the data.
@@ -99,11 +100,12 @@ const TransactionForm: Component<{
 
     // Reset the state.
     setState({
-      refs: [],
-      type: ETransactionType.DEBIT,
-      amount: 0,
-      currency: DEFAULT_CURRENCY,
-      description: "",
+      refs: props.transaction?.refs || [],
+      type: props.transaction?.type || ETransactionType.DEBIT,
+      nature: props.transaction?.nature || "",
+      amount: props.transaction?.amount || 10,
+      currency: props.transaction?.currency || DEFAULT_CURRENCY,
+      description: props.transaction?.description || "",
     });
   };
 

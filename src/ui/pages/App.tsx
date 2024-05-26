@@ -107,6 +107,33 @@ const App: Component = () => {
     }
   };
 
+  const updateTransaction = async (
+    transaction: ITransaction,
+  ): Promise<void> => {
+    if (user()) {
+      // From the user object, replace the edited transaction.
+      const transactions: ITransaction[] = [
+        ...(user()!.budget.transactions.filter(
+          (txn) => txn.uid !== transaction.uid,
+        ) || []),
+        transaction,
+      ];
+
+      // Add it back to the user.
+      const updatedUser: IUser = {
+        username: user()!.username,
+        config: user()!.config,
+        budget: { ...user()!.budget, transactions },
+      };
+
+      // Make the request to Firebase.
+      updateOrCreateUser(updatedUser, userId());
+
+      // Refetch the user data.
+      refetch();
+    }
+  };
+
   createEffect(() => {
     if (!user.loading) {
       setFinances(useFinances({ period, user: user() }));
@@ -228,12 +255,16 @@ const App: Component = () => {
             </div>
 
             {/* List all transactions */}
-            <div class="rounded-xl bg-gray-100 dark:bg-gray-700 p-4">
+            <div class="rounded-xl bg-gray-100 dark:bg-gray-800 p-4">
               <TransactionsSheet
+                natures={user()!.config.natures}
+                credits={finances.projectedCredits}
+                debits={finances.projectedDebits}
                 transactions={[
                   ...(finances.creditTransactions ?? []),
                   ...(finances.debitTransactions ?? []),
                 ]}
+                submitHandler={updateTransaction}
               />
             </div>
           </section>

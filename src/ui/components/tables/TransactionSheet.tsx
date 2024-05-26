@@ -1,17 +1,21 @@
-// Import interfaces...
-import type { Component } from "solid-js";
-import type { ITransaction } from "@interfaces/budget";
-
-// Import the SolidJS modules...
-import { createSignal, For } from "solid-js";
-
-// Import the necessary composables...
+import EditTransactionDialog from "@components/dialogs/EditTransactionDialog";
 import useFormatting from "@composables/useFormatting";
+import type {
+  IProjectedCredit,
+  IProjectedDebit,
+  ITransaction,
+} from "@interfaces/budget";
+import type { Component } from "solid-js";
+import { For, createSignal } from "solid-js";
 
 // Define the component.
-const TransactionsSheet: Component<{ transactions: ITransaction[] }> = (
-  props,
-) => {
+const TransactionsSheet: Component<{
+  natures: { credit: string[]; debit: string[] };
+  credits: IProjectedCredit[];
+  debits: IProjectedDebit[];
+  submitHandler: (txn: ITransaction) => Promise<void>;
+  transactions: ITransaction[];
+}> = (props) => {
   // Get the composable functions
   const { toPrice, toTitle } = useFormatting();
 
@@ -123,14 +127,14 @@ const TransactionsSheet: Component<{ transactions: ITransaction[] }> = (
       <ul class="flex flex-col gap-2">
         <For each={filteredTransactions()}>
           {(transaction) => (
-            <li class="grid grid-cols-5 items-center gap-4 rounded-md bg-gray-200 px-5 py-4 tracking-tighter text-gray-700 transition-all ease-in hover:bg-gray-700 hover:text-gray-50 hover:shadow-lg md:grid-cols-12 md:px-8">
+            <li class="group grid grid-cols-5 items-center lg:gap-6 rounded-md bg-gray-200 px-5 py-4 tracking-tighter text-gray-700 transition-all ease-in hover:bg-gray-700 hover:text-gray-50 hover:shadow-lg md:grid-cols-12 md:px-8">
               {/* Nature */}
-              <p class="col-span-3 truncate text-lg font-semibold">
+              <p class="col-span-6 truncate text-xl font-bold">
                 {transaction.description}
               </p>
 
               {/* Description */}
-              <p class="col-span-1 hidden text-sm text-gray-400 md:col-span-4 md:inline-grid">
+              <p class="col-span-1 hidden text-sm text-gray-400 md:inline-grid">
                 {toTitle(transaction.nature)}
               </p>
 
@@ -145,9 +149,19 @@ const TransactionsSheet: Component<{ transactions: ITransaction[] }> = (
               </p>
 
               {/* Amount and Currency */}
-              <p class="text-md col-span-2 truncate text-right font-mono font-extrabold md:text-xl">
-                {toPrice(transaction.amount, transaction.currency)}
-              </p>
+              <div class="col-span-5 lg:col-span-2 flex justify-between items-center">
+                <p class="group-hover:text-gray-400 text-md lg:truncate text-right text-gray-600 font-mono font-extrabold md:text-xl">
+                  {toPrice(transaction.amount, transaction.currency)}
+                </p>
+
+                <EditTransactionDialog
+                  natures={props.natures}
+                  credits={props.credits}
+                  debits={props.debits}
+                  transaction={transaction}
+                  submitHandler={props.submitHandler}
+                />
+              </div>
             </li>
           )}
         </For>

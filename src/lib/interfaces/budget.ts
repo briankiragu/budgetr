@@ -5,9 +5,11 @@ export enum ETransactionType {
   DEBIT = "debit",
 }
 export enum ETransactionNature {
-  SAVING = "saving",
   PASSIVE = "passive",
   INTEREST = "interest",
+  
+  SAVING = "saving",
+  INVESTMENT = "investment",
 }
 
 export enum EProjectedExpenseCategory {

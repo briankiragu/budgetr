@@ -1,6 +1,7 @@
 import useDate from "@composables/useDate";
 import {
   EProjectedExpenseCategory,
+  ETransactionNature,
   ETransactionType,
   type ICreditStream,
   type IDebitStream,
@@ -138,7 +139,12 @@ export default ({
   const debitStreams: IDebitStream[] = Object.entries(
     Object.groupBy(projectedDebits, ({ nature }) => nature),
   )
-    .filter(([, values]) => values)
+    .filter(
+      ([key, values]) =>
+        ![ETransactionNature.SAVING, ETransactionNature.INVESTMENT].includes(
+          key as ETransactionNature,
+        ) && values,
+    )
     .map(([, values]) => {
       const refs = (values as IProjectedDebit[]).map((value) => value.uid);
       return {

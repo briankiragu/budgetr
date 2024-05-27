@@ -33,7 +33,7 @@ const EditTransactionDialog: Component<{
       {/* Trigger */}
       <button
         type="button"
-        class="group hover:bg-indigo-700 dark:hover:bg-indigo-500 rounded-full size-9 lg:size-10 flex items-center justify-center transition focus:outline-none"
+        class="group hover:bg-indigo-500 rounded-full size-9 lg:size-10 flex items-center justify-center transition focus:outline-none"
         onClick={() => handleDialogShow()}
       >
         <span class="material-symbols-outlined transition text-indigo-600 group-hover:text-indigo-50">

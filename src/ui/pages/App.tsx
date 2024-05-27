@@ -4,6 +4,7 @@ import ActualIncomeCard from "@components/cards/ActualIncomeCard";
 import ActualPassiveIncomeCard from "@components/cards/ActualPassiveIncomeCard";
 import ActualSavingsCard from "@components/cards/ActualSavingsCard";
 import CreditStreamCard from "@components/cards/CreditStreamCard";
+import DebitStreamCard from "@components/cards/DebitStreamCard";
 import ProjectedExpensesCard from "@components/cards/ProjectedExpensesCard";
 import ProjectedIncomeCard from "@components/cards/ProjectedIncomeCard";
 import NewProjectedCreditDialog from "@components/dialogs/NewProjectedCreditDialog";
@@ -201,6 +202,8 @@ const App: Component = () => {
             </div>
           </div>
 
+          <hr class="dark:border-rose-500" />
+
           {/* Income streams */}
           <div class="lg:min-h-52 flex flex-col gap-2">
             <h1 class="text-4xl dark:text-white text-gray-800 font-extrabold tracking-tight">
@@ -225,10 +228,35 @@ const App: Component = () => {
               />
             </div>
           </div>
-        </section>
-        <hr class="dark:border-rose-500" />
+          <hr class="dark:border-rose-500" />
 
-        {/* Reports */}
+          {/* Expenses */}
+          <div class="lg:min-h-52 flex flex-col gap-2">
+            <h1 class="text-4xl dark:text-white text-gray-800 font-extrabold tracking-tight">
+              Expenses
+            </h1>
+
+            <div class="grid grid-cols-1 gap-5 md:grid-cols-5">
+              {finances.debitStreams.map((stream) => (
+                <div class="col-span-1">
+                  <DebitStreamCard
+                    stream={stream}
+                    natures={user()?.config.natures.credit}
+                    submitHandler={updateProjectedCredit}
+                  />
+                </div>
+              ))}
+
+              {/* New Projected Expense Trigger & Dialog*/}
+              {/* <NewProjectedCreditDialog
+                natures={user()?.config.natures.credit}
+                submitHandler={createProjectedCredit}
+              /> */}
+            </div>
+          </div>
+          <hr class="dark:border-rose-500" />
+        </section>
+
         <section class="flex flex-col gap-8">
           {/* Transactions */}
           <section class="flex flex-col gap-4">

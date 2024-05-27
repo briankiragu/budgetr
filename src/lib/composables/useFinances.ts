@@ -135,13 +135,20 @@ export default ({
 
   // Get the list of projected debit streams and their fulfillments
   // (whether they were received or not).
-  const debitStreams: IDebitStream[] = projectedDebits.map((debit) => ({
-    projected: debit,
-    // Check if it was fulfilled in the actual debit transaction.
-    actual: debitTransactions.filter((transaction) =>
-      transaction.refs.includes(debit.uid),
-    ),
-  }));
+  const debitStreams: IDebitStream[] = Object.entries(
+    Object.groupBy(projectedDebits, ({ nature }) => nature),
+  )
+    .filter(([, values]) => values)
+    .map(([, values]) => {
+      const refs = (values as IProjectedDebit[]).map((value) => value.uid);
+      return {
+        projected: values as IProjectedDebit[],
+        actual: debitTransactions.filter((transaction) =>
+          transaction.refs.some((ref) => refs?.includes(ref)),
+        ),
+      };
+    })
+    .flat();
 
   return {
     projectedCredits,

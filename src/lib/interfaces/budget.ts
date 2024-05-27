@@ -69,7 +69,7 @@ export type ICreditStream = {
 
 // A projected expense item and the transactions that belong to it.
 export type IDebitStream = {
-  projected: IProjectedDebit;
+  projected: IProjectedDebit[];
   actual: ITransaction[];
 };
 

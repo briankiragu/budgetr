@@ -30,7 +30,7 @@ const CreditStreamCard: Component<{
         submitHandler={props.submitHandler}
       />
 
-      <div class="flex flex-col gap-2">
+      <div class="flex flex-col">
         <h1 class="text-md text-white font-bold tracking-tight leading-3 md:text-lg">
           {toTitle(props.stream.projected.nature)}
         </h1>
@@ -47,7 +47,7 @@ const CreditStreamCard: Component<{
       {/* Income stream fulfillment progress */}
       <div class="overflow-hidden rounded-full bg-gray-200">
         <div
-          class="h-1 rounded-full bg-gradient-to-r from-green-600 to-blue-900"
+          class="h-1 rounded-full bg-green-600"
           style={`width: ${progress()}%`}
         ></div>
       </div>

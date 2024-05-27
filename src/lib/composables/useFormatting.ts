@@ -7,11 +7,13 @@ export default () => {
       // minimumFractionDigits: 0,
     });
 
-  const toTitle = (title: string): string =>
+  const toTitle = (title?: string): string =>
     title
-      .split("-")
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(" ");
+      ? title
+          .split("-")
+          .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+          .join(" ")
+      : "";
 
   return { toPrice, toTitle };
 };

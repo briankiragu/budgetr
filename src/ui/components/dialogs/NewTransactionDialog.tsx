@@ -29,10 +29,13 @@ const NewTransactionDialog: Component<{
     <>
       {/* Trigger */}
       <button
-        class="h-14 w-14 rounded-full bg-rose-700 text-sm text-rose-50 transition-all ease-in hover:shadow-lg md:h-auto md:w-auto md:rounded-md md:px-6 md:py-2 md:text-base"
+        class="flex items-center justify-center gap-1.5 h-14 w-14 rounded-full bg-rose-700 font-extrabold font-mono text-rose-50 transition-all ease-in hover:shadow-lg md:h-auto md:w-auto md:rounded-md md:px-6 md:py-2 md:text-base tracking-tighter focus:outline-none"
         onClick={handleDialogTrigger}
       >
-        New
+        <span class="material-symbols-outlined font-bold text-2xl">
+          attach_money
+        </span>
+        <span class="hidden lg:block">New Transaction</span>
       </button>
 
       {/* Dialog */}

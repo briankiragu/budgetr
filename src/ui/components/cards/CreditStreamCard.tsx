@@ -11,7 +11,7 @@ const CreditStreamCard: Component<{
   // Get the methods from the composables.
   const { toPrice, toTitle } = useFormatting();
 
-  // Calculate the total amount of this income stream that was fulfilled.
+  // Calculate the total amount of this credit stream that was fulfilled.
   const fulfilled = (): number =>
     props.stream.actual.reduce(
       (acc, transaction) => acc + transaction.amount,
@@ -41,7 +41,10 @@ const CreditStreamCard: Component<{
 
       {/* Income stream projected amount */}
       <p class="text-3xl text-indigo-50 tracking-tighter font-mono font-extrabold md:text-2xl">
-        {toPrice(fulfilled(), props.stream.projected.currency)}
+        {toPrice(
+          props.stream.projected.amount,
+          props.stream.projected.currency,
+        )}
       </p>
 
       {/* Income stream fulfillment progress */}

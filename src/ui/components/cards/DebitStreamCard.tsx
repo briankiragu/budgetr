@@ -14,7 +14,14 @@ const DebitStreamCard: Component<{
   // Is the debit stream expanded.
   const [isExpanded, setIsExpanded] = createSignal<boolean>(false);
 
-  // Calculate the total amount of this income stream that was fulfilled.
+  // Calculate the total amount of this debit stream that was projected.
+  const projected = (): number =>
+    props.stream.projected.reduce(
+      (acc, transaction) => acc + transaction.amount,
+      0,
+    );
+
+  // Calculate the total amount of this debit stream that was fulfilled.
   const fulfilled = (): number =>
     props.stream.actual.reduce(
       (acc, transaction) => acc + transaction.amount,
@@ -22,10 +29,7 @@ const DebitStreamCard: Component<{
     );
 
   // Calculate the fulfillment progress.
-  const progress = (): number =>
-    (fulfilled() /
-      props.stream.projected.reduce((acc, debit) => acc + debit.amount, 0)) *
-    100;
+  const progress = (): number => (fulfilled() / projected()) * 100;
 
   return (
     <div class="relative">
@@ -54,7 +58,7 @@ const DebitStreamCard: Component<{
         {/* Income stream projected amount */}
         <p class="text-wrap flex items-end justify-between gap-2 text-3xl text-teal-50 tracking-tighter font-mono font-extrabold md:text-2xl">
           <span>
-            {toPrice(fulfilled(), props.stream.projected.at(0)?.currency)}
+            {toPrice(projected(), props.stream.projected.at(0)?.currency)}
           </span>
           {/* <span class="text-sm">({progress().toFixed(0)}%)</span> */}
         </p>

@@ -4,7 +4,7 @@ import type { Component } from "solid-js";
 
 // Define the component.
 const NewProjectedDebitDialog: Component<{
-  natures?: string[];
+  nature?: string;
   credits: IProjectedCredit[];
   debit?: IProjectedDebit;
   submitHandler: (debit: IProjectedDebit) => Promise<void>;
@@ -28,7 +28,7 @@ const NewProjectedDebitDialog: Component<{
       {/* Trigger */}
       <button
         type="button"
-        class="group h-32 border-2 bg-gray-300 hover:shadow-lg dark:bg-gray-800/60 border-dashed hover:border-solid transition border-gray-400 hover:border-gray-100 rounded-lg flex items-center justify-center focus:outline-none"
+        class="group h-12 border-2 bg-gray-300 hover:shadow-lg dark:bg-gray-800/80 border-dashed hover:border-solid transition border-gray-400 hover:border-gray-100 rounded-lg flex items-center justify-center focus:outline-none"
         onClick={() => handleDialogShow()}
       >
         <span class="material-symbols-outlined text-3xl text-gray-500 font-bold group-hover:text-gray-100 transition">
@@ -44,7 +44,7 @@ const NewProjectedDebitDialog: Component<{
         class="w-full rounded-md p-0 md:w-[50vw] dark:bg-gray-800"
       >
         <ProjectedDebitForm
-          natures={props.natures}
+          natures={[props.nature!]}
           credits={props.credits}
           submitHandler={props.submitHandler}
           closeHandler={handleDialogClose}

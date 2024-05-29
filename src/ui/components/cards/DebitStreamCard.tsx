@@ -1,4 +1,5 @@
 import EditProjectedDebitDialog from "@components/dialogs/EditProjectedDebitDialog";
+import NewProjectedDebitDialog from "@components/dialogs/NewProjectedDebitDialog";
 import useFormatting from "@composables/useFormatting";
 import {
   EProjectedExpenseCategory,
@@ -101,6 +102,13 @@ const DebitStreamCard: Component<{
               </li>
             )}
           </For>
+
+          {/* New Debit */}
+          <NewProjectedDebitDialog
+            nature={props.stream.projected.at(0)?.nature}
+            credits={props.credits}
+            submitHandler={props.submitHandler}
+          />
         </ul>
       </Show>
     </div>

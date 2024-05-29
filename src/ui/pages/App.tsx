@@ -17,6 +17,7 @@ import {
   type IFinances,
   type IPeriod,
   type IProjectedCredit,
+  type IProjectedDebit,
   type ITransaction,
 } from "@interfaces/budget";
 import type { IUser } from "@interfaces/user";
@@ -89,6 +90,31 @@ const App: Component = () => {
         username: user()!.username,
         config: user()!.config,
         budget: { ...user()!.budget, credits },
+      };
+
+      // Make the request to Firebase.
+      updateOrCreateUser(updatedUser, userId());
+
+      // Refetch the user data.
+      refetch();
+    }
+  };
+
+  const updateProjectedDebit = async (
+    debit: IProjectedDebit,
+  ): Promise<void> => {
+    if (user()) {
+      // From the user object, replace the edited credit.
+      const debits: IProjectedDebit[] = [
+        ...(user()!.budget.debits.filter((dbt) => dbt.uid !== debit.uid) || []),
+        debit,
+      ];
+
+      // Add it back to the user.
+      const updatedUser: IUser = {
+        username: user()!.username,
+        config: user()!.config,
+        budget: { ...user()!.budget, debits },
       };
 
       // Make the request to Firebase.
@@ -241,17 +267,12 @@ const App: Component = () => {
                 <div class="col-span-1">
                   <DebitStreamCard
                     stream={stream}
-                    natures={user()?.config.natures.credit}
-                    submitHandler={updateProjectedCredit}
+                    natures={user()?.config.natures.debit}
+                    credits={user()?.budget.credits || []}
+                    submitHandler={updateProjectedDebit}
                   />
                 </div>
               ))}
-
-              {/* New Projected Expense Trigger & Dialog*/}
-              {/* <NewProjectedCreditDialog
-                natures={user()?.config.natures.credit}
-                submitHandler={createProjectedCredit}
-              /> */}
             </div>
           </div>
           <hr class="dark:border-rose-500" />

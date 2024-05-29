@@ -1,10 +1,16 @@
-// import EditProjectedDebitDialog from "@components/dialogs/EditProjectedDebitDialog";
+import EditProjectedDebitDialog from "@components/dialogs/EditProjectedDebitDialog";
 import useFormatting from "@composables/useFormatting";
-import type { IDebitStream, IProjectedDebit } from "@interfaces/budget";
+import {
+  EProjectedExpenseCategory,
+  type IDebitStream,
+  type IProjectedCredit,
+  type IProjectedDebit,
+} from "@interfaces/budget";
 import { For, Show, createSignal, type Component } from "solid-js";
 
 const DebitStreamCard: Component<{
   stream: IDebitStream;
+  credits: IProjectedCredit[];
   natures?: string[];
   submitHandler: (credit: IProjectedDebit) => Promise<void>;
 }> = (props) => {
@@ -33,21 +39,20 @@ const DebitStreamCard: Component<{
 
   return (
     <div class="relative">
-      <div class="transition-shadow ease-in p-6 rounded-lg bg-teal-600 dark:bg-teal-800 flex flex-col gap-2 lg:pb-6 lg:pt-4 justify-between hover:shadow-lg">
-        {/* <EditProjectedDebitDialog
-        natures={props.natures}
-        credit={props.stream.projected}
-        submitHandler={props.submitHandler}
-      /> */}
-        <button
-          type="button"
-          class="group flex items-center transition justify-center absolute top-2 right-2 size-9 hover:bg-gray-600/40 rounded-full"
-          onClick={() => setIsExpanded(!isExpanded())}
-        >
-          <span class="material-symbols-outlined transition text-gray-600 group-hover:text-gray-300">
-            unfold_more
-          </span>
-        </button>
+      <div
+        class={`transition-shadow ease-in p-6 ${isExpanded() ? "rounded-t-lg" : "rounded-lg"} bg-teal-600 dark:bg-teal-800 flex flex-col gap-2 lg:pb-6 lg:pt-4 justify-between hover:shadow-lg`}
+      >
+        <div class="absolute top-2 right-2 flex items-center">
+          <button
+            type="button"
+            class="group flex items-center transition justify-center size-9 hover:bg-gray-600/40 rounded-full focus:outline-none"
+            onClick={() => setIsExpanded(!isExpanded())}
+          >
+            <span class="material-symbols-outlined transition dark:text-gray-500 text-gray-600 group-hover:text-gray-300">
+              {isExpanded() ? "unfold_less" : "unfold_more"}
+            </span>
+          </button>
+        </div>
 
         <div class="flex flex-col">
           <h1 class="text-md text-white font-bold tracking-tight leading-3 md:text-lg">
@@ -60,13 +65,12 @@ const DebitStreamCard: Component<{
           <span>
             {toPrice(projected(), props.stream.projected.at(0)?.currency)}
           </span>
-          {/* <span class="text-sm">({progress().toFixed(0)}%)</span> */}
         </p>
 
         {/* Income stream fulfillment progress */}
         <div class="overflow-hidden rounded-full bg-gray-200">
           <div
-            class="h-1 rounded-full bg-red-400"
+            class={`h-1 rounded-full ${progress() > 100 ? "bg-red-500" : "bg-green-600"}`}
             style={`width: ${progress()}%`}
           ></div>
         </div>
@@ -74,14 +78,26 @@ const DebitStreamCard: Component<{
 
       {/* Breakdown */}
       <Show when={isExpanded()}>
-        <ul class="flex flex-col gap-1 relative -top-4 p-2 pt-6 -z-10 transition rounded-b-lg bg-teal-200">
+        <ul class="flex flex-col gap-1 relative p-2 transition rounded-b-lg bg-teal-200">
           <For each={props.stream.projected}>
             {(debit) => (
-              <li class="flex justify-between items-center gap-2 text-sm bg-green-300 text-green-900 px-4 py-2 rounded-md">
-                <span class="">{debit.description}</span>
-                <span class="font-mono">
-                  {toPrice(debit.amount, debit.currency)}
-                </span>
+              <li class="group min-h-12 flex justify-between items-center gap-2 text-sm bg-green-300 dark:bg-green-400 text-green-900 dark:text-gray-900 px-4 py-2 rounded-md">
+                <span class="w-28">{debit.description}</span>
+                <div class="flex items-center">
+                  <span class="font-mono group-hover:hidden">
+                    {debit.category === EProjectedExpenseCategory.PERCENTAGE
+                      ? `${debit.amount}%`
+                      : toPrice(debit.amount, debit.currency)}
+                  </span>
+                  <div class="hidden group-hover:block">
+                    <EditProjectedDebitDialog
+                      natures={props.natures}
+                      credits={props.credits}
+                      debit={debit}
+                      submitHandler={props.submitHandler}
+                    />
+                  </div>
+                </div>
               </li>
             )}
           </For>

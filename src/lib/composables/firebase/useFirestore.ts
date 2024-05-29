@@ -1,5 +1,9 @@
 import useIdentity from "@composables/useIdentity";
-import type { IProjectedCredit, ITransaction } from "@interfaces/budget";
+import type {
+  IProjectedCredit,
+  IProjectedDebit,
+  ITransaction,
+} from "@interfaces/budget";
 import type { IUser } from "@interfaces/user";
 import { db } from "@lib/firebase";
 import { arrayUnion, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
@@ -27,6 +31,14 @@ export default () => {
 
       await updateDoc(docRef, {
         "budget.credits": arrayUnion(credit),
+      });
+    },
+
+    addProjectedDebit: async (id: string, debit: IProjectedDebit) => {
+      const docRef = doc(db, COLLECTION_NAME, id);
+
+      await updateDoc(docRef, {
+        "budget.debits": arrayUnion(debit),
       });
     },
 

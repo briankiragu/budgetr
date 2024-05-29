@@ -8,6 +8,7 @@ import DebitStreamCard from "@components/cards/DebitStreamCard";
 import ProjectedExpensesCard from "@components/cards/ProjectedExpensesCard";
 import ProjectedIncomeCard from "@components/cards/ProjectedIncomeCard";
 import NewProjectedCreditDialog from "@components/dialogs/NewProjectedCreditDialog";
+import NewProjectedDebitDialog from "@components/dialogs/NewProjectedDebitDialog";
 import NewTransactionDialog from "@components/dialogs/NewTransactionDialog";
 import TransactionsSheet from "@components/tables/TransactionSheet";
 import useFirestore from "@composables/firebase/useFirestore";
@@ -273,6 +274,11 @@ const App: Component = () => {
                   />
                 </div>
               ))}
+              <NewProjectedDebitDialog
+                natures={user()?.config.natures.debit}
+                credits={user()?.budget.credits || []}
+                submitHandler={updateProjectedDebit}
+              />
             </div>
           </div>
           <hr class="dark:border-rose-500" />

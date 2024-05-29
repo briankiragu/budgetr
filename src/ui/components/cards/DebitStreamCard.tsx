@@ -40,7 +40,7 @@ const DebitStreamCard: Component<{
   return (
     <div class="relative">
       <div
-        class={`transition-shadow ease-in p-6 ${isExpanded() ? "rounded-t-lg" : "rounded-lg"} bg-teal-600 dark:bg-teal-800 flex flex-col gap-2 lg:pb-6 lg:pt-4 justify-between hover:shadow-lg`}
+        class={`transition-shadow ease-in p-6 ${isExpanded() ? "rounded-t-lg" : "rounded-lg"} min-h-32 bg-teal-600 dark:bg-teal-800 flex flex-col gap-2 lg:pb-6 lg:pt-4 justify-between hover:shadow-lg`}
       >
         <div class="absolute top-2 right-2 flex items-center">
           <button
